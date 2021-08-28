@@ -1,0 +1,1292 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8. Graph Neural Networks &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. Attention Layers" href="attention.html" />
+    <link rel="prev" title="7. Standard Layers" href="layers.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="flows.html">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NLP.html">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="xai.html">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/dl/gnn.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/dl/gnn.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/dl/gnn.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representing-a-graph">
+   8.1. Representing a Graph
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   8.2. Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-graph-neural-network">
+   8.3. A Graph Neural Network
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-simple-gnn">
+     8.3.1. A simple GNN
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kipf-welling-gcn">
+   8.4. Kipf &amp; Welling GCN
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gcn-implementation">
+     8.4.1. GCN Implementation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#solubility-example">
+   8.5. Solubility Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#message-passing-viewpoint">
+   8.6. Message Passing Viewpoint
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gated-graph-neural-network">
+   8.7. Gated Graph Neural Network
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pooling">
+   8.8. Pooling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#battaglia-general-equations">
+   8.9. Battaglia General Equations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reformulating-gcn-into-battaglia-equations">
+     8.9.1. Reformulating GCN into Battaglia equations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nodes-vs-edges">
+   8.10. Nodes vs Edges
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#common-architecture-motifs-and-comparisons">
+   8.11. Common Architecture Motifs and Comparisons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#do-we-need-graphs">
+   8.12. Do we need graphs?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relevant-videos">
+   8.13. Relevant Videos
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#intro-to-gnns">
+     8.13.1. Intro to GNNs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#overview-of-gnn-with-molecule-compiler-examples">
+     8.13.2. Overview of GNN with Molecule, Compiler Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chapter-summary">
+   8.14. Chapter Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   8.15. Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="graph-neural-networks">
+<h1><span class="section-number">8. </span>Graph Neural Networks<a class="headerlink" href="#graph-neural-networks" title="Permalink to this headline">¶</a></h1>
+<p>The biggest difficulty for deep learning with molecules is the choice and computation of “descriptors”. Graph neural networks (GNNs) are a category of deep neural networks whose inputs are graphs. As usual, they are composed of specific layers that input a graph and those layers are what we’re interested in. You can find reviews of GNNs in Dwivedi <em>et al.</em><span id="id1">[<a class="reference internal" href="#id73">DJL+20</a>]</span>, Bronstein <em>et al.</em><span id="id2">[<a class="reference internal" href="#id74">BBL+17</a>]</span>, and  Wu <em>et al.</em><span id="id3">[<a class="reference internal" href="#id75">WPC+20</a>]</span>. GNNs can be used for everything from coarse-grained molecular dynamics <span id="id4">[<a class="reference internal" href="#id88">LWC+20</a>]</span> to predicting NMR chemical shifts <span id="id5">[<a class="reference internal" href="#id89">YCW20</a>]</span> to modeling dynamics of solids <span id="id6">[<a class="reference internal" href="#id40">XFLW+19</a>]</span>. Before we dive too deep into them, we must first understand how a graph is represented and how molecules are converted into graphs.</p>
+<div class="section" id="representing-a-graph">
+<h2><span class="section-number">8.1. </span>Representing a Graph<a class="headerlink" href="#representing-a-graph" title="Permalink to this headline">¶</a></h2>
+<p>A graph <span class="math notranslate nohighlight">\(\mathbf{G}\)</span> is a set of nodes <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and edges <span class="math notranslate nohighlight">\(\mathbf{E}\)</span>. In our setting, node <span class="math notranslate nohighlight">\(i\)</span> is defined by a vector <span class="math notranslate nohighlight">\(\vec{v}_i\)</span>, so that the set of nodes can be written as a rank 2 tensor. The edges can be represented as an adjacency matrix <span class="math notranslate nohighlight">\(\mathbf{E}\)</span>, where if <span class="math notranslate nohighlight">\(e_{ij} = 1\)</span> then nodes <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are connected by an edge. In many fields, graphs are often immediately simplified to be directed and acyclic, which simplifies things. Molecules are instead undirected and have cycles (rings). Thus, our adjacency matrices are always symmetric <span class="math notranslate nohighlight">\(e_{ij} = e_{ji}\)</span>. Often our edges themselves have features, so that <span class="math notranslate nohighlight">\(e_{ij}\)</span> is itself a vector. Then the adjacency matrix becomes a rank 3 tensor. Examples of edge features might be covalent bond order or distance between two nodes.</p>
+<div class="figure align-default" id="methanol">
+<a class="reference internal image-reference" href="../_images/methanol.jpg"><img alt="../_images/methanol.jpg" src="../_images/methanol.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 8.1 </span><span class="caption-text">Methanol with atoms numbered so that we can convert it to a graph.</span><a class="headerlink" href="#methanol" title="Permalink to this image">¶</a></p>
+</div>
+<p>Let’s see how a graph can be constructed from a molecule. Consider methanol, shown in Figure <a class="reference internal" href="#methanol"><span class="std std-numref">Fig. 8.1</span></a>. I’ve numbered the atoms so that we have an order for defining the nodes/edges. First, the node features. You can use anything for node features, but often we’ll begin with one-hot encoded feature vectors:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Node</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>H</p></th>
+<th class="text-align:right head"><p>O</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>2</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>3</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>4</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>5</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>6</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math notranslate nohighlight">\(\mathbf{V}\)</span> will be the combined feature vectors of these nodes. The adjacency matrix <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> will look like:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p></p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>5</p></th>
+<th class="text-align:right head"><p>6</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>2</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>3</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>4</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>5</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>6</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Take a moment to understand these two. For example, notice that rows 1, 2, and 3 only have the 4th column as non-zero. That’s because atoms 1-3 are bonded only to carbon (atom 4). Also, the diagonal is always 0 because atoms cannot be bonded with themselves.</p>
+<p>You can find a similar process for converting crystals into graphs in Xie et al. <span id="id7">[<a class="reference internal" href="#id112">XG18</a>]</span>. We’ll now begin with a function which can convert a smiles string into this representation.</p>
+</div>
+<div class="section" id="running-this-notebook">
+<h2><span class="section-number">8.2. </span>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages, either on your own environment or on Google Colab</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install jupyter-book matplotlib numpy tensorflow pydot seaborn Pillow rdkit-pypi
+</pre></div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">rdkit</span><span class="o">,</span> <span class="nn">rdkit.Chem</span><span class="o">,</span> <span class="nn">rdkit.Chem.rdDepictor</span><span class="o">,</span> <span class="nn">rdkit.Chem.Draw</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;dark&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s1">&#39;xtick.bottom&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;ytick.left&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span>     <span class="mf">0.8</span> <span class="p">,</span> <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="n">color_cycle</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1BBC9B&#39;</span><span class="p">,</span> <span class="s1">&#39;#F06060&#39;</span><span class="p">,</span> <span class="s1">&#39;#5C4B51&#39;</span><span class="p">,</span> <span class="s1">&#39;#F3B562&#39;</span><span class="p">,</span> <span class="s1">&#39;#6e5687&#39;</span><span class="p">]</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_cycle</span><span class="p">)</span> 
+<span class="c1">#soldata = pd.read_csv(&#39;https://dataverse.harvard.edu/api/access/datafile/3407241?format=original&amp;gbrecs=true&#39;)</span>
+<span class="c1"># had to rehost because dataverse isn&#39;t reliable</span>
+<span class="n">soldata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://github.com/whitead/dmol-book/raw/master/data/curated-solubility-dataset.csv&#39;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">my_elements</span> <span class="o">=</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;H&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The hidden cell below defines our function <code class="docutils literal notranslate"><span class="pre">smiles2graph</span></code>. This creates one-hot node feature vectors for the element C, H, and O. It also creates an adjacency tensor with one-hot bond order being the feature vector.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">smiles2graph</span><span class="p">(</span><span class="n">sml</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Argument for the RD2NX function should be a valid SMILES sequence</span>
+<span class="sd">    returns: the graph</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">sml</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">order_string</span> <span class="o">=</span> <span class="p">{</span><span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">TRIPLE</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">AROMATIC</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()))</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">my_elements</span><span class="p">)))</span>
+    <span class="n">lookup</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">my_elements</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
+        <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span> <span class="n">lookup</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">())]</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="n">adj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span><span class="n">j</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span><span class="n">j</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>        
+        <span class="n">order</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">order_string</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">order_string</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s1">&#39;Ignoring bond order&#39;</span> <span class="o">+</span> <span class="n">order</span><span class="p">)</span>
+        <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>        
+        <span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>        
+    <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span> <span class="o">=</span> <span class="n">smiles2graph</span><span class="p">(</span><span class="s1">&#39;CO&#39;</span><span class="p">)</span>
+<span class="n">nodes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="a-graph-neural-network">
+<h2><span class="section-number">8.3. </span>A Graph Neural Network<a class="headerlink" href="#a-graph-neural-network" title="Permalink to this headline">¶</a></h2>
+<p>A graph neural network (GNN) is a neural network with two defining attributes:</p>
+<ol class="simple">
+<li><p>It’s input is a graph</p></li>
+<li><p>It’s output is permutation invariant</p></li>
+</ol>
+<p>We can understand clearly the first point. Here, a graph permutation means re-ordering our nodes. In our methanol example above, we could have easily made the carbon be atom 1 instead of atom 4. Our new adjacency matrix would then be:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p></p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>5</p></th>
+<th class="text-align:right head"><p>6</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>2</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>3</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>4</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>5</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td class="text-align:right"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>6</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-align:right"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Ok, so technically we might want our GNN to be permutation <em>equivariant</em>. If our GNN outputs per-node features, then obviously if we swap the node order of input, we want our per-node output to swap.</p>
+</div>
+<p>A GNN is permutation invariant if the output is insensitive to these kind of exchanges. Of course, there may exist GNNs out there which are not permutation invariant, especially if they are for trees where it is possible to deterministically order all nodes. Yet all the GNNs used in chemistry and most of the deep learning work is concerned with GNNs that are permutation invariant.</p>
+<div class="section" id="a-simple-gnn">
+<h3><span class="section-number">8.3.1. </span>A simple GNN<a class="headerlink" href="#a-simple-gnn" title="Permalink to this headline">¶</a></h3>
+<p>We will often mention a GNN when we really mean a layer from a GNN. Most GNNs implement a specific layer that can deal with graphs, and so usually we are only concerned with this layer. Let’s see an example of a simple layer for a GNN:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-54819330-63e2-41d9-86ba-5e935da4caca">
+<span class="eqno">(8.1)<a class="headerlink" href="#equation-54819330-63e2-41d9-86ba-5e935da4caca" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+f_k = \sigma\left( \sum_i \sum_jn_{ij}w_{jk}  \right)
+\end{equation}\]</div>
+<p>This equation shows that we first multiply every node feature by trainable weights <span class="math notranslate nohighlight">\(w_{jk}\)</span>, sum over all node features, and then apply an activation. This will yield a single feature vector for the graph. Is this equation permutation invariant? Yes, because the node index in our expression is index <span class="math notranslate nohighlight">\(i\)</span> which can be re-ordered without affecting the output.</p>
+<p>Let’s see an example that is similar, but not permutation invariant:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-66623bc6-cba9-4f82-b544-aaaa398055c3">
+<span class="eqno">(8.2)<a class="headerlink" href="#equation-66623bc6-cba9-4f82-b544-aaaa398055c3" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+f_k = \sigma\left( \sum_i n_{ij}w_{ik}  \right)
+\end{equation}\]</div>
+<p>This is a small change. We have one weight vector per node now. This makes the trainable weights depend on the ordering of the nodes. Then if we swap the node ordering, our weights will no longer align. So if we were to input two methanol molecules, which should have the same output, but we switched two atom numbers, we would get different answers. These simple examples differ from real GNNs in two important ways: (i) they give a single feature vector output, which throws away per-node information, and (ii) they do not use the adjacency matrix. Let’s see a real GNN that has these properties while maintaining permutation invariance.</p>
+</div>
+</div>
+<div class="section" id="kipf-welling-gcn">
+<h2><span class="section-number">8.4. </span>Kipf &amp; Welling GCN<a class="headerlink" href="#kipf-welling-gcn" title="Permalink to this headline">¶</a></h2>
+<p>One of the first popular GNNs is the Kipf &amp; Welling graph convolutional network (GCN) <span id="id8">[<a class="reference internal" href="#id52">KW16</a>]</span>. Although some people consider GCNs to be a broad class of GNNs, we’ll use GCNs to refer specifically the Kipf &amp; Welling GCN.
+Thomas Kipf has written an <a class="reference external" href="https://tkipf.github.io/graph-convolutional-networks/">excellent article introducing the GCN</a>. I will not repeat this article, so please take a look at it.</p>
+<p>The input to a GCN layer is <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and it outputs an updated <span class="math notranslate nohighlight">\(\mathbf{V}'\)</span>. Each node feature vector is updated. The way it updates a node feature vector is by averaging the feature vectors of its neigbhors, as determined by <span class="math notranslate nohighlight">\(\mathbf{E}\)</span>. The choice of averaging over neigbhors is what makes a GCN layer permutation invariant. Averaging over neighbors is not trainable, so we must add trainable parameters. We multiply the neighbor features by a trainable matrix before the averaging, which gives the GCN the ability to learn. In Einstein notation, this process is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6a6fa853-7914-4647-aca8-cd9776ba06de">
+<span class="eqno">(8.3)<a class="headerlink" href="#equation-6a6fa853-7914-4647-aca8-cd9776ba06de" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+v_{il} = \sigma\left(\frac{1}{d_i}e_{ij}v_{jk}w_{lk}\right)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> is the node we’re considering, <span class="math notranslate nohighlight">\(j\)</span> is the neighbor index, <span class="math notranslate nohighlight">\(k\)</span> is the node input feature, <span class="math notranslate nohighlight">\(l\)</span> is the ouput node feature, <span class="math notranslate nohighlight">\(d_i\)</span> is the degree of node i (which makes it an average instead of sum), <span class="math notranslate nohighlight">\(e_{ij}\)</span> isolates neighbors so that all non-neighbor <span class="math notranslate nohighlight">\(v_{jk}\)</span>s are zero, <span class="math notranslate nohighlight">\(\sigma\)</span> is our activation, and <span class="math notranslate nohighlight">\(w_{lk}\)</span> is the trainable weights. This equation is a mouthful, but it truly just is the average over neighbors with a trainable matrix thrown in. One common modification is to make all nodes neighbors of themselves. This is so that the output node features <span class="math notranslate nohighlight">\(v_{il}\)</span> depends on the input features <span class="math notranslate nohighlight">\(v_{ik}\)</span>. We do not need to change our equation, just make the adjacency matrix have <span class="math notranslate nohighlight">\(1\)</span>s on the diagonal instead of <span class="math notranslate nohighlight">\(0\)</span> by adding the identity matrix during pre-processing.</p>
+<p>Building understanding about the GCN is important for understanding other GNNs. You can view the GCN layer as a way to “communicate” between a node and its neigbhors. The output for node <span class="math notranslate nohighlight">\(i\)</span> will depend only on its immediate neigbhors. For chemistry, this is not satisfactory. So you can stack multiple layers. If you have two layers, then the output for node <span class="math notranslate nohighlight">\(i\)</span> will include information about node <span class="math notranslate nohighlight">\(i\)</span>’s neighbors’ neigbhors. Another important detail to understand in GCNs is that the averaging procedure accomplishes two goals: (i) it gives permutation invariance by removing the effect of neighbor order and (ii) it prevents a change in magnitude in node features. A sum would accomplish (i) but would cause the magnitude of the node features to grow after each layer. Of course, you could ad-hoc put a batch normalization layer after each GCN layer to keep output magnitudes stable but averaging is easy.</p>
+<div class="figure align-default" id="dframe">
+<div class="cell_output docutils container">
+<img alt="../_images/gnn_10_0.png" src="../_images/gnn_10_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 8.2 </span><span class="caption-text">Intermediate step of the graph convolution layer. The center node is being updated by averaging its neighbors features.</span><a class="headerlink" href="#dframe" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="gcnanim">
+<img alt="../_images/gcn.gif" src="../_images/gcn.gif" />
+<p class="caption"><span class="caption-number">Fig. 8.3 </span><span class="caption-text">Animation of the graph convolution layer. The left is input, right is output node features. Note that two layers are shown (see title change).</span><a class="headerlink" href="#gcnanim" title="Permalink to this image">¶</a></p>
+</div>
+<p>To help understand the GCN layer, look at <a class="reference internal" href="#dframe"><span class="std std-numref">Fig. 8.2</span></a>. It shows an intermediate step of the GCN layer. Each node feature is represented here as a one-hot encoded vector at input. The animation in <a class="reference internal" href="#gcnanim"><span class="std std-numref">Fig. 8.3</span></a> shows the averaging process over neighbor features.  To make this animation easy to follow, the trainable weights and activation functions are not considered. Note that the animation repeats for a second layer. Watch how the “information” about there being an oxygen atom in the molecule is propogated only after two layers to each atom. All GNNs operate with similair approaches, so try to understand how this animation works.</p>
+<div class="section" id="gcn-implementation">
+<h3><span class="section-number">8.4.1. </span>GCN Implementation<a class="headerlink" href="#gcn-implementation" title="Permalink to this headline">¶</a></h3>
+<p>Let’s now create a tensor implementation of the GCN. We’ll skip the activation and trainable weights for now.
+We must first compute our rank 2 adjacency matrix. The <code class="docutils literal notranslate"><span class="pre">smiles2graph</span></code> code above computes an adjacency tensor with feature vectors. We can fix that with a simple reduction and add the identity at the same time</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span> <span class="o">=</span> <span class="n">smiles2graph</span><span class="p">(</span><span class="s1">&#39;CO&#39;</span><span class="p">)</span>
+<span class="n">adj_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">adj</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">adj_mat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 1., 1., 1., 1., 0.],
+       [1., 1., 0., 0., 0., 1.],
+       [1., 0., 1., 0., 0., 0.],
+       [1., 0., 0., 1., 0., 0.],
+       [1., 0., 0., 0., 1., 0.],
+       [0., 1., 0., 0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>To compute degree of each node, we can do another reduction:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">adj_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">degree</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([5., 3., 2., 2., 2., 2.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can put all these pieces together into the Einstein equation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># note to divide by degree, make the input 1 / degree</span>
+<span class="n">new_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ij,jk-&gt;ik&#39;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">degree</span><span class="p">,</span> <span class="n">adj_mat</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1. 0. 0.]
+[0.2 0.2 0.6]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To now implement this as a layer in Keras, we must put this code above into a new Layer subclass. The code is relatively straightforward, but you can read-up on the function names and Layer class in <a class="reference external" href="https://keras.io/guides/making_new_layers_and_models_via_subclassing/">this tutorial</a>. The three main changes are that we create trainable parameters <code class="docutils literal notranslate"><span class="pre">self.w</span></code> and use them in the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/einsum" title="(in TensorFlow v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.einsum</span></code></a>, we use an activation <code class="docutils literal notranslate"><span class="pre">self.activation</span></code>, and we output both our new node features and the adjacency matrix. The reason to output the adjacency matrix is so that we can stack multiple GCN layers without having to pass the adjacency matrix each time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">GCNLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Implementation of GCN as layer&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># constructor, which just calls super constructor</span>
+        <span class="c1"># and turns requested activation into a callable function</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GCNLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">activations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">activation</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
+        <span class="c1"># create trainable weights</span>
+        <span class="n">node_shape</span><span class="p">,</span> <span class="n">adj_shape</span> <span class="o">=</span> <span class="n">input_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_weight</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">node_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">node_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="c1"># split input into nodes, adj</span>
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span> <span class="o">=</span> <span class="n">inputs</span> 
+        <span class="c1"># compute degree</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">adj</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># GCN equation</span>
+        <span class="n">new_nodes</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bi,bij,bjk,kl-&gt;bil&#39;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">degree</span><span class="p">,</span> <span class="n">adj</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">adj</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now try our our layer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcnlayer</span> <span class="o">=</span> <span class="n">GCNLayer</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">)</span>
+<span class="c1"># we insert a batch axis here</span>
+<span class="n">gcnlayer</span><span class="p">((</span><span class="n">nodes</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> <span class="n">adj_mat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;tf.Tensor: shape=(1, 6, 3), dtype=float32, numpy=
+ array([[[0.21066622, 0.        , 0.        ],
+         [0.4151064 , 0.        , 0.        ],
+         [0.18857527, 0.23702252, 0.        ],
+         [0.18857527, 0.23702252, 0.        ],
+         [0.18857527, 0.23702252, 0.        ],
+         [0.3860873 , 0.        , 0.        ]]], dtype=float32)&gt;,
+ &lt;tf.Tensor: shape=(1, 6, 6), dtype=float32, numpy=
+ array([[[1., 1., 1., 1., 1., 0.],
+         [1., 1., 0., 0., 0., 1.],
+         [1., 0., 1., 0., 0., 0.],
+         [1., 0., 0., 1., 0., 0.],
+         [1., 0., 0., 0., 1., 0.],
+         [0., 1., 0., 0., 0., 1.]]], dtype=float32)&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It outputs (1) the new node features and (2) the adjacency matrix. Let’s make sure we can stack these and apply the GCN multiple times</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> <span class="n">adj_mat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">gcnlayer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It works! Why do we see zeros though? Probably because we had negative numbers that were removed by our ReLU activation. This will be solved by training and increasing our dimension number.</p>
+</div>
+</div>
+<div class="section" id="solubility-example">
+<h2><span class="section-number">8.5. </span>Solubility Example<a class="headerlink" href="#solubility-example" title="Permalink to this headline">¶</a></h2>
+<p>We’ll now revisit predicting solubility with GCNs. Remember before that we used the features included with the dataset. Now we can use the molecular structures directly. Our GCN layer outputs node-level features. To predict solubility, we need to get a graph-level feature. We’ll see later how to be more sophisticated in this process, but for now let’s just take the average over all node features after our GCN layers. This is simple, permutation invariant, and gets us from node-level to graph level. Here’s an implementation of this</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">GRLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;A GNN layer that computes average over all node features&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;GRLayer&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GRLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="n">reduction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">reduction</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<p>To complete our deep solubility predictor, we can add some dense layers and make sure we have a single-output without activation since we’re doing regression. Note this model is defined using the <a class="reference external" href="https://keras.io/guides/functional_api/">Keras functional API</a> which is necessary when you have multiple inputs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ninput</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span><span class="mi">100</span><span class="p">,))</span>
+<span class="n">ainput</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,))</span>
+<span class="c1"># GCN block</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GCNLayer</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">)([</span><span class="n">ninput</span><span class="p">,</span> <span class="n">ainput</span><span class="p">])</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GCNLayer</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GCNLayer</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GCNLayer</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1"># reduce to graph features</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GRLayer</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1"># standard layers</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;tanh&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">(</span><span class="n">ninput</span><span class="p">,</span> <span class="n">ainput</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>where does the 100 come from? Well, this dataset has lots of elements so we cannot use our size 3 one-hot encodings because we’ll have more than 3 unique elements. We previously only had C, H and O. This is a good time to update our <code class="docutils literal notranslate"><span class="pre">smiles2graph</span></code> function to deal with this</p>
+<div class="cell tag_hidden-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gen_smiles2graph</span><span class="p">(</span><span class="n">sml</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Argument for the RD2NX function should be a valid SMILES sequence</span>
+<span class="sd">    returns: the graph</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">sml</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">order_string</span> <span class="o">=</span> <span class="p">{</span><span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">TRIPLE</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">AROMATIC</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()))</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
+        <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span> <span class="n">i</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="n">adj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span><span class="n">j</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span><span class="n">j</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>        
+        <span class="n">order</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">order_string</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">order_string</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s1">&#39;Ignoring bond order&#39;</span> <span class="o">+</span> <span class="n">order</span><span class="p">)</span>
+        <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>        
+        <span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">adj</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span><span class="p">,</span> <span class="n">adj</span> <span class="o">=</span> <span class="n">gen_smiles2graph</span><span class="p">(</span><span class="s1">&#39;CO&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="p">((</span><span class="n">nodes</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> <span class="n">adj_mat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;tf.Tensor: shape=(1, 1), dtype=float32, numpy=array([[-0.02501082]], dtype=float32)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>It outputs one number! That’s always nice to have. Now we need to do some work to get a trainable dataset. Our dataset is a little bit complex because our features are tuples of tensors(<span class="math notranslate nohighlight">\(\mathbf{V}, \mathbf{E}\)</span>) so that our dataset is a tuple of tuples: <span class="math notranslate nohighlight">\(\left((\mathbf{V}, \mathbf{E}), y\right)\)</span>. We use a <strong>generator</strong>, which is just a python function that can return multiple times. Our function returns once for every training example. Then we have to pass it to the <code class="docutils literal notranslate"><span class="pre">from_generator</span></code> <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset" title="(in TensorFlow v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.data.Dataset</span></code></a> constructor which requires explicit declaration of the shapes of these examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">soldata</span><span class="p">)):</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">gen_smiles2graph</span><span class="p">(</span><span class="n">soldata</span><span class="o">.</span><span class="n">SMILES</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>        
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">soldata</span><span class="o">.</span><span class="n">Solubility</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">graph</span><span class="p">,</span> <span class="n">sol</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span><span class="n">example</span><span class="p">,</span> <span class="n">output_types</span><span class="o">=</span><span class="p">((</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> 
+                                      <span class="n">output_shapes</span><span class="o">=</span><span class="p">((</span><span class="n">tf</span><span class="o">.</span><span class="n">TensorShape</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="mi">100</span><span class="p">]),</span> <span class="n">tf</span><span class="o">.</span><span class="n">TensorShape</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])),</span> <span class="n">tf</span><span class="o">.</span><span class="n">TensorShape</span><span class="p">([])))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Whew, that’s a lot. Now we can do our usual splitting of the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">val_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And finally, time to train.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">val_data</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>  <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/gnn_38_0.png" src="../_images/gnn_38_0.png" />
+</div>
+</div>
+<p>This model is definitely underfit. One reason is that our batch size is 1. This is a side-effect of making the number of atoms variable and then Keras/tensorflow has trouble batching together our data if there are two unknown dimensions. You can fix this by manually batching or padding all molecules to have as many atoms as the one with the max. In any case, this example shows how to use GCN layers in a complete model.</p>
+</div>
+<div class="section" id="message-passing-viewpoint">
+<h2><span class="section-number">8.6. </span>Message Passing Viewpoint<a class="headerlink" href="#message-passing-viewpoint" title="Permalink to this headline">¶</a></h2>
+<p>One way to more broadly view a GCN layer is that it is a kind of “message-passing” layer. You first compute a message coming from each neighboring node:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ceffb85e-d310-4a9e-abbd-c9d5427a23f3">
+<span class="eqno">(8.4)<a class="headerlink" href="#equation-ceffb85e-d310-4a9e-abbd-c9d5427a23f3" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{e}_{{s_i}j} = \vec{n}_{{s_i}j} \mathbf{W}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n_{{s_i}j}\)</span> means the <span class="math notranslate nohighlight">\(j\)</span>th neigbhor of node <span class="math notranslate nohighlight">\(i\)</span>. The <span class="math notranslate nohighlight">\(s_i\)</span> means senders to <span class="math notranslate nohighlight">\(i\)</span>. This is how a GCN computes the messages, it’s just a weight matrix times each neighbor node features. After getting the messages that will go to <span class="math notranslate nohighlight">\(\vec{e}_{{s_i}j}\)</span>, we aggregate them using a function which is permutation invariant to the order of neigbhors:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-492c8318-3d08-44f6-aeff-188dedb46ef0">
+<span class="eqno">(8.5)<a class="headerlink" href="#equation-492c8318-3d08-44f6-aeff-188dedb46ef0" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{e}_{i} = \frac{1}{|\vec{e}_{{s_i}j}|}\sum \vec{e}_{{s_i}j} 
+\end{equation}\]</div>
+<p>In the GCN this aggregation is just a mean. Finally, we update our node using the aggregated message in the GCN:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-da0b9d20-ffeb-4022-a44c-b8fc7f3606d2">
+<span class="eqno">(8.6)<a class="headerlink" href="#equation-da0b9d20-ffeb-4022-a44c-b8fc7f3606d2" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{n}^{'}_{i} = \sigma(\vec{e}_i)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n^{'}\)</span> indicates the new node features. This is simply the activated aggregated message. Writing it out this way, you can see how it is possible to make small changes. One important paper by Gilmer et al. explored some of these choices and described how this general idea of message passing layers does well in learning to predict molecular energies from quantum mechanics <span id="id9">[<a class="reference internal" href="#id56">GSR+17</a>]</span>. Examples of changes to the above GCN equations are to include edge information when computing the neighbor messages or use a dense neural network layer in place of <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+</div>
+<div class="section" id="gated-graph-neural-network">
+<h2><span class="section-number">8.7. </span>Gated Graph Neural Network<a class="headerlink" href="#gated-graph-neural-network" title="Permalink to this headline">¶</a></h2>
+<p>One common variant of the message passing layer is the <strong>gated graph neural network</strong> (GGN) <span id="id10">[<a class="reference internal" href="#id54">LTBZ15</a>]</span>. It replaces the last equation, the node update, with</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1a0917c2-c008-4fb2-aa00-e2c1be75f7ff">
+<span class="eqno">(8.7)<a class="headerlink" href="#equation-1a0917c2-c008-4fb2-aa00-e2c1be75f7ff" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{n}^{'}_{i} = \textrm{GRU}(\vec{n}_i, \vec{e}_i)
+\end{equation}\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\textrm{GRU}(\cdot, \cdot)\)</span> is a gated recurrent unit<span id="id11">[<a class="reference internal" href="#id55">CGCB14</a>]</span>. The interesting property of a GRU is that it has trainable parameters, giving the model a bit more flexibility, but the GRU parameters do not change as you stack more layers. A GRU is usually used for modeling sequences of undetermined length, like a sentence. What’s nice about this is that you can stack infinite GGN layers without increasing the number of trainable parameters (assuming you make <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> the same at each layer). Thus GGNs are suited for large graphs, like a large protein or large unit cell.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>You’ll often see the prefix “gated” on GNNs and that means that the nodes are updated according to a GRU.</p>
+</div>
+</div>
+<div class="section" id="pooling">
+<h2><span class="section-number">8.8. </span>Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h2>
+<p>Within the message passing viewpoint, and in general for GNNS, the way that messages from neighbors are combined is a key step. This is sometimes called <strong>pooling</strong>, since it’s similar to the pooling layer used in convolutional neural networks. Just like in pooling for convolutional neural networsk, there are multiple reduction operations you can use. Typically you see sum or mean in GNNs, but you can be quite sophisticated like in Graph Isomorphism Networks <span id="id12">[<a class="reference internal" href="#id69">XHLJ18</a>]</span>. We’ll see an example in our attention chapter of using self-attention, which is a complicated reduction that could be used for pooling. It can be tempting to focus on this step, but it’s been empirically found that the choice of pooling is not so important<span id="id13">[<a class="reference internal" href="#id68">LDLio19</a>, <a class="reference internal" href="#id67">MSK20</a>]</span>.</p>
+</div>
+<div class="section" id="battaglia-general-equations">
+<h2><span class="section-number">8.9. </span>Battaglia General Equations<a class="headerlink" href="#battaglia-general-equations" title="Permalink to this headline">¶</a></h2>
+<p>As you can see, message passing layers is a general way to view GNN layers. Battaglia <em>et al.</em> <span id="id14">[<a class="reference internal" href="#id53">BHB+18</a>]</span> went further and created a general set of equations which captures nearly all GNNs. They broke the GNN layer equations down into 3 update equations, like the node update equation we saw in the message passing layer equations, and 3 aggregation equations (6 total equations). There is a new concept in these equations: graph feature vectors. A graph feature vector is a set of features which represent the whole graph or molecule. For example, when computing solubility it may have been useful to build-up a per-molecule feature vector that is eventually used to compute solubility. Any knid of per-molecule quantity like energy can be expressed as a graph-level feature vector.</p>
+<p>The first step in these equations is updating the edge feature vectors, written as <span class="math notranslate nohighlight">\(\vec{e}_k\)</span>, which we haven’t seen yet but is certainly possible:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1424aa6e-608a-4a44-901c-4349a0441729">
+<span class="eqno">(8.8)<a class="headerlink" href="#equation-1424aa6e-608a-4a44-901c-4349a0441729" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{e}^{'}_k = \phi^e\left( \vec{e}_k, \vec{v}_{rk}, \vec{v}_{sk}, \vec{u}\right)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{e}_k\)</span> is the feature vector of edge <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(\vec{v}_{rk}\)</span> is the receiving node feature vector for edge <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(\vec{v}_{sk}\)</span> is the sending node feature vector for edge <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(\vec{u}\)</span> is the global graph feature vector, and <span class="math notranslate nohighlight">\(\phi^e\)</span> is one of the three update functions that the define the GNN layer. Note that these are meant to be general expressions and you define <span class="math notranslate nohighlight">\(\phi^e\)</span> for your specific GNN layer. The output edge updates are then aggregated with the first aggregation function:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-51caa475-0a5a-469b-a67b-c9011888711a">
+<span class="eqno">(8.9)<a class="headerlink" href="#equation-51caa475-0a5a-469b-a67b-c9011888711a" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\bar{e}^{'}_i = \rho^{e\rightarrow v}\left( E_i^{'}\right)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho^{e\rightarrow v}\)</span> is our defined function and <span class="math notranslate nohighlight">\(E_i^{'}\)</span> represents all edges in or out of node i. Having our aggregated edge, which is equivalent to our <em>message</em> previously, we can compute the node update:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-81e5ee3b-4fdb-4020-b8f8-376d10f5792e">
+<span class="eqno">(8.10)<a class="headerlink" href="#equation-81e5ee3b-4fdb-4020-b8f8-376d10f5792e" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{v}^{'}_i = \phi^v\left( \bar{e}^{'}_i, \vec{v}_i, \vec{u}\right)
+\end{equation}\]</div>
+<p>This concludes the usual steps of a GNN layer. If you are updating global attributes or aggregating nodes or edges, the following additional steps may be defined:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-762ca946-d0a1-4975-9de1-31b0fd3aff9e">
+<span class="eqno">(8.11)<a class="headerlink" href="#equation-762ca946-d0a1-4975-9de1-31b0fd3aff9e" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\bar{e}^{'} = \rho^{e\rightarrow u}\left( E^{'}\right)
+\end{equation}\]</div>
+<p>This equation aggregates all messages across the whole graph. Then we can aggregate the new nodes across the whole graph:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4ed67004-8356-4a92-9ac1-7b1b8fc38437">
+<span class="eqno">(8.12)<a class="headerlink" href="#equation-4ed67004-8356-4a92-9ac1-7b1b8fc38437" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\bar{v}^{'} = \rho^{v\rightarrow u}\left( V^{'}\right)
+\end{equation}\]</div>
+<p>Then, we can compute the update to the global feature vector as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1cfc95f9-b882-43d8-a9ab-b66de6c8b4da">
+<span class="eqno">(8.13)<a class="headerlink" href="#equation-1cfc95f9-b882-43d8-a9ab-b66de6c8b4da" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{u}^{'} = \phi^u\left( \bar{e}^{'},\bar{v}^{'}, \vec{u}\right)
+\end{equation}\]</div>
+<div class="section" id="reformulating-gcn-into-battaglia-equations">
+<h3><span class="section-number">8.9.1. </span>Reformulating GCN into Battaglia equations<a class="headerlink" href="#reformulating-gcn-into-battaglia-equations" title="Permalink to this headline">¶</a></h3>
+<p>Let’s see how the GCN is presented in this form. We first compute our neighbor messages for all possible neighbors. Since our graph is undirected, we’ll just by convention use the senders as the “neighbor”</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9b6d8c02-a363-49da-8532-59e65dab9a09">
+<span class="eqno">(8.14)<a class="headerlink" href="#equation-9b6d8c02-a363-49da-8532-59e65dab9a09" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{e}^{'}_k = \phi^e\left( \vec{e}_k, \vec{v}_{rk}, \vec{v}_{sk}, \vec{u}\right) = \vec{v}_{sk} \mathbf{W}
+\end{equation}\]</div>
+<p>To aggregate our messages, we average them.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2a5a151c-6893-4670-9854-41c32f6eae4f">
+<span class="eqno">(8.15)<a class="headerlink" href="#equation-2a5a151c-6893-4670-9854-41c32f6eae4f" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\bar{e}^{'}_i = \rho^{e\rightarrow v}\left( E_i^{'}\right) = \frac{1}{|E_i^{'}|}\sum E_i^{'}
+\end{equation}\]</div>
+<p>Our node update is then the activation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fe46b417-0763-4ba7-8d5e-740e7fc8455e">
+<span class="eqno">(8.16)<a class="headerlink" href="#equation-fe46b417-0763-4ba7-8d5e-740e7fc8455e" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\vec{v}^{'}_i = \phi^v\left( \bar{e}^{'}_i, \vec{v}_i, \vec{u}\right) = \sigma(\bar{e}^{'}_i)
+\end{equation}\]</div>
+<p>we could include the self-loop above using <span class="math notranslate nohighlight">\(\sigma(\bar{e}^{'}_i + \vec{v}_i)\)</span>. The other functions are not used so that is the complete set.</p>
+</div>
+</div>
+<div class="section" id="nodes-vs-edges">
+<h2><span class="section-number">8.10. </span>Nodes vs Edges<a class="headerlink" href="#nodes-vs-edges" title="Permalink to this headline">¶</a></h2>
+<p>You’ll find that most GNNs use the node-update equation in the Battaglia equations but do not update edges. For example, the GCN will update nodes at each layer but the edges are constant. Some recent work has shown that updating edges can be important for learning when the edges have geometric information, like if the input graph is a molecule and the edges are distance between the atoms <span id="id15">[<a class="reference internal" href="#id86">KGrossGunnemann20</a>]</span>. As we’ll see in the chapter on equivariances (<a class="reference internal" href="data.html"><span class="doc">Input Data &amp; Equivariances</span></a>), one of the key properties of neural networks with geometric data (i.e., Cartesian xyz coordinates) is to have rotation equivariance. <span id="id16">[<a class="reference internal" href="#id86">KGrossGunnemann20</a>]</span> showed that you can achieve this if you do edge updates and encode the edge vectors using a rotation equivariant basis set with spherical harmonics and Bessel functions. These kind of edge updating GNNs can be used to predict protein structure <span id="id17">[<a class="reference internal" href="#id87">JES+20</a>]</span>.</p>
+</div>
+<div class="section" id="common-architecture-motifs-and-comparisons">
+<h2><span class="section-number">8.11. </span>Common Architecture Motifs and Comparisons<a class="headerlink" href="#common-architecture-motifs-and-comparisons" title="Permalink to this headline">¶</a></h2>
+<p>We’ve now seen message passing layer GNNs, GCNs, GGNs, and the generalized Battaglia equations. You’ll find common motifs in the architectures, like gating, attention, and pooling strategies. For example, Gated GNNS (GGNs) can be combined with attention pooling to create Gated Attention GNNs (GAANs)<span id="id18">[<a class="reference internal" href="#id59">ZSX+18</a>]</span>. GraphSAGE is a similar to a GCN but it samples when pooling, making the neighbor-updates of fixed dimension<span id="id19">[<a class="reference internal" href="#id70">HYL17</a>]</span>. So you’ll see the suffix “sage” when you sample over neighbors while pooling. These can all be represented in the Battaglia equations, but you should be aware of these names.</p>
+<p>The enormous variety of architectures has led to work on identifying the “best” or most general GNN architecture <span id="id20">[<a class="reference internal" href="#id73">DJL+20</a>, <a class="reference internal" href="#id72">EPBM19</a>, <a class="reference internal" href="#id71">SMBGunnemann18</a>]</span>. Unfortunately, the question of which GNN architecture is best is as difficult as “what benchmark problems are best?” Thus there are no agreed upon conclusions on the best architecture. However, those papers are great resources on training, hyperparameters, and reasonable starting guesses and I highly recommend reading them before designing your own GNN. There has been some theoretical work to show that simple architectures, like GCNs, cannot distinguish between certain simple graphs <span id="id21">[<a class="reference internal" href="#id69">XHLJ18</a>]</span>. How much this practically matters depends on your data. Ultimately, there is so much variety in hyperparameters, data equivariances, and training decisions that you should think carefully about how much the GNN architecture matters before exploring it with too much depth.</p>
+</div>
+<div class="section" id="do-we-need-graphs">
+<h2><span class="section-number">8.12. </span>Do we need graphs?<a class="headerlink" href="#do-we-need-graphs" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to convert a graph into a string under certain constraints on the graph. Molecules specifically can be converted into a string. This means you can use sequence deep learning layers (i.e., transformers) and avoid the complexities of graph neural network. SMILES is one common approach to converting molecular graphs into strings. However, SMILES is not surjective meaning there are strings in the SMILES alphabet. It also not injective, meaning there are multiple valid SMILES string for each molecule. Some of the early work on using SMILES focused on teaching generative models (e.g., VAEs) to learn to make valid SMILES. Then, hilariously, someone realized you could just create a new way of converting molecules into strings that was surjective leading to SELFIES <span id="id22">[<a class="reference internal" href="#id84">KHaseN+20</a>]</span>. In SELFIES then you can trivially generate molecules. I don’t think there is a paper on it yet, but there is a “superstition” that working in molecular graphs is more robust because SELFIES and SMILES can vary quite a bit when a molecular graph undergoes a small change (e.g., ring-opening). It is an unresolved question if GNNs are necessary or if we can do everything with SELFIES.</p>
+</div>
+<div class="section" id="relevant-videos">
+<h2><span class="section-number">8.13. </span>Relevant Videos<a class="headerlink" href="#relevant-videos" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="intro-to-gnns">
+<h3><span class="section-number">8.13.1. </span>Intro to GNNs<a class="headerlink" href="#intro-to-gnns" title="Permalink to this headline">¶</a></h3>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uF53xsT7mjc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<div class="section" id="overview-of-gnn-with-molecule-compiler-examples">
+<h3><span class="section-number">8.13.2. </span>Overview of GNN with Molecule, Compiler Examples<a class="headerlink" href="#overview-of-gnn-with-molecule-compiler-examples" title="Permalink to this headline">¶</a></h3>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/zCEYiCxrL_0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+</div>
+<div class="section" id="chapter-summary">
+<h2><span class="section-number">8.14. </span>Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Molecules can be represented by graphs by using one-hot encoded feature vectors that show the elemental identity of each node (atom) and an adjacency matrix that show immediate neighbors (bonded atoms).</p></li>
+<li><p>Graph neural networks are a category of deep neural networks that have graphs as inputs.</p></li>
+<li><p>One of the early GNNs is the Kipf &amp; Welling GCN. The input to the GCN is the node feature vector and the adjacency matrix, and returns the updated node feature vector. The GCN is permutation invariant because it averages over the neighbors.</p></li>
+<li><p>A GCN can be viewed as a message-passing layer, in which we have senders and receivers. Messages are computed from neighboring nodes, which when aggregated update that node.</p></li>
+<li><p>A gated graph neural network is a variant of the message passing layer, for which the nodes are updated according to a gated recurrent unit function.</p></li>
+<li><p>The aggregation of messages is sometimes called pooling, to which there are multiple reduction operations.</p></li>
+<li><p>The Battaglia equations encompasses almost all GNNs into a set of 6 update and aggregation equations.</p></li>
+</ul>
+</div>
+<div class="section" id="cited-references">
+<h2><span class="section-number">8.15. </span>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<p id="id23"><dl class="citation">
+<dt class="label" id="id73"><span class="brackets">DJL+20</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id20">2</a>)</span></dt>
+<dd><p>Vijay Prakash Dwivedi, Chaitanya K Joshi, Thomas Laurent, Yoshua Bengio, and Xavier Bresson. Benchmarking graph neural networks. <em>arXiv preprint arXiv:2003.00982</em>, 2020.</p>
+</dd>
+<dt class="label" id="id74"><span class="brackets"><a class="fn-backref" href="#id2">BBL+17</a></span></dt>
+<dd><p>Michael M Bronstein, Joan Bruna, Yann LeCun, Arthur Szlam, and Pierre Vandergheynst. Geometric deep learning: going beyond euclidean data. <em>IEEE Signal Processing Magazine</em>, 34(4):18–42, 2017.</p>
+</dd>
+<dt class="label" id="id75"><span class="brackets"><a class="fn-backref" href="#id3">WPC+20</a></span></dt>
+<dd><p>Zonghan Wu, Shirui Pan, Fengwen Chen, Guodong Long, Chengqi Zhang, and S Yu Philip. A comprehensive survey on graph neural networks. <em>IEEE Transactions on Neural Networks and Learning Systems</em>, 2020.</p>
+</dd>
+<dt class="label" id="id88"><span class="brackets"><a class="fn-backref" href="#id4">LWC+20</a></span></dt>
+<dd><p>Zhiheng Li, Geemi P Wellawatte, Maghesree Chakraborty, Heta A Gandhi, Chenliang Xu, and Andrew D White. Graph neural network based coarse-grained mapping prediction. <em>Chemical Science</em>, 11(35):9524–9531, 2020.</p>
+</dd>
+<dt class="label" id="id89"><span class="brackets"><a class="fn-backref" href="#id5">YCW20</a></span></dt>
+<dd><p>Ziyue Yang, Maghesree Chakraborty, and Andrew D White. Predicting chemical shifts with graph neural networks. <em>bioRxiv</em>, 2020.</p>
+</dd>
+<dt class="label" id="id40"><span class="brackets"><a class="fn-backref" href="#id6">XFLW+19</a></span></dt>
+<dd><p>Tian Xie, Arthur France-Lanord, Yanming Wang, Yang Shao-Horn, and Jeffrey C Grossman. Graph dynamical networks for unsupervised learning of atomic scale dynamics in materials. <em>Nature communications</em>, 10(1):1–9, 2019.</p>
+</dd>
+<dt class="label" id="id112"><span class="brackets"><a class="fn-backref" href="#id7">XG18</a></span></dt>
+<dd><p>Tian Xie and Jeffrey C. Grossman. Crystal graph convolutional neural networks for an accurate and interpretable prediction of material properties. <em>Phys. Rev. Lett.</em>, 120:145301, Apr 2018. URL: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevLett.120.145301">https://link.aps.org/doi/10.1103/PhysRevLett.120.145301</a>, <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.120.145301">doi:10.1103/PhysRevLett.120.145301</a>.</p>
+</dd>
+<dt class="label" id="id52"><span class="brackets"><a class="fn-backref" href="#id8">KW16</a></span></dt>
+<dd><p>Thomas N Kipf and Max Welling. Semi-supervised classification with graph convolutional networks. <em>arXiv preprint arXiv:1609.02907</em>, 2016.</p>
+</dd>
+<dt class="label" id="id56"><span class="brackets"><a class="fn-backref" href="#id9">GSR+17</a></span></dt>
+<dd><p>Justin Gilmer, Samuel S Schoenholz, Patrick F Riley, Oriol Vinyals, and George E Dahl. Neural message passing for quantum chemistry. <em>arXiv preprint arXiv:1704.01212</em>, 2017.</p>
+</dd>
+<dt class="label" id="id54"><span class="brackets"><a class="fn-backref" href="#id10">LTBZ15</a></span></dt>
+<dd><p>Yujia Li, Daniel Tarlow, Marc Brockschmidt, and Richard Zemel. Gated graph sequence neural networks. <em>arXiv preprint arXiv:1511.05493</em>, 2015.</p>
+</dd>
+<dt class="label" id="id55"><span class="brackets"><a class="fn-backref" href="#id11">CGCB14</a></span></dt>
+<dd><p>Junyoung Chung, Caglar Gulcehre, KyungHyun Cho, and Yoshua Bengio. Empirical evaluation of gated recurrent neural networks on sequence modeling. <em>arXiv preprint arXiv:1412.3555</em>, 2014.</p>
+</dd>
+<dt class="label" id="id69"><span class="brackets">XHLJ18</span><span class="fn-backref">(<a href="#id12">1</a>,<a href="#id21">2</a>)</span></dt>
+<dd><p>Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka. How powerful are graph neural networks? In <em>International Conference on Learning Representations</em>. 2018.</p>
+</dd>
+<dt class="label" id="id68"><span class="brackets"><a class="fn-backref" href="#id13">LDLio19</a></span></dt>
+<dd><p>Enxhell Luzhnica, Ben Day, and Pietro Liò. On graph classification networks, datasets and baselines. <em>arXiv preprint arXiv:1905.04682</em>, 2019.</p>
+</dd>
+<dt class="label" id="id67"><span class="brackets"><a class="fn-backref" href="#id13">MSK20</a></span></dt>
+<dd><p>Diego Mesquita, Amauri Souza, and Samuel Kaski. Rethinking pooling in graph neural networks. <em>Advances in Neural Information Processing Systems</em>, 2020.</p>
+</dd>
+<dt class="label" id="id53"><span class="brackets"><a class="fn-backref" href="#id14">BHB+18</a></span></dt>
+<dd><p>Peter W Battaglia, Jessica B Hamrick, Victor Bapst, Alvaro Sanchez-Gonzalez, Vinicius Zambaldi, Mateusz Malinowski, Andrea Tacchetti, David Raposo, Adam Santoro, Ryan Faulkner, and others. Relational inductive biases, deep learning, and graph networks. <em>arXiv preprint arXiv:1806.01261</em>, 2018.</p>
+</dd>
+<dt class="label" id="id86"><span class="brackets">KGrossGunnemann20</span><span class="fn-backref">(<a href="#id15">1</a>,<a href="#id16">2</a>)</span></dt>
+<dd><p>Johannes Klicpera, Janek Groß, and Stephan Günnemann. Directional message passing for molecular graphs. In <em>International Conference on Learning Representations</em>. 2020.</p>
+</dd>
+<dt class="label" id="id87"><span class="brackets"><a class="fn-backref" href="#id17">JES+20</a></span></dt>
+<dd><p>Bowen Jing, Stephan Eismann, Patricia Suriana, Raphael JL Townshend, and Ron Dror. Learning from protein structure with geometric vector perceptrons. <em>arXiv preprint arXiv:2009.01411</em>, 2020.</p>
+</dd>
+<dt class="label" id="id59"><span class="brackets"><a class="fn-backref" href="#id18">ZSX+18</a></span></dt>
+<dd><p>Jiani Zhang, Xingjian Shi, Junyuan Xie, Hao Ma, Irwin King, and Dit-Yan Yeung. Gaan: gated attention networks for learning on large and spatiotemporal graphs. <em>arXiv preprint arXiv:1803.07294</em>, 2018.</p>
+</dd>
+<dt class="label" id="id70"><span class="brackets"><a class="fn-backref" href="#id19">HYL17</a></span></dt>
+<dd><p>Will Hamilton, Zhitao Ying, and Jure Leskovec. Inductive representation learning on large graphs. In <em>Advances in neural information processing systems</em>, 1024–1034. 2017.</p>
+</dd>
+<dt class="label" id="id72"><span class="brackets"><a class="fn-backref" href="#id20">EPBM19</a></span></dt>
+<dd><p>Federico Errica, Marco Podda, Davide Bacciu, and Alessio Micheli. A fair comparison of graph neural networks for graph classification. In <em>International Conference on Learning Representations</em>. 2019.</p>
+</dd>
+<dt class="label" id="id71"><span class="brackets"><a class="fn-backref" href="#id20">SMBGunnemann18</a></span></dt>
+<dd><p>Oleksandr Shchur, Maximilian Mumme, Aleksandar Bojchevski, and Stephan Günnemann. Pitfalls of graph neural network evaluation. <em>arXiv preprint arXiv:1811.05868</em>, 2018.</p>
+</dd>
+<dt class="label" id="id84"><span class="brackets"><a class="fn-backref" href="#id22">KHaseN+20</a></span></dt>
+<dd><p>Mario Krenn, Florian Häse, AkshatKumar Nigam, Pascal Friederich, and Alan Aspuru-Guzik. Self-referencing embedded strings (selfies): a 100% robust molecular string representation. <em>Machine Learning: Science and Technology</em>, 1(4):045024, 2020.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./dl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="layers.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">7. </span>Standard Layers</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="attention.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">9. </span>Attention Layers</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

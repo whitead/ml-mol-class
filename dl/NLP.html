@@ -1,0 +1,1056 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>14. Natural Language Processing &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="15. Interpretability in Deep Learning" href="xai.html" />
+    <link rel="prev" title="13. Equivariant Neural Networks" href="Equivariant.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="flows.html">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="xai.html">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/dl/NLP.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/dl/NLP.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/dl/NLP.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#converting-molecules-into-text">
+   14.1. Converting Molecules into Text
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#selfies">
+     14.1.1. SELFIES
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#demo">
+     14.1.2. Demo
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stereochemistry">
+     14.1.3. Stereochemistry
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-a-chemical-bond">
+     14.1.4. What is a chemical bond?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   14.2. Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recurrent-neural-networks">
+   14.3. Recurrent Neural Networks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generative-rnns">
+     14.3.1. Generative RNNs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#masking-padding">
+   14.4. Masking &amp; Padding
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rnn-solubility-example">
+   14.5. RNN Solubility Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformers">
+   14.6. Transformers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#architecture">
+     14.6.1. Architecture
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-the-latent-space-for-design">
+   14.7. Using the Latent Space for Design
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representing-materials-as-text">
+   14.8. Representing Materials as Text
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#applications">
+   14.9. Applications
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   14.10. Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   14.11. Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="natural-language-processing">
+<h1><span class="section-number">14. </span>Natural Language Processing<a class="headerlink" href="#natural-language-processing" title="Permalink to this headline">¶</a></h1>
+<p>Working with written language is called natural language processing (NLP) and is a much broader field than deep learning. We’ll focus just on deep learning in NLP and specifically it’s application to molecules and materials. NLP in chemistry would at first appear to be a rich area, especially with the large amount of historic chemistry data existing only in plain text. However, the most work in this area has been on representations of molecules <em>as text</em> via the SMILES<span id="id1">[<a class="reference internal" href="#id134">Wei88</a>]</span> (and recently SELFIES <span id="id2">[<a class="reference internal" href="#id124">KHN+20</a>]</span>) encoding. Although InChI is another way to encode molecules<span id="id3">[<a class="reference internal" href="#id136">HMP+15</a>]</span>, it cannot distinguish certain classes of molecules (e.g., cisplatin vs transplatin) and according to folk lore is more difficult to train a neural network with.</p>
+<p>The focus of NLP on encoding molecules is mostly due to chemistry relying on publishers which prevent bulk access/ML on publications. Few data (often called corpuses) exists for NLP on research articles. To a large extent then, NLP in chemistry is mostly another way of “featurizing” molecules without resorting to descriptors. This is obviously an essential task in working with molecular data, but I think there are still many important opportunities to explore NLP in areas aside from featurizing molecules.</p>
+<p>One advantage of working with molecules as text relative to graph neural networks (GNNs) is that existing ML frameworks have many more features for working with text. Another reason is that it is easier to train generative models because generating valid text is easier than generating valid graphs. You’ll thus see generative/unsupervised learning of chemical space more often done with NLP, whereas GNNs are typically better for supervised learning tasks and can incorporate spatial features (e.g., <span id="id4">[<a class="reference internal" href="gnn.html#id86">KGrossGunnemann20</a>, <a class="reference internal" href="gnn.html#id89">YCW20</a>]</span>). Outside of deep learning, graphical representations are in viewed as more robust than text encodings when used in methods like genetic algorithms and chemical space exploration <span id="id5">[<a class="reference internal" href="#id145">BFSV19</a>]</span>. NLP can be used to understand textual descriptions of materials and molecules, which is essential for <em>materials</em> that are defined with more than just the molecular structure.</p>
+<p>In NLP, there are a two major tasks which we should be aware of. <strong>Language modeling</strong> means predicting the probability of the next token (word or character) in a sequence, like guessing the last word in a sentence. For chemistry, this is equivalent to predicting a molecule. For materials, this might be predicting a synthesis procedure given a set of ingredients. Language models are statistical models that have a “understanding” of language and can be fine-tuned (trained a second time) for a more specific task, like predicting if a molecule will bind to a protein. <strong>Topic classification</strong> or text classification is predicting probabilities of classes for a sequence. For chemistry, this could be predicting a binary label like “soluble in water” from a SMILES string. The models described below are characterized as seq2vec or seq2seq (which is usually a combined seq2vec + vec2seq). A sequence to sequence model (seq2seq) does language modeling: it actually predicts probabilities for an output sequence. A sequence to vector (seq2vec) model converts a sequence into a vector of real numbers, which can then be used for classification or other tasks.</p>
+<div class="section" id="converting-molecules-into-text">
+<h2><span class="section-number">14.1. </span>Converting Molecules into Text<a class="headerlink" href="#converting-molecules-into-text" title="Permalink to this headline">¶</a></h2>
+<p>Before we can begin to use neural networks, we need to convert molecules into text. Simplified molecular-input line-entry system (SMILES) is a de facto standard for converting molecules into a string. SMILES enables molecular structures to be correctly saved in spreadsheets, databases, and input to models that work on sequences like text. Here’s an example SMILES string: <code class="docutils literal notranslate"><span class="pre">CC(NC)CC1=CC=C(OCO2)C2=C1</span></code>. SMILES was crucial to the field of cheminformatics and is widely used today beyond deep learning. Some of the first deep learning work was with SMILES strings because of the ability to apply NLP models to SMILES strings.</p>
+<p>Let us imagine SMILES as a function whose domain is molecular graphs (or some equivalent complete description of a molecule) and the image is a string. The SMILES function is not surjective – there are many strings which are not valid SMILES strings. The SMILES function is injective – each graph has at least one SMILES string. The non-surjectivity actually causes some problems in generative models because strings which look like valid SMILES are actually not. The inverse function, going from SMILES string to molecular graph, is non-injective. There are multiply SMILES strings that map to the same molecular graph.  This arises from the grammar of SMILES, which allows multiply ways to specify a ring and implicit vs explicit valency or hydrogens. The inverse function is surjective – every molecular graph has at least one valid SMILES.</p>
+<p>If you’ve read the previous chapters on equivariances (<a class="reference internal" href="data.html"><span class="doc">Input Data &amp; Equivariances</span></a> and <a class="reference internal" href="Equivariant.html"><span class="doc">Equivariant Neural Networks</span></a>), a natural question is if SMILES is permutation equivariant or permutation invariant. That is, if you change the order of atoms in a way that has no effect on chemistry, is the SMILES string identical? <em>Sort of</em>. There is an extra step in making a SMILES string called canonicalization. Because multiple SMILES strings map to the same molecular graph, SMILES parsers have a systematic way of choosing a single <em>canonical</em> SMILES string to represent all the equivalent ones. <em>Canonical SMILES</em> are thus permutation invariant.</p>
+<div class="section" id="selfies">
+<h3><span class="section-number">14.1.1. </span>SELFIES<a class="headerlink" href="#selfies" title="Permalink to this headline">¶</a></h3>
+<p>Recent work from Krenn et al. developed an alternative approach to SMILES called SELF-referencIng Embedded Strings (SELFIES)<span id="id6">[<a class="reference internal" href="#id124">KHN+20</a>]</span>. SELFIES is surjective – meaning every string is a valid molecule. Do note that the characters in SELFIES are not all ASCII characters, so it’s not like every sentence encodes a molecule. The SELFIES function is thus bijective, which makes it an excellent choice for generative models. SELFIES, as of 2021, is not directly canonicalized though and thus is not permutation invariant by itself. However, if you add canonical SMILES as an intermediate step, then SELFIES are canonical. It seems that models which output a molecule (generative or supervised) benefit from using SELFIES instead of SMILES because the model does not need to learn how to make valid strings – all strings are already valid SELFIES <span id="id7">[<a class="reference internal" href="#id125">RZS20</a>]</span>. This benefit is less clear in supervised learning and no difference has been observed empirically<span id="id8">[<a class="reference internal" href="#id128">CGR20</a>]</span>. Here’s a blog post giving an <a class="reference external" href="https://aspuru.substack.com/p/molecular-graph-representations-and">overview of SELFIES and its applications</a>.</p>
+</div>
+<div class="section" id="demo">
+<h3><span class="section-number">14.1.2. </span>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h3>
+<p>You can get a sense for SMILES and SELFIES in this <a class="reference external" href="https://whitead.github.io/molecule-dream/">demo page</a> that uses a RNN (discussed below) to generate SMILES and SELFIES strings.</p>
+</div>
+<div class="section" id="stereochemistry">
+<h3><span class="section-number">14.1.3. </span>Stereochemistry<a class="headerlink" href="#stereochemistry" title="Permalink to this headline">¶</a></h3>
+<p>SMILES and SELFIES can treat stereoisomers, but there are a few complications. <code class="docutils literal notranslate"><span class="pre">rdkit</span></code>, the dominant Python package, <a class="reference external" href="https://github.com/rdkit/rdkit/issues/3220">cannot treat non-tetrahedral chiral centers with SMILES</a> as of 2021. For example, even though SMILES according to its specification can correctly distinguish cisplatin and transplatin, the implementation of SMILES in <code class="docutils literal notranslate"><span class="pre">rdkit</span></code> cannot. Other examples of chirality that are present in the SMILES specification but not implementations are planar and axial chirality. SELFIES relies on SMILES (specifically the <code class="docutils literal notranslate"><span class="pre">rdkit</span></code> implementation) and thus is also susceptible to this problem. This is an issue for any organometallic compounds. In organic chemistry though, most chirality is tetrahedral and correctly treated by <code class="docutils literal notranslate"><span class="pre">rdkit</span></code>.</p>
+</div>
+<div class="section" id="what-is-a-chemical-bond">
+<h3><span class="section-number">14.1.4. </span>What is a chemical bond?<a class="headerlink" href="#what-is-a-chemical-bond" title="Permalink to this headline">¶</a></h3>
+<p>More broadly, the idea of a chemical bond is a concept created by chemists. You cannot measure the existence of a chemical bond in the lab and it is not some quantum mechanical operator with an observable. There are certain molecules which cannot be represented by classic single,double,triple,aromatic bonded representations, like ferrocene or diborane. This bleeds over to text encoding of a molecule where the bonding topology doesn’t map neatly to bond order. The specific issue this can cause is that multiple unique molecules may appear to have the same encoding (non-injective). In situations like this, it is probably better to just work with the exact 3D coordinates and then bond order or type is less important than distance between atoms.</p>
+</div>
+</div>
+<div class="section" id="running-this-notebook">
+<h2><span class="section-number">14.2. </span>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages, either on your own environment or on Google Colab</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install matplotlib numpy tensorflow
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="recurrent-neural-networks">
+<h2><span class="section-number">14.3. </span>Recurrent Neural Networks<a class="headerlink" href="#recurrent-neural-networks" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>String is a synonym for sequence here. Character and symbol are synonyms for token (single element of the string).</p>
+</div>
+<p>Recurrent neural networks (RNN) have been by far the most popular approach to working with molecular strings. RNNs have a critical property that they can have different length input sequences, making it appropriate for SMILES or SELFIES which both have variable length. RNNs have recurrent layers that consume an input sequence element-by-element. Consider an input sequence <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> which is composed of a series of vectors (recall that characters or words can be represented with one-hot or embedding vectors) <span class="math notranslate nohighlight">\(\mathbf{X} = \left[\vec{x}_0, \vec{x}_1,\ldots,\vec{x}_L\right]\)</span>. The RNN layer function is binary and takes as input the <span class="math notranslate nohighlight">\(i\)</span>th element of the input sequence and the output from the <span class="math notranslate nohighlight">\(i - 1\)</span> layer function. You can write it as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-872ffdcd-9dff-4993-b699-51ecda628d61">
+<span class="eqno">(14.1)<a class="headerlink" href="#equation-872ffdcd-9dff-4993-b699-51ecda628d61" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+f(f\ldots f(\vec{x}_0,\vec{0}), \vec{x}_1), \vec{x}_2)\ldots \vec{x}_L)
+\end{equation}\]</div>
+<p>Commonly we would like to actually see and look at the these intermediate outputs from the layer function <span class="math notranslate nohighlight">\(f_4(\vec{x}_4, f_3(\ldots)) = \vec{h}_4\)</span>. These <span class="math notranslate nohighlight">\(\vec{h}\)</span>s are called the hidden state because of the connection between RNNs and Markov State Models. We can <strong>unroll</strong> our picture of an RNN to be:</p>
+<div class="figure align-default" id="rnn">
+<a class="reference internal image-reference" href="../_images/rnn.jpg"><img alt="../_images/rnn.jpg" src="../_images/rnn.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Unrolled picture of RNN.</span><a class="headerlink" href="#rnn" title="Permalink to this image">¶</a></p>
+</div>
+<p>where the initial hidden state is assumed to be <span class="math notranslate nohighlight">\(\vec{0}\)</span>, but could be trained. The output at the end is shown as <span class="math notranslate nohighlight">\(\vec{y}\)</span>. <em>Notice there are no subscripts on <span class="math notranslate nohighlight">\(f\)</span> because we use the same function and weights at each step</em>. This re-use of weights makes the choice of parameter number independent of input lengths, which is also necessary to make the RNN accommodate arbitrary length input sequences. It should be noted that the length of <span class="math notranslate nohighlight">\(\vec{y}\)</span> may be a function of the input length, so that the <span class="math notranslate nohighlight">\(\vec{h}_i\)</span> may be increasing in length at each step to enable an output <span class="math notranslate nohighlight">\(\vec{y}\)</span>. Some diagrams of RNNs will show that by indicating a growing output sequence as an additional output from <span class="math notranslate nohighlight">\(f(\vec{x}_i, h_{i-1})\)</span>.</p>
+<p>Interestingly, the form of <span class="math notranslate nohighlight">\(f(\vec{x}, \vec{h})\)</span> is quite flexible based on the discussion above. There have been hundreds of ideas for the function <span class="math notranslate nohighlight">\(f\)</span> and it is problem dependent. The two most common are long short-term memory (LSTM) units and gated recurrent unit (GRU). You can spend quite a bit of time trying to reason about <a class="reference external" href="http://d2l.ai/chapter_recurrent-modern/gru.html">these functions</a>, understanding how <a class="reference external" href="http://d2l.ai/chapter_recurrent-neural-networks/bptt.html">gradients propagate nicely through them</a>, and there is an analogy about how they are inspired by human memory. Ultimately, they are used because they perform well and are widely-implemented so we do not need to spend much time on these details. The main thing to know is that GRUs are simpler and faster, but LSTMs seem to be better at more difficult sequences. Note that <span class="math notranslate nohighlight">\(\vec{h}\)</span> is typically 1-3 different quantities in modern implementations. Another details is the word <strong>units</strong>. Units are like the hidden state dimension, but because the hidden state could be multiple quantities (e.g., LSTM) we do not call it dimension.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Actually, they are not used so much anymore because transformers seem to be a direct replacement for RNNs.</p>
+</div>
+<p>The RNN layer allows us to input an arbitrary length sequence and outputs a label which could depend on the length of the input sequence. You can imagine that this could be used for regression or classification. <span class="math notranslate nohighlight">\(\hat{y}\)</span> would be a scalar. Or you could take the output from an RNN layer into an MLP to get a class.</p>
+<div class="section" id="generative-rnns">
+<h3><span class="section-number">14.3.1. </span>Generative RNNs<a class="headerlink" href="#generative-rnns" title="Permalink to this headline">¶</a></h3>
+<p>An interesting use case for an RNN is in unsupervised generative models, where we try to predict new examples. This means that we’re trying to learn <span class="math notranslate nohighlight">\(P(\mathbf{X})\)</span> <span id="id9">[<a class="reference internal" href="#id126">SKTW18</a>]</span>. With a generative RNN, we predict the sequence one symbol at a time by conditioning on a growing sequence. This is called <strong>autoregressive</strong> generation.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3f396a4d-43b4-4b7b-a42c-4e36f1ba245e">
+<span class="eqno">(14.2)<a class="headerlink" href="#equation-3f396a4d-43b4-4b7b-a42c-4e36f1ba245e" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+P(\mathbf{X}) = \prod P(\vec{x}_L | \vec{x}_{L - 1}, \vec{x}_{L - 2}, \ldots,\vec{x}_0)\ldots P(\vec{x}_1 | \vec{x}_0) P(\vec{x}_0))
+\end{equation}\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>This is also called <strong>self-supervised</strong> instead of unsupervised learning. The distinction is that we’re creating labels by chopping up our training data – so it is supervised. But it’s not quite supervised because labels do not need to be supplied.</p>
+</div>
+<p>The RNN is trained to take as input a sequence and output the probability for the next character. Our network is trained to be this conditional probability: <span class="math notranslate nohighlight">\(P(\vec{x}_i | \vec{x}_{L - i}, \vec{x}_{L - i}, \ldots, \vec{x}_0)\)</span>. What about the <span class="math notranslate nohighlight">\(P(\vec{x}_0)\)</span> term? Typically we just <em>pick</em> what the first character should be. Or, we could create an artificial “start” character that marks the beginning of a sequence (typically <code class="docutils literal notranslate"><span class="pre">0</span></code>) and always choose that.</p>
+<p>We can train the RNN to agree with <span class="math notranslate nohighlight">\(P(\vec{x}_i | \vec{x}_{L - i}, \vec{x}_{L - i}, \ldots, \vec{x}_0)\)</span> by taking an arbitrary sequence <span class="math notranslate nohighlight">\(\vec{x}\)</span> and choosing a split point <span class="math notranslate nohighlight">\(\vec{x}_i\)</span> and training on the proceeding sequence elements. This is just multi-class classification. The number of classes is the number of available characters and our model should output a probability vector across the classes. Recall the loss for this cross-entropy.</p>
+<p>When doing this process with SMILES an obvious way to judge success would be if the generated sequences are valid SMILES strings. This at first seems reasonable and was used as a benchmark for years in this topic. However, this is a low-bar: we can find valid SMILES in much more efficient ways. You can download 77 million SMILES <span id="id10">[<a class="reference internal" href="#id128">CGR20</a>]</span> and you can find vendors that will give you a multi-million entry database of purchasable molecules. You can also just use SELFIES and then an untrained RNN will generate only valid strings, since SELFIES is bijective. A more interesting metric is to assess if your generated molecules are in the same region of chemical space as the training data<span id="id11">[<a class="reference internal" href="#id126">SKTW18</a>]</span>. I believe though that generative RNNs are relatively poor compared with other generative models in 2021. They are still strong though when composed with other architectures, like VAEs <span id="id12">[<a class="reference internal" href="#id127">GomezBWD+18</a>]</span> or encoder/decoder <span id="id13">[<a class="reference internal" href="#id125">RZS20</a>]</span>.</p>
+</div>
+</div>
+<div class="section" id="masking-padding">
+<h2><span class="section-number">14.4. </span>Masking &amp; Padding<a class="headerlink" href="#masking-padding" title="Permalink to this headline">¶</a></h2>
+<p>As in our <a class="reference internal" href="gnn.html"><span class="doc">Graph Neural Networks</span></a> chapter, we run into issues with variable length inputs. The easiest and most compute efficient way to treat this is to pad (and/or trim) all strings to be the same length, making it easy to batch examples. A memory efficient way is to not batch and either batch gradients as a separate step or trim your sequences into subsequences and save the RNN hidden-state between them. Due to the way that NVIDIA has written RNN kernels, padding should always be done on the right (sequences all begin at index 0). The character used for padding is typically 0. Don’t forget, we will always first convert our string characters to integers corresponding to indices of our vocabulary (see <a class="reference internal" href="layers.html"><span class="doc">Standard Layers</span></a>). Thus, remember to make sure that the index 0 should be reserved for padding.</p>
+<p>Masking is used for two things. Masking is used to ensure that the padded values are not accidentally considered in training. This is framework dependent and you can read about <a class="reference external" href="https://keras.io/guides/understanding_masking_and_padding/">Keras here</a>, which is what we’ll use. The second use for masking is to do element-by-element training like the generative RNN. We train each time with a shorter mask, enabling it to see more of the sequence. This prevents you from needing to slice-up the training examples into many shorter sequences. This idea of a right-mask that prevents the model for using characters farther in the sequence is sometimes called <strong>causal masking</strong> because we’re preventing characters from the “future” affecting the model.</p>
+</div>
+<div class="section" id="rnn-solubility-example">
+<h2><span class="section-number">14.5. </span>RNN Solubility Example<a class="headerlink" href="#rnn-solubility-example" title="Permalink to this headline">¶</a></h2>
+<p>Let’s revisit our solubility example from before. We’ll use a GRU to <em>encode</em> the SMILES string into a vector and then apply a dense layer to get a scalar value for solubility. Let’s revisit the solubility AqSolDB<span id="id14">[<a class="reference internal" href="../ml/regression.html#id10">SKE19</a>]</span> dataset from <a class="reference internal" href="../ml/regression.html"><span class="doc">Regression</span></a>. Recall it has about 10,000 unique compounds with measured solubility in water (label) and their SMILES strings. Many of the steps below are explained in the <a class="reference internal" href="layers.html"><span class="doc">Standard Layers</span></a> chapter that introduces Keras and the principles of building a deep model.</p>
+<p>I’ve hidden the cell below which sets-up our imports and shown a few rows of the dataset.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;dark&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s1">&#39;xtick.bottom&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;ytick.left&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span>     <span class="mf">0.8</span> <span class="p">,</span> <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="n">color_cycle</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1BBC9B&#39;</span><span class="p">,</span> <span class="s1">&#39;#F06060&#39;</span><span class="p">,</span> <span class="s1">&#39;#5C4B51&#39;</span><span class="p">,</span> <span class="s1">&#39;#F3B562&#39;</span><span class="p">,</span> <span class="s1">&#39;#6e5687&#39;</span><span class="p">]</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_cycle</span><span class="p">)</span> 
+<span class="c1">#soldata = pd.read_csv(&#39;https://dataverse.harvard.edu/api/access/datafile/3407241?format=original&amp;gbrecs=true&#39;)</span>
+<span class="c1"># had to rehost because dataverse isn&#39;t reliable</span>
+<span class="n">soldata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://github.com/whitead/dmol-book/raw/master/data/curated-solubility-dataset.csv&#39;</span><span class="p">)</span>
+<span class="n">features_start_at</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">soldata</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;MolWt&#39;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">soldata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>InChI</th>
+      <th>InChIKey</th>
+      <th>SMILES</th>
+      <th>Solubility</th>
+      <th>SD</th>
+      <th>Ocurrences</th>
+      <th>Group</th>
+      <th>MolWt</th>
+      <th>...</th>
+      <th>NumRotatableBonds</th>
+      <th>NumValenceElectrons</th>
+      <th>NumAromaticRings</th>
+      <th>NumSaturatedRings</th>
+      <th>NumAliphaticRings</th>
+      <th>RingCount</th>
+      <th>TPSA</th>
+      <th>LabuteASA</th>
+      <th>BalabanJ</th>
+      <th>BertzCT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A-3</td>
+      <td>N,N,N-trimethyloctadecan-1-aminium bromide</td>
+      <td>InChI=1S/C21H46N.BrH/c1-5-6-7-8-9-10-11-12-13-...</td>
+      <td>SZEMGTQCPRNXEG-UHFFFAOYSA-M</td>
+      <td>[Br-].CCCCCCCCCCCCCCCCCC[N+](C)(C)C</td>
+      <td>-3.616127</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>G1</td>
+      <td>392.510</td>
+      <td>...</td>
+      <td>17.0</td>
+      <td>142.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>158.520601</td>
+      <td>0.000000e+00</td>
+      <td>210.377334</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A-4</td>
+      <td>Benzo[cd]indol-2(1H)-one</td>
+      <td>InChI=1S/C11H7NO/c13-11-8-5-1-3-7-4-2-6-9(12-1...</td>
+      <td>GPYLCFQEKPUWLD-UHFFFAOYSA-N</td>
+      <td>O=C1Nc2cccc3cccc1c23</td>
+      <td>-3.254767</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>G1</td>
+      <td>169.183</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>62.0</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>29.10</td>
+      <td>75.183563</td>
+      <td>2.582996e+00</td>
+      <td>511.229248</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A-5</td>
+      <td>4-chlorobenzaldehyde</td>
+      <td>InChI=1S/C7H5ClO/c8-7-3-1-6(5-9)2-4-7/h1-5H</td>
+      <td>AVPYQKSLYISFPO-UHFFFAOYSA-N</td>
+      <td>Clc1ccc(C=O)cc1</td>
+      <td>-2.177078</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>G1</td>
+      <td>140.569</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>46.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>17.07</td>
+      <td>58.261134</td>
+      <td>3.009782e+00</td>
+      <td>202.661065</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A-8</td>
+      <td>zinc bis[2-hydroxy-3,5-bis(1-phenylethyl)benzo...</td>
+      <td>InChI=1S/2C23H22O3.Zn/c2*1-15(17-9-5-3-6-10-17...</td>
+      <td>XTUPUYCJWKHGSW-UHFFFAOYSA-L</td>
+      <td>[Zn++].CC(c1ccccc1)c2cc(C(C)c3ccccc3)c(O)c(c2)...</td>
+      <td>-3.924409</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>G1</td>
+      <td>756.226</td>
+      <td>...</td>
+      <td>10.0</td>
+      <td>264.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>120.72</td>
+      <td>323.755434</td>
+      <td>2.322963e-07</td>
+      <td>1964.648666</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A-9</td>
+      <td>4-({4-[bis(oxiran-2-ylmethyl)amino]phenyl}meth...</td>
+      <td>InChI=1S/C25H30N2O4/c1-5-20(26(10-22-14-28-22)...</td>
+      <td>FAUAZXVRLVIARB-UHFFFAOYSA-N</td>
+      <td>C1OC1CN(CC2CO2)c3ccc(Cc4ccc(cc4)N(CC5CO5)CC6CO...</td>
+      <td>-4.662065</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>G1</td>
+      <td>422.525</td>
+      <td>...</td>
+      <td>12.0</td>
+      <td>164.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>6.0</td>
+      <td>56.60</td>
+      <td>183.183268</td>
+      <td>1.084427e+00</td>
+      <td>769.899934</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 26 columns</p>
+</div></div></div>
+</div>
+<p>We’ll extract our labels and convert SMILES into padded characters. We make use of a <strong>tokenizer</strong>, which is essentially a look-up table for how to go from the characters in a SMILES string to integers. To make our model run faster, I will filter out very long SMILES strings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># filter out long smiles</span>
+<span class="n">smask</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">96</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">soldata</span><span class="o">.</span><span class="n">SMILES</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Removed </span><span class="si">{</span><span class="n">soldata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">smask</span><span class="p">)</span><span class="si">}</span><span class="s1"> long SMILES strings&#39;</span><span class="p">)</span>
+<span class="n">filtered_soldata</span> <span class="o">=</span> <span class="n">soldata</span><span class="p">[</span><span class="n">smask</span><span class="p">]</span>
+
+<span class="c1"># make tokenizer with 128 size vocab and </span>
+<span class="c1"># have it examine all text in dataset</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">char_level</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">filtered_soldata</span><span class="o">.</span><span class="n">SMILES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Removed 285 long SMILES strings
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now get padded sequences</span>
+<span class="n">seqs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">filtered_soldata</span><span class="o">.</span><span class="n">SMILES</span><span class="p">)</span>
+<span class="n">padded_seqs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">seqs</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">)</span>
+
+<span class="c1"># Now build dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">padded_seqs</span><span class="p">,</span> <span class="n">filtered_soldata</span><span class="o">.</span><span class="n">Solubility</span><span class="p">))</span>
+<span class="c1"># now split into val, test, train and batch</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">soldata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">nontest</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+<span class="n">val_data</span><span class="p">,</span> <span class="n">train_data</span> <span class="o">=</span> <span class="n">nontest</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nontest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’re now ready to build our model. We will just use an embedding then RNN and some dense layers to get to a final predicted solubility.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+
+<span class="c1"># make embedding and indicate that 0 should be treated as padding mask</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="c1"># RNN layer</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GRU</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+<span class="c1"># a dense hidden layer</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="c1"># regression, so no activation</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, None, 16)          2048      
+_________________________________________________________________
+gru (GRU)                    (None, 32)                4800      
+_________________________________________________________________
+dense (Dense)                (None, 32)                1056      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 33        
+=================================================================
+Total params: 7,937
+Trainable params: 7,937
+Non-trainable params: 0
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’ll compile our model and train it. This is a regression problem, so we use mean squared error for our loss.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">),</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/NLP_16_0.png" src="../_images/NLP_16_0.png" />
+</div>
+</div>
+<p>As usual, we could keep training and I encourage you to explore adding regularization or modifying the architecture. Let’s now see how the test data looks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># evaluate on test data</span>
+<span class="n">yhat</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_y</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">:</span>
+    <span class="n">yhat</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">test_y</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+<span class="n">yhat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yhat</span><span class="p">)</span>
+<span class="n">test_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot test data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_y</span><span class="p">,</span> <span class="n">test_y</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_y</span><span class="p">,</span> <span class="n">yhat</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;correlation = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">test_y</span><span class="p">,</span> <span class="n">yhat</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;loss = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">test_y</span> <span class="o">-</span> <span class="n">yhat</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Testing Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/NLP_19_0.png" src="../_images/NLP_19_0.png" />
+</div>
+</div>
+<p>Linear regression from <a class="reference internal" href="../ml/regression.html"><span class="doc">Regression</span></a> still wins, but this demonstrates the use of an RNN for this task.</p>
+</div>
+<div class="section" id="transformers">
+<h2><span class="section-number">14.6. </span>Transformers<a class="headerlink" href="#transformers" title="Permalink to this headline">¶</a></h2>
+<p>Transformers have been well-established now as the current state of the art for language modeling tasks. The transformer architecture is actually just self-attention repeated in multiple layers. The paper describing the architecture was quite a breakthrough. At the time, the best models used convolutions, recurrence, attention and encoder/decoder. The paper title was “attention is all you need” and that is basically the conclusion <span id="id15">[<a class="reference internal" href="attention.html#id46">VSP+17</a>]</span>. They found that multi-head attention (including self-attention) was what mattered and this led to <strong>transformers</strong>. Transformers are simple and <em>scalable</em> because each layer is nearly the same operation. This has led to simple “scaling-up the language model” resulting in things like GPT-3, which has billions of parameters and cost millions of dollars to train. GPT-3 is also surprisingly good and versatile. The single model is able to answer questions, describe computer code, translate languages, and infer recipe instructions for cookies. I highly recommend reading the paper, it’s quite interesting<span id="id16">[<a class="reference internal" href="#id129">BMR+20</a>]</span>.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Considering the whole sequence simultaneously is also possible with bi-directional RNNs that read a sequence simultaneously from both ends – meaning context before and after a missing character can be used for training.</p>
+</div>
+<p>There are two principles from the transformer that interest us. One is of course that it is a simple and effective replacement for RNNs. The second is that the transformer considers the whole sequence simultaneously. This has a few consequences. The first is that it is again input size dependent. However, we can pad and mask to get around that. The second consequence is that the self-supervised/unsupervised training can be more interesting than just predict the next character in the string. Instead, we can randomly delete characters and ask the transformer to infer the missing character. This is how transformers are typically “pre-trained” – by feeding a bunch of masked sequences to teach the transformer the language. Then, if desired, the transformer can be refined with labels on your specific task. Transformers and their pre-training training procedure have led to pre-trained chemistry specific models that can be downloaded and used immediately on chemistry data, like ChemBERTa <span id="id17">[<a class="reference internal" href="#id128">CGR20</a>]</span>. These pre-trained models have been trained on 77 million molecules and so should already have some “intuition” about molecular structures and they indeed do well on supervised learning tasks.</p>
+<div class="section" id="architecture">
+<h3><span class="section-number">14.6.1. </span>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h3>
+<p>The transformer is fundamentally made-up of layers of multi-head attention blocks as discussed in <a class="reference internal" href="attention.html"><span class="doc">Attention Layers</span></a>.  The overall architecture is an encoder/decoder like seen in <a class="reference internal" href="VAE.html"><span class="doc">Variational Autoencoder</span></a>. Like the variational autoencoder, the decoder portion can be discarded and only the encoder is used for supervised tasks. Thus, you might <strong>pre-train</strong> the encoder/decoder with self-supervised training (strings with withheld characters) on a large dataset without labels and then use only the encoder for a regression tasks with a smaller dataset.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Some have recently argued that convolutions might be as effective as transformers with some tuning. If substantiated, this could upend NLP because convolutions are simpler to understand, parallelize, and interpret. <span id="id18">[<a class="reference internal" href="#id150">TDG+21</a>]</span></p>
+</div>
+<p>What exactly is going in and out of the encoder/decoder? The transformer is an example of a sequence to sequence (seq2seq) model and the most obvious interpretation is translating between two languages like English to French. The encoder takes in English and the decoder produces French. Or maybe SMILES to IUPAC name. However, that requires “labels” (the paired sequence). To do self-supervised training pre-training, we need the input to the encoder to be a sequence missing some values and the decoder output to be the same sequence with probabilities for each position values filled in. This is called <strong>masked</strong> self-supervised training. If you pre-train in this way, you can do two tasks with your pre-trained encoder/decoder. You can use the encoder alone as a way to embed a string into real numbers and then a downstream task like predicting a molecule’s enthalpy of formation from its SMILES string. The other way to use a model trained this way is for autoregressive generation. The input might be a few characters or a <em>prompt</em> <span id="id19">[<a class="reference internal" href="#id131">RM21</a>]</span> specifically crafted like a question. This is similar the generative RNN, although it allows more flexibility.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Self-supervised training is not just for transformers! It has been successfully applied to graph neural networks as well <span id="id20">[<a class="reference internal" href="#id135">WWCF21</a>]</span>.</p>
+</div>
+<p>There are many details to transformers and “hand-tuned” hyperparameters. Examples in modern transformers are layer normalizations (similar to batch normalization), embeddings, dropout, weight decay, learning rate decay, and position information encoding <span id="id21">[<a class="reference internal" href="#id130">LOG+19</a>]</span>. Position information is quite an interesting topic – you need to include the location of a token (character) in its embedding. Was it the first character or last character?  This is key because when you compute the attention between tokens, the relative location is probably important. Some recent promising work proposed a kind of phase/amplitude split, where the position is the phase and the amplitude is the embedding<span id="id22">[<a class="reference internal" href="#id149">SLP+21</a>]</span>.</p>
+<p>If you would like to see how to implement a real transformer with most of these details, take a look at this <a class="reference external" href="https://keras.io/examples/generative/text_generation_with_miniature_gpt/">Keras tutorial</a>. Because transformers are so tightly coupled with pre-training, there has been a great deal of effort in pre-training models. Aside from <a class="reference external" href="https://en.wikipedia.org/wiki/GPT-3">GPT-3</a>, a general model pre-trained on an enormous corpus of billions of sequences from multiple languages, there are many language specific pre-trained models. <a class="reference external" href="https://huggingface.co/">Hugging Face</a> is a company and API that hosts pre-trained transformers for specific language models like Chinese language, XML, SMILES, or question and answer format. These can be quickly downloaded and utilized, enabling rapid use of state-of-the art language models.</p>
+</div>
+</div>
+<div class="section" id="using-the-latent-space-for-design">
+<h2><span class="section-number">14.7. </span>Using the Latent Space for Design<a class="headerlink" href="#using-the-latent-space-for-design" title="Permalink to this headline">¶</a></h2>
+<p>One of the most interesting applications of these encoder/decoder seq2seq models in chemistry is their use for doing optimal design of a molecule. We pre-train an encoder/decoder pair with masking. The encoder brings our molecule to a continuous representation (seq2vec). Then we can do regression in this vector space for whatever property we would like (e.g., solubility). Then we can optimize this regressed model, finding an input vector that is a minimum or maximum, and finally convert that input vector into a molecule using the decoder <span id="id23">[<a class="reference internal" href="#id127">GomezBWD+18</a>]</span>. The vector space output by the encoder is called the <strong>latent space</strong> like we saw in <a class="reference internal" href="VAE.html"><span class="doc">Variational Autoencoder</span></a>. Of course, this works for RNN seq2seq models, transformers, or convolutions.</p>
+</div>
+<div class="section" id="representing-materials-as-text">
+<h2><span class="section-number">14.8. </span>Representing Materials as Text<a class="headerlink" href="#representing-materials-as-text" title="Permalink to this headline">¶</a></h2>
+<p>Materials are an interesting problem for deep learning because they are not defined by a single molecule. There can be information like the symmetry group or components/phases for a composite material. This creates a challenge for modeling, especially for real materials that have complexities like annealing temperature, additives, and age. From a philosophical point of view, a material is defined by how it was constructed. Practically that means a material is defined by the text describing its synthesis <span id="id24">[<a class="reference internal" href="#id137">BDC+18</a>]</span>. This is an idea taken to its extreme in Tshitoyan et al. <span id="id25">[<a class="reference internal" href="#id132">TDW+19</a>]</span> who found success in representing thermoelectrics via the text describing their synthesis <span id="id26">[<a class="reference internal" href="#id138">SC16</a>]</span>. This work is amazing to me because they had to manually collect papers (publishers do not allow ML/bulk download on articles) and annotate the synthesis methods. Their seq2vec model is relatively old (2 years!) and yet there has not been much progress in this area. I think this is a promising direction but challenging due to the data access limitations. For example, recent progress by Friedrich et al. <span id="id27">[<a class="reference internal" href="#id133">FAT+20</a>]</span> built a pre-trained transformer for solid oxide fuel cells materials but their corpus was limited to open access articles (45) over a 7 year period. This is one critical line of research that is limited due to copyright issues. Text can be copyrighted, not data, but maybe someday a court can be convinced that they are interchangeable.</p>
+</div>
+<div class="section" id="applications">
+<h2><span class="section-number">14.9. </span>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<p>As discussed above, molecular design has been one of the most popular areas for NLP models in chemistry <span id="id28">[<a class="reference internal" href="#id126">SKTW18</a>, <a class="reference internal" href="#id127">GomezBWD+18</a>, <a class="reference internal" href="#id139">MFGS18</a>]</span>. Transformers have been found to be excellent at predicting chemical reactions. Schwaller et al. <span id="id29">[<a class="reference internal" href="#id141">SPZ+20</a>]</span> have shown how to do retrosynthetic  pathway analysis with transformers. The transformers take as input just the reactants and reagents and can predict the products. The models can be calibrated to include uncertainty estimates <span id="id30">[<a class="reference internal" href="#id142">SLG+19</a>]</span> and predict synthetic yield <span id="id31">[<a class="reference internal" href="#id140">SVLR20</a>]</span>. Beyond taking molecules as input, Vaucher et al. trained a seq2seq transformer that can translate the unstructured methods section of a scientific paper into a set of structured synthetic steps <span id="id32">[<a class="reference internal" href="#id143">VZG+20</a>]</span>. Finally, Schwaller et al. <span id="id33">[<a class="reference internal" href="#id144">SPV+21</a>]</span> trained a transformer to classify reactions into organic reaction classes leading to a <a class="reference external" href="https://rxn4chemistry.github.io/rxnfp/tmaps/tmap_ft_10k.html">fascinating map of chemical reactions</a>.</p>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">14.10. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Text is a natural representation of both molecules and materials</p></li>
+<li><p>SMILES and SELFIES are ways to convert molecules into strings</p></li>
+<li><p>Recurrent neural networks (RNNs) are an input-length independent method of converting strings into vectors for regression or classification</p></li>
+<li><p>RNNs can be trained in seq2seq (encoder/decoder) setting by having it predict the next character in a sequence. This yields a model that can autoregressively generate new sequences/molecules</p></li>
+<li><p>Withholding or masking sequences for training is called self-supervised training and is a pre-training step for seq2seq models to enable them to learn the properties of a language like English or SMILES</p></li>
+<li><p>Transformers are currently the best seq2seq models</p></li>
+<li><p>The latent space of seq2seq models can be used for molecular design</p></li>
+<li><p>Materials can be represented as text which is a complete representation for many materials</p></li>
+</ul>
+</div>
+<div class="section" id="cited-references">
+<h2><span class="section-number">14.11. </span>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<p id="id34"><dl class="citation">
+<dt class="label" id="id35"><span class="brackets"><a class="fn-backref" href="#id14">SKE19</a></span></dt>
+<dd><p>Murat Cihan Sorkun, Abhishek Khetan, and Süleyman Er. AqSolDB, a curated reference set of aqueous solubility and 2D descriptors for a diverse set of compounds. <em>Sci. Data</em>, 6(1):143, 2019. <a class="reference external" href="https://doi.org/10.1038/s41597-019-0151-1">doi:10.1038/s41597-019-0151-1</a>.</p>
+</dd>
+<dt class="label" id="id100"><span class="brackets"><a class="fn-backref" href="#id4">YCW20</a></span></dt>
+<dd><p>Ziyue Yang, Maghesree Chakraborty, and Andrew D White. Predicting chemical shifts with graph neural networks. <em>bioRxiv</em>, 2020.</p>
+</dd>
+<dt class="label" id="id97"><span class="brackets"><a class="fn-backref" href="#id4">KGrossGunnemann20</a></span></dt>
+<dd><p>Johannes Klicpera, Janek Groß, and Stephan Günnemann. Directional message passing for molecular graphs. In <em>International Conference on Learning Representations</em>. 2020.</p>
+</dd>
+<dt class="label" id="id68"><span class="brackets"><a class="fn-backref" href="#id15">VSP+17</a></span></dt>
+<dd><p>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in neural information processing systems</em>, 5998–6008. 2017.</p>
+</dd>
+<dt class="label" id="id134"><span class="brackets"><a class="fn-backref" href="#id1">Wei88</a></span></dt>
+<dd><p>David Weininger. Smiles, a chemical language and information system. 1. introduction to methodology and encoding rules. <em>Journal of chemical information and computer sciences</em>, 28(1):31–36, 1988.</p>
+</dd>
+<dt class="label" id="id124"><span class="brackets">KHN+20</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id6">2</a>)</span></dt>
+<dd><p>Mario Krenn, Florian Häse, AkshatKumar Nigam, Pascal Friederich, and Alan Aspuru-Guzik. Self-referencing embedded strings (SELFIES): a 100% robust molecular string representation. <em>Machine Learning: Science and Technology</em>, 1(4):045024, nov 2020. URL: <a class="reference external" href="https://doi.org/10.1088/2632-2153/aba947">https://doi.org/10.1088/2632-2153/aba947</a>, <a class="reference external" href="https://doi.org/10.1088/2632-2153/aba947">doi:10.1088/2632-2153/aba947</a>.</p>
+</dd>
+<dt class="label" id="id136"><span class="brackets"><a class="fn-backref" href="#id3">HMP+15</a></span></dt>
+<dd><p>Stephen R Heller, Alan McNaught, Igor Pletnev, Stephen Stein, and Dmitrii Tchekhovskoi. Inchi, the iupac international chemical identifier. <em>Journal of cheminformatics</em>, 7(1):1–34, 2015.</p>
+</dd>
+<dt class="label" id="id145"><span class="brackets"><a class="fn-backref" href="#id5">BFSV19</a></span></dt>
+<dd><p>Nathan Brown, Marco Fiscato, Marwin HS Segler, and Alain C Vaucher. Guacamol: benchmarking models for de novo molecular design. <em>Journal of chemical information and modeling</em>, 59(3):1096–1108, 2019.</p>
+</dd>
+<dt class="label" id="id125"><span class="brackets">RZS20</span><span class="fn-backref">(<a href="#id7">1</a>,<a href="#id13">2</a>)</span></dt>
+<dd><p>Kohulan Rajan, Achim Zielesny, and Christoph Steinbeck. Decimer: towards deep learning for chemical image recognition. <em>Journal of Cheminformatics</em>, 12(1):1–9, 2020.</p>
+</dd>
+<dt class="label" id="id128"><span class="brackets">CGR20</span><span class="fn-backref">(<a href="#id8">1</a>,<a href="#id10">2</a>,<a href="#id17">3</a>)</span></dt>
+<dd><p>Seyone Chithrananda, Gabe Grand, and Bharath Ramsundar. Chemberta: large-scale self-supervised pretraining for molecular property prediction. <em>arXiv preprint arXiv:2010.09885</em>, 2020.</p>
+</dd>
+<dt class="label" id="id126"><span class="brackets">SKTW18</span><span class="fn-backref">(<a href="#id9">1</a>,<a href="#id11">2</a>,<a href="#id28">3</a>)</span></dt>
+<dd><p>Marwin HS Segler, Thierry Kogej, Christian Tyrchan, and Mark P Waller. Generating focused molecule libraries for drug discovery with recurrent neural networks. <em>ACS central science</em>, 4(1):120–131, 2018.</p>
+</dd>
+<dt class="label" id="id127"><span class="brackets">GomezBWD+18</span><span class="fn-backref">(<a href="#id12">1</a>,<a href="#id23">2</a>,<a href="#id28">3</a>)</span></dt>
+<dd><p>Rafael Gómez-Bombarelli, Jennifer N Wei, David Duvenaud, José Miguel Hernández-Lobato, Benjamín Sánchez-Lengeling, Dennis Sheberla, Jorge Aguilera-Iparraguirre, Timothy D Hirzel, Ryan P Adams, and Alán Aspuru-Guzik. Automatic chemical design using a data-driven continuous representation of molecules. <em>ACS central science</em>, 4(2):268–276, 2018.</p>
+</dd>
+<dt class="label" id="id129"><span class="brackets"><a class="fn-backref" href="#id16">BMR+20</a></span></dt>
+<dd><p>Tom B Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and others. Language models are few-shot learners. <em>arXiv preprint arXiv:2005.14165</em>, 2020.</p>
+</dd>
+<dt class="label" id="id150"><span class="brackets"><a class="fn-backref" href="#id18">TDG+21</a></span></dt>
+<dd><p>Yi Tay, Mostafa Dehghani, Jai Gupta, Dara Bahri, Vamsi Aribandi, Zhen Qin, and Donald Metzler. Are pre-trained convolutions better than pre-trained transformers? <em>arXiv preprint arXiv:2105.03322</em>, 2021.</p>
+</dd>
+<dt class="label" id="id131"><span class="brackets"><a class="fn-backref" href="#id19">RM21</a></span></dt>
+<dd><p>Laria Reynolds and Kyle McDonell. Prompt programming for large language models: beyond the few-shot paradigm. <em>arXiv preprint arXiv:2102.07350</em>, 2021.</p>
+</dd>
+<dt class="label" id="id135"><span class="brackets"><a class="fn-backref" href="#id20">WWCF21</a></span></dt>
+<dd><p>Yuyang Wang, Jianren Wang, Zhonglin Cao, and Amir Barati Farimani. Molclr: molecular contrastive learning of representations via graph neural networks. <em>arXiv preprint arXiv:2102.10056</em>, 2021.</p>
+</dd>
+<dt class="label" id="id130"><span class="brackets"><a class="fn-backref" href="#id21">LOG+19</a></span></dt>
+<dd><p>Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. <em>arXiv preprint arXiv:1907.11692</em>, 2019.</p>
+</dd>
+<dt class="label" id="id149"><span class="brackets"><a class="fn-backref" href="#id22">SLP+21</a></span></dt>
+<dd><p>Jianlin Su, Yu Lu, Shengfeng Pan, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. <em>arXiv preprint arXiv:2104.09864</em>, 2021.</p>
+</dd>
+<dt class="label" id="id137"><span class="brackets"><a class="fn-backref" href="#id24">BDC+18</a></span></dt>
+<dd><p>Keith T Butler, Daniel W Davies, Hugh Cartwright, Olexandr Isayev, and Aron Walsh. Machine learning for molecular and materials science. <em>Nature</em>, 559(7715):547–555, 2018.</p>
+</dd>
+<dt class="label" id="id132"><span class="brackets"><a class="fn-backref" href="#id25">TDW+19</a></span></dt>
+<dd><p>Vahe Tshitoyan, John Dagdelen, Leigh Weston, Alexander Dunn, Ziqin Rong, Olga Kononova, Kristin A Persson, Gerbrand Ceder, and Anubhav Jain. Unsupervised word embeddings capture latent knowledge from materials science literature. <em>Nature</em>, 571(7763):95–98, 2019.</p>
+</dd>
+<dt class="label" id="id138"><span class="brackets"><a class="fn-backref" href="#id26">SC16</a></span></dt>
+<dd><p>Matthew C Swain and Jacqueline M Cole. Chemdataextractor: a toolkit for automated extraction of chemical information from the scientific literature. <em>Journal of chemical information and modeling</em>, 56(10):1894–1904, 2016.</p>
+</dd>
+<dt class="label" id="id133"><span class="brackets"><a class="fn-backref" href="#id27">FAT+20</a></span></dt>
+<dd><p>Annemarie Friedrich, Heike Adel, Federico Tomazic, Johannes Hingerl, Renou Benteau, Anika Maruscyk, and Lukas Lange. The sofc-exp corpus and neural approaches to information extraction in the materials science domain. <em>arXiv preprint arXiv:2006.03039</em>, 2020.</p>
+</dd>
+<dt class="label" id="id139"><span class="brackets"><a class="fn-backref" href="#id28">MFGS18</a></span></dt>
+<dd><p>Daniel Merk, Lukas Friedrich, Francesca Grisoni, and Gisbert Schneider. De novo design of bioactive small molecules by artificial intelligence. <em>Molecular informatics</em>, 37(1-2):1700153, 2018.</p>
+</dd>
+<dt class="label" id="id141"><span class="brackets"><a class="fn-backref" href="#id29">SPZ+20</a></span></dt>
+<dd><p>Philippe Schwaller, Riccardo Petraglia, Valerio Zullo, Vishnu H Nair, Rico Andreas Haeuselmann, Riccardo Pisoni, Costas Bekas, Anna Iuliano, and Teodoro Laino. Predicting retrosynthetic pathways using transformer-based models and a hyper-graph exploration strategy. <em>Chemical Science</em>, 11(12):3316–3325, 2020.</p>
+</dd>
+<dt class="label" id="id142"><span class="brackets"><a class="fn-backref" href="#id30">SLG+19</a></span></dt>
+<dd><p>Philippe Schwaller, Teodoro Laino, Théophile Gaudin, Peter Bolgar, Christopher A Hunter, Costas Bekas, and Alpha A Lee. Molecular transformer: a model for uncertainty-calibrated chemical reaction prediction. <em>ACS central science</em>, 5(9):1572–1583, 2019.</p>
+</dd>
+<dt class="label" id="id140"><span class="brackets"><a class="fn-backref" href="#id31">SVLR20</a></span></dt>
+<dd><p>Philippe Schwaller, Alain C Vaucher, Teodoro Laino, and Jean-Louis Reymond. Prediction of chemical reaction yields using deep learning. <em>ChemRxiv Preprint</em>, 2020. URL: <a class="reference external" href="https://doi.org/10.26434/chemrxiv.12758474.v2">https://doi.org/10.26434/chemrxiv.12758474.v2</a>.</p>
+</dd>
+<dt class="label" id="id143"><span class="brackets"><a class="fn-backref" href="#id32">VZG+20</a></span></dt>
+<dd><p>Alain C Vaucher, Federico Zipoli, Joppe Geluykens, Vishnu H Nair, Philippe Schwaller, and Teodoro Laino. Automated extraction of chemical synthesis actions from experimental procedures. <em>Nature communications</em>, 11(1):1–11, 2020.</p>
+</dd>
+<dt class="label" id="id144"><span class="brackets"><a class="fn-backref" href="#id33">SPV+21</a></span></dt>
+<dd><p>Philippe Schwaller, Daniel Probst, Alain C Vaucher, Vishnu H Nair, David Kreutter, Teodoro Laino, and Jean-Louis Reymond. Mapping the space of chemical reactions using attention-based neural networks. <em>Nature Machine Intelligence</em>, pages 1–9, 2021.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./dl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="Equivariant.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">13. </span>Equivariant Neural Networks</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="xai.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">15. </span>Interpretability in Deep Learning</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

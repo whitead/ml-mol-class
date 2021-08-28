@@ -1,0 +1,986 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>16. Predicting DFT Energies with GNNs &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="17. Generative RNN in Browser" href="MolGenerator.html" />
+    <link rel="prev" title="15. Interpretability in Deep Learning" href="../dl/xai.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/flows.html">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/NLP.html">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/xai.html">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/applied/QM9.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/applied/QM9.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/applied/QM9.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#label-description">
+   16.1. Label Description
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data">
+   16.2. Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   16.3. Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#baseline-model">
+   16.4. Baseline Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-gnn-model">
+   16.5. Example GNN Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#jax-model-implementation">
+     16.5.1. JAX Model Implementation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relevant-videos-about-modeling-qm9">
+   16.6. Relevant Videos About Modeling QM9
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   16.7. Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="predicting-dft-energies-with-gnns">
+<h1><span class="section-number">16. </span>Predicting DFT Energies with GNNs<a class="headerlink" href="#predicting-dft-energies-with-gnns" title="Permalink to this headline">¶</a></h1>
+<p>QM9 is a dataset of 134,000 molecules consisting of 9 heavy atoms drawn from the elements C, H, O, N, F<span id="id1">[<a class="reference internal" href="#id151">RDRVL14</a>]</span>. The features are the xyz coordinates (<span class="math notranslate nohighlight">\(\mathbf{X}\)</span>) and elements (<span class="math notranslate nohighlight">\(\vec{e}\)</span>) of the molecule. The coordinates are determined from B3LYP/6-31G(2df,p) level DFT geometry optimization. There are multiple labels (see table below), but we’ll be interested specifically in the energy of formation (Enthalpy at 298.15 K). The goal in this chapter is to see how we can model this data. We will build upon ideas in the following chapters:</p>
+<ol class="simple">
+<li><p><a class="reference internal" href="../ml/regression.html"><span class="doc">Regression</span></a></p></li>
+<li><p><a class="reference internal" href="../dl/gnn.html"><span class="doc">Graph Neural Networks</span></a></p></li>
+<li><p><a class="reference internal" href="../dl/data.html"><span class="doc">Input Data &amp; Equivariances</span></a></p></li>
+</ol>
+<p>QM9 is one of the most popular dataset for machine learning and deep learning since it came out in 2014. The first papers could achieve about 10 kcal/mol on this regression problem and now are down to ~1 kcal/mol and lower. Any model on this dataset must be translation, rotation, and permutation invariant.</p>
+<div class="section" id="label-description">
+<h2><span class="section-number">16.1. </span>Label Description<a class="headerlink" href="#label-description" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Index</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Units</p></th>
+<th class="text-align:right head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>0</p></td>
+<td><p>index</p></td>
+<td><p>-</p></td>
+<td class="text-align:right"><p>Consecutive, 1-based integer identifier of molecule</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>1</p></td>
+<td><p>A</p></td>
+<td><p>GHz</p></td>
+<td class="text-align:right"><p>Rotational constant A</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>2</p></td>
+<td><p>B</p></td>
+<td><p>GHz</p></td>
+<td class="text-align:right"><p>Rotational constant B</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>3</p></td>
+<td><p>C</p></td>
+<td><p>GHz</p></td>
+<td class="text-align:right"><p>Rotational constant C</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>4</p></td>
+<td><p>mu</p></td>
+<td><p>Debye</p></td>
+<td class="text-align:right"><p>Dipole moment</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>5</p></td>
+<td><p>alpha</p></td>
+<td><p>Bohr^3</p></td>
+<td class="text-align:right"><p>Isotropic polarizability</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>6</p></td>
+<td><p>homo</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Energy of Highest occupied molecular orbital (HOMO)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>7</p></td>
+<td><p>lumo</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Energy of Lowest occupied molecular orbital (LUMO)</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>8</p></td>
+<td><p>gap</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Gap, difference between LUMO and HOMO</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>9</p></td>
+<td><p>r2</p></td>
+<td><p>Bohr^2</p></td>
+<td class="text-align:right"><p>Electronic spatial extent</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>10</p></td>
+<td><p>zpve</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Zero point vibrational energy</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>11</p></td>
+<td><p>U0</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Internal energy at 0 K</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>12</p></td>
+<td><p>U</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Internal energy at 298.15 K</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>13</p></td>
+<td><p>H</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Enthalpy at 298.15 K</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>14</p></td>
+<td><p>G</p></td>
+<td><p>Hartree</p></td>
+<td class="text-align:right"><p>Free energy at 298.15 K</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>15</p></td>
+<td><p>Cv</p></td>
+<td><p>cal/(mol K)</p></td>
+<td class="text-align:right"><p>Heat capacity at 298.15 K</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="data">
+<h2><span class="section-number">16.2. </span>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
+<p>I have written some helper code in the <code class="docutils literal notranslate"><span class="pre">fetch_data.py</span></code> file. It downloads the data and converts into a format easily used in Python. The data returned from this function is broken into the features <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\vec{e}\)</span>. <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is an <span class="math notranslate nohighlight">\(N\times4\)</span> matrix of atom positions + partial charge of the atom. <span class="math notranslate nohighlight">\(\vec{e}\)</span> is vector of atomic numbers for each atom in the molecule. Remember to slice the specific label you want from the label vector.</p>
+</div>
+<div class="section" id="running-this-notebook">
+<h2><span class="section-number">16.3. </span>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages, either on your own environment or on Google Colab</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install matplotlib numpy pandas seaborn tensorflow jax jaxlib MDAnalysis
+!wget https://raw.githubusercontent.com/whitead/dmol-book/master/applied/fetch_data.py
+</pre></div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">fetch_data</span> <span class="kn">import</span> <span class="n">qm9_parse</span><span class="p">,</span> <span class="n">qm9_fetch</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s load the data. This step will take a few minutes as it is downloaded and processed.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qm9_records</span> <span class="o">=</span> <span class="n">qm9_fetch</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">qm9_parse</span><span class="p">(</span><span class="n">qm9_records</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">data</span></code> is an iterable containing the data for the 133k molecules. Let’s examine the first one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((&lt;tf.Tensor: shape=(5,), dtype=int64, numpy=array([6, 1, 1, 1, 1])&gt;, &lt;tf.Tensor: shape=(5, 4), dtype=float32, numpy=
+array([[-1.2698136e-02,  1.0858041e+00,  8.0009960e-03, -5.3568900e-01],
+       [ 2.1504159e-03, -6.0313176e-03,  1.9761203e-03,  1.3392100e-01],
+       [ 1.0117308e+00,  1.4637512e+00,  2.7657481e-04,  1.3392200e-01],
+       [-5.4081506e-01,  1.4475266e+00, -8.7664372e-01,  1.3392299e-01],
+       [-5.2381361e-01,  1.4379326e+00,  9.0639728e-01,  1.3392299e-01]],
+      dtype=float32)&gt;), &lt;tf.Tensor: shape=(16,), dtype=float32, numpy=
+array([ 1.0000000e+00,  1.5771181e+02,  1.5770998e+02,  1.5770699e+02,
+        0.0000000e+00,  1.3210000e+01, -3.8769999e-01,  1.1710000e-01,
+        5.0480002e-01,  3.5364101e+01,  4.4748999e-02, -4.0478931e+01,
+       -4.0476063e+01, -4.0475117e+01, -4.0498596e+01,  6.4689999e+00],
+      dtype=float32)&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>These are Tensorflow Tensors. They can be converted to numpy arrays via <code class="docutils literal notranslate"><span class="pre">x.numpy()</span></code>. The first item is the element vector <code class="docutils literal notranslate"><span class="pre">6,1,1,1,1</span></code>. Do you recognize the elements? It’s C, H, H, H, H. The positions come next. Note that the there is an extra column containing the atom partial charges, which we will not use as a feature. Finally, the last tensor is the label vector.</p>
+<p>Now we will do some processing of the data to get into a more usable format. Let’s convert to numpy arrays, remove the partial charges, and convert the elements into one-hot vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">convert_record</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="c1"># break up record</span>
+    <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">d</span>
+    <span class="c1"># </span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>    
+    <span class="c1"># make ohc size larger </span>
+    <span class="c1"># so use same node feature</span>
+    <span class="c1"># shape later</span>
+    <span class="n">ohc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+    <span class="n">ohc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)),</span> <span class="n">e</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>    
+    <span class="k">return</span> <span class="p">(</span><span class="n">ohc</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">13</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Element one hots</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coordinates</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Label:&#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Element one hots
+ [[0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+ [1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+ [1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+ [1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+ [1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]]
+Coordinates
+ [[-1.2698136e-02  1.0858041e+00  8.0009960e-03]
+ [ 2.1504159e-03 -6.0313176e-03  1.9761203e-03]
+ [ 1.0117308e+00  1.4637512e+00  2.7657481e-04]
+ [-5.4081506e-01  1.4475266e+00 -8.7664372e-01]
+ [-5.2381361e-01  1.4379326e+00  9.0639728e-01]]
+Label: -40.475117
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="baseline-model">
+<h2><span class="section-number">16.4. </span>Baseline Model<a class="headerlink" href="#baseline-model" title="Permalink to this headline">¶</a></h2>
+<p>Before we get too far into modeling, let’s see what a simple model can do for accuracy. This will help establish a baseline model which any more sophisticated implementation should exceed in accuracy. You can make many choices for this, but I’ll just make a linear regression based on number of atom types.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.experimental.optimizers</span> <span class="k">as</span> <span class="nn">optimizers</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">baseline_model</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="c1"># get sum of each element type</span>
+    <span class="n">atom_count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">yhat</span> <span class="o">=</span> <span class="n">atom_count</span> <span class="o">@</span> <span class="n">w</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">yhat</span>
+
+<span class="k">def</span> <span class="nf">baseline_loss</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">baseline_model</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">baseline_loss_grad</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">baseline_loss</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">0.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ve set-up our simple regression model. One complexity is that we cannot batch the molecules like normal because each molecule contains different shaped tensors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we&#39;ll just train on 5,000 and use 1,000 for test</span>
+<span class="c1"># shuffle</span>
+<span class="n">shuffled_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">7000</span><span class="p">)</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">shuffled_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">valid_set</span> <span class="o">=</span> <span class="n">shuffled_data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">shuffled_data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The labels in this data are quite large, so we’re going to make a transform on them to make our learning rates and training going more smoothly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_record</span><span class="p">(</span><span class="n">d</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_set</span><span class="p">]</span>
+<span class="n">train_ym</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+<span class="n">train_ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean = &#39;</span><span class="p">,</span> <span class="n">train_ym</span><span class="p">,</span> <span class="s1">&#39;Std =&#39;</span><span class="p">,</span> <span class="n">train_ys</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean =  -360.46396 Std = 43.418262
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’ll just use this transform when training: <span class="math notranslate nohighlight">\(y_s = \frac{y - \mu_y}{\sigma_y}\)</span> and then our predictions will be transformed by <span class="math notranslate nohighlight">\(\hat{y} = \hat{f}(e,x) \cdot \sigma_y + \mu_y\)</span>. This just helps standardize our range of outputs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">transform_label</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">train_ym</span><span class="p">)</span> <span class="o">/</span> <span class="n">train_ys</span>
+<span class="k">def</span> <span class="nf">transform_prediction</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">y</span> <span class="o">*</span> <span class="n">train_ys</span> <span class="o">+</span> <span class="n">train_ym</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">baseline_val_loss</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_set</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y_raw</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">transform_label</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span>
+        <span class="n">grad_est</span> <span class="o">=</span> <span class="n">baseline_loss_grad</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>        
+        <span class="c1"># update regression weights</span>
+        <span class="n">w</span> <span class="o">-=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">grad_est</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">-=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">grad_est</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># compute validation loss    </span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">valid_set</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y_raw</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">transform_label</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span>
+        <span class="c1"># convert SE to RMSE</span>
+        <span class="n">baseline_val_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">+=</span> <span class="n">baseline_loss</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">baseline_val_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">baseline_val_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">eta</span> <span class="o">*=</span> <span class="mf">0.9</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">baseline_val_loss</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Val Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</pre></div>
+</div>
+<img alt="../_images/QM9_20_1.png" src="../_images/QM9_20_1.png" />
+</div>
+</div>
+<p>This is poor performance, but it gives us a baseline value of what we can expect. One unusual detail I did in this training was to slowly reduce the learning rate. This is because our features and labels are all in different magnitudes. Our weights need to move far to get into the right order of magnitude and then need to fine-tune a little. Thus we start at high learning rate and decrease.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">yhats</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">valid_set</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">yhat_raw</span> <span class="o">=</span> <span class="n">baseline_model</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">yhat</span> <span class="o">=</span> <span class="n">transform_prediction</span><span class="p">(</span><span class="n">yhat_raw</span><span class="p">)</span>
+    <span class="n">yhats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yhat</span><span class="p">)</span>
+
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">yhats</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted Energy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/QM9_22_0.png" src="../_images/QM9_22_0.png" />
+</div>
+</div>
+<p>You can see that the broad trends about molecule size capture a lot of variance, but more work needs to be done.</p>
+</div>
+<div class="section" id="example-gnn-model">
+<h2><span class="section-number">16.5. </span>Example GNN Model<a class="headerlink" href="#example-gnn-model" title="Permalink to this headline">¶</a></h2>
+<p>We now can work with this data to build a model. Let’s build a simple model that can model energy and obeys the invariances required of the problem. We will use a graph neural network (GNN) because it obeys permutation invariance. We will create a <em>graph</em> from the coordinates/element vector by joining all atoms to all other atoms and using their inverse pairwise distance as the edge weight. The choice of pairwise distance gives us translation and rotation invariance. The choice of inverse distance means that atoms which are far away naturally have low edge weights.</p>
+<p>I will now define our model using the Battaglia equations <span id="id2">[<a class="reference internal" href="../dl/gnn.html#id53">BHB+18</a>]</span>. As opposed to most examples we’ve seen in class, I will use the graph level feature vector <span class="math notranslate nohighlight">\(\vec{u}\)</span> which will ultimately be our estimate of energy. The edge update will only consider the sender and the edge weight with trainable parameters:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2c43e05c-2809-42f5-a7e7-459c4bd013b6">
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-2c43e05c-2809-42f5-a7e7-459c4bd013b6" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+      \vec{e}^{'}_k = \phi^e\left( \vec{e}_k, \vec{v}_{rk}, \vec{v}_{sk}, \vec{u}\right) = \sigma\left(\vec{v}_{sk}\vec{w}_ee_k + \vec{b}_e\right)
+\end{equation}\]</div>
+<p>where the input edge <span class="math notranslate nohighlight">\(e_k\)</span> will be a single number (inverse pairwise distance) and <span class="math notranslate nohighlight">\(\vec{b}_e\)</span> is a trainable bias vector. We will use a sum aggregation for edges (not shown). <span class="math notranslate nohighlight">\(\sigma\)</span> is a leaky ReLU. The leaky just prevents vanishing gradients, which I found empirically to reduce performance here. The node update will be</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ab098055-023a-45b2-9f01-04aa27ca163c">
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-ab098055-023a-45b2-9f01-04aa27ca163c" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+   \vec{v}^{'}_i = \phi^v\left( \bar{e}^{'}_i, \vec{v}_i, \vec{u}\right) = \sigma\left(\mathbf{W}_v \bar{e}^{'}_i\right) + \vec{v}_i
+\end{equation}\]</div>
+<p>The global node aggregation will also be a sum. Finally we have our graph feature vector update:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-be6bb4f7-3fd2-479e-ac3e-24dbdd0b1ba2">
+<span class="eqno">(16.3)<a class="headerlink" href="#equation-be6bb4f7-3fd2-479e-ac3e-24dbdd0b1ba2" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    \vec{u}^{'} = \phi^u\left( \bar{e}^{'},\bar{v}^{'}, \vec{u}\right) = \sigma\left(\mathbf{W}_u\bar{v}^{'}\right) + \vec{u}
+\end{equation}\]</div>
+<p>To compute the final energy, we’ll use our regression equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9de5088d-4891-4304-8e52-7b49d9c8cd19">
+<span class="eqno">(16.4)<a class="headerlink" href="#equation-9de5088d-4891-4304-8e52-7b49d9c8cd19" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    \hat{E} = \vec{w}\cdot \vec{u} + b
+\end{equation}\]</div>
+<p>One final detail is that we will pass on <span class="math notranslate nohighlight">\(\vec{u}\)</span> and the nodes, but we will keep the edges the same at each GNN layer. Remember this is an example model: there are many changes that could be made to the above. Also, it is not kernel learning which is the favorite for this domain. Let’s implement it though and see if it works.</p>
+<div class="section" id="jax-model-implementation">
+<h3><span class="section-number">16.5.1. </span>JAX Model Implementation<a class="headerlink" href="#jax-model-implementation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">x2e</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;convert xyz coordinates to inverse pairwise distance&#39;&#39;&#39;</span>    
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">r2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">e</span>
+
+<span class="k">def</span> <span class="nf">gnn_layer</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">we</span><span class="p">,</span> <span class="n">web</span><span class="p">,</span> <span class="n">wv</span><span class="p">,</span> <span class="n">wu</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Implementation of the GNN&#39;&#39;&#39;</span>
+    <span class="c1"># make nodes be N x N so we can just multiply directly</span>
+    <span class="c1"># ek is now shaped N x N x features</span>
+    <span class="n">ek</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">web</span> <span class="o">+</span> 
+        <span class="n">jnp</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> <span class="n">nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">@</span> <span class="n">we</span> <span class="o">*</span> <span class="n">edges</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+    <span class="c1"># sum over neighbors to get N x features</span>
+    <span class="n">ebar</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ek</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># dense layer for new nodes to get N x features</span>
+    <span class="n">new_nodes</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">ebar</span> <span class="o">@</span> <span class="n">wv</span><span class="p">)</span> <span class="o">+</span> <span class="n">nodes</span>
+    <span class="c1"># sum over nodes to get shape features</span>
+    <span class="n">global_node_features</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># dense layer for new features</span>
+    <span class="n">new_features</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">global_node_features</span>  <span class="o">@</span> <span class="n">wu</span><span class="p">)</span> <span class="o">+</span> <span class="n">features</span>    
+    <span class="c1"># just return features for ease of use</span>
+    <span class="k">return</span> <span class="n">new_nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">new_features</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We have implemented the code to convert coordinates into inverse pairwise distance and the GNN equations above. Let’s test them out.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">graph_feature_len</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">node_feature_len</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">msg_feature_len</span> <span class="o">=</span> <span class="mi">16</span>
+    
+<span class="c1"># make our weights</span>
+<span class="k">def</span> <span class="nf">init_weights</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="n">we</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+    <span class="n">wv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+    <span class="n">wu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">g</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">we</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">wv</span><span class="p">,</span> <span class="n">wu</span><span class="p">]</span>
+
+<span class="c1"># make a graph</span>
+<span class="n">nodes</span> <span class="o">=</span> <span class="n">e</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="n">x2e</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">graph_feature_len</span><span class="p">)</span>
+
+<span class="c1"># eval</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">gnn_layer</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="o">*</span><span class="n">init_weights</span><span class="p">(</span><span class="n">graph_feature_len</span><span class="p">,</span> <span class="n">node_feature_len</span><span class="p">,</span> <span class="n">msg_feature_len</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input feautres&#39;</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output features&#39;</span><span class="p">,</span> <span class="n">out</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>input feautres [0. 0. 0. 0. 0. 0. 0. 0.]
+output features [-0.02175841  0.05012481 -0.01557639  0.20740296 -0.00221884 -0.01659717
+ -0.00824974  0.06425503]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great! Our model can update the graph features. Now we need to convert this into callable and loss. We’ll stack two GNN layers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get weights for both layers</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">init_weights</span><span class="p">(</span><span class="n">graph_feature_len</span><span class="p">,</span> <span class="n">node_feature_len</span><span class="p">,</span> <span class="n">msg_feature_len</span><span class="p">)</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">init_weights</span><span class="p">(</span><span class="n">graph_feature_len</span><span class="p">,</span> <span class="n">node_feature_len</span><span class="p">,</span> <span class="n">msg_feature_len</span><span class="p">)</span>
+<span class="n">w3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">graph_feature_len</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">0.</span>
+
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>    
+    <span class="n">f0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">graph_feature_len</span><span class="p">)</span>
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">x2e</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+    <span class="n">n0</span> <span class="o">=</span> <span class="n">nodes</span>
+    <span class="n">n1</span><span class="p">,</span><span class="n">e1</span><span class="p">,</span><span class="n">f1</span> <span class="o">=</span> <span class="n">gnn_layer</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="o">*</span><span class="n">w1</span><span class="p">)</span>
+    <span class="n">n2</span><span class="p">,</span><span class="n">e2</span><span class="p">,</span><span class="n">f2</span> <span class="o">=</span> <span class="n">gnn_layer</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="o">*</span><span class="n">w2</span><span class="p">)</span>
+    <span class="n">yhat</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">@</span> <span class="n">w3</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">yhat</span>
+
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">loss_grad</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>You could pad the molecules to all be the same shape. This is a common strategy. We will skip this though for simplicity.</p>
+</div>
+<p>One small change we’ve made below is that we scale the learning rate for the GNN to be <span class="math notranslate nohighlight">\( 1 / 10\)</span> of the rate for the regression parameters. This is because the GNN parameters need to vary slower based on trial and error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">val_loss</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">)]</span>  
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_set</span><span class="p">:</span>         
+        <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y_raw</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">transform_label</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span>        
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_grad</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>     
+        <span class="c1"># update regression weights</span>
+        <span class="n">w3</span> <span class="o">-=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">grad</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">-=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">grad</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># update GNN weights            </span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">w</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)]:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)):</span>
+                <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">grad</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span>
+    <span class="c1"># compute validation loss    </span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">valid_set</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y_raw</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">transform_label</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span>
+        <span class="c1"># convert SE to RMSE</span>
+        <span class="n">val_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">val_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">val_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">eta</span> <span class="o">*=</span> <span class="mf">0.9</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">baseline_val_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;baseline&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;GNN&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Val Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/QM9_32_0.png" src="../_images/QM9_32_0.png" />
+</div>
+</div>
+<p>This is a large dataset and we’re under training, but hopefully you get the principles of this process! Finally, we’ll examine our parity plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">yhats</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">valid_set</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_record</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">yhat_raw</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>    
+    <span class="n">yhats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transform_prediction</span><span class="p">(</span><span class="n">yhat_raw</span><span class="p">))</span>
+
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">yhats</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted Energy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/QM9_34_0.png" src="../_images/QM9_34_0.png" />
+</div>
+</div>
+<p>The clusters are molecule types/sizes. You can see we’re starting to get the correct trend within the clusters, but a lot of work needs to be done to move some of them. Additional learning required!</p>
+</div>
+</div>
+<div class="section" id="relevant-videos-about-modeling-qm9">
+<h2><span class="section-number">16.6. </span>Relevant Videos About Modeling QM9<a class="headerlink" href="#relevant-videos-about-modeling-qm9" title="Permalink to this headline">¶</a></h2>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/S09kzo5piAM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<div class="section" id="cited-references">
+<h2><span class="section-number">16.7. </span>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<p id="id3"><dl class="citation">
+<dt class="label" id="id33"><span class="brackets"><a class="fn-backref" href="#id2">BHB+18</a></span></dt>
+<dd><p>Peter W Battaglia, Jessica B Hamrick, Victor Bapst, Alvaro Sanchez-Gonzalez, Vinicius Zambaldi, Mateusz Malinowski, Andrea Tacchetti, David Raposo, Adam Santoro, Ryan Faulkner, and others. Relational inductive biases, deep learning, and graph networks. <em>arXiv preprint arXiv:1806.01261</em>, 2018.</p>
+</dd>
+<dt class="label" id="id151"><span class="brackets"><a class="fn-backref" href="#id1">RDRVL14</a></span></dt>
+<dd><p>Raghunathan Ramakrishnan, Pavlo O Dral, Matthias Rupp, and O Anatole Von Lilienfeld. Quantum chemistry structures and properties of 134 kilo molecules. <em>Scientific data</em>, 1(1):1–7, 2014.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./applied"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="../dl/xai.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">15. </span>Interpretability in Deep Learning</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="MolGenerator.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">17. </span>Generative RNN in Browser</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

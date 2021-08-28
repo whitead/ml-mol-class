@@ -1,0 +1,1090 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. Tensors and Shapes &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Introduction to Machine Learning" href="../ml/introduction.html" />
+    <link rel="prev" title="Overview" href="../intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/flows.html">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/NLP.html">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dl/xai.html">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/math/tensors-and-shapes.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/math/tensors-and-shapes.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/math/tensors-and-shapes.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#einstein-notation">
+   1.1. Einstein Notation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tensor-operations">
+   1.2. Tensor Operations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reduction-operations">
+     1.2.1. Reduction Operations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#element-operations">
+     1.2.2. Element Operations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#broadcasting">
+   1.3. Broadcasting
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#suggested-reading-for-broadcasting">
+     1.3.1. Suggested Reading for Broadcasting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#modifying-rank">
+   1.4. Modifying Rank
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reshaping">
+     1.4.1. Reshaping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rank-slicing">
+     1.4.2. Rank Slicing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chapter-summary">
+   1.5. Chapter Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercises">
+   1.6. Exercises
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     1.6.1. Einstein notation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reductions">
+     1.6.2. Reductions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#broadcasting-and-shapes">
+     1.6.3. Broadcasting and Shapes
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="tensors-and-shapes">
+<h1><span class="section-number">1. </span>Tensors and Shapes<a class="headerlink" href="#tensors-and-shapes" title="Permalink to this headline">¶</a></h1>
+<p>Tensors are the generalization of vectors (rank 1) and matrices (rank 2) to arbitrary <strong>rank</strong>. Rank can be defined as the number of indices required to get individual elements of a tensor. A matrix requires two indices (row, column), and is thus a rank 2 tensor. We may say in normal conversation that a matrix is a “two dimensional object” because it has rows and columns, but this is ambiguous because the row could be 6 dimensions and the columns could be 1 dimension. Always use the word rank to distinguish vectors, matrices, and higher-order tensors. The components that make up rank are called <strong>axes</strong> (plural of <strong>axis</strong>). The <strong>dimension</strong> is how many elements are in a particular axis. The <strong>shape</strong> of a tensor combines all of these. A shape is a tuple whose length is the rank and elements are the dimension of each axis.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Rank</p>
+<p><a class="reference external" href="https://mathworld.wolfram.com/TensorRank.html">Tensor rank</a> and <a class="reference external" href="https://mathworld.wolfram.com/MatrixRank.html">matrix rank</a> are two different concepts. Matrix rank
+is the number of linearly independent columns and has nothing to do with tensor rank. Some authors may use <em>order</em> to refer to tensor rank to distinguish the two terms.</p>
+</div>
+<p>Let’s practice our new vocabulary. A Euclidean vector <span class="math notranslate nohighlight">\((x, y, z)\)</span> is a rank 1 tensor whose 0th axis is dimension 3. Its shape is <span class="math notranslate nohighlight">\((3)\)</span>. Beautiful. A 5 row, 4 column matrix is now called a rank 2 tensor whose axes are dimension 5 and 4. Its shape is <span class="math notranslate nohighlight">\((5, 4)\)</span>. The scalar (real number) 3.2 is a rank 0 tensor whose shape is <span class="math notranslate nohighlight">\(()\)</span>.</p>
+<p>TensorFlow has a <a class="reference external" href="https://www.tensorflow.org/guide/tensor">nice visual guide to tensors</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Array and tensor are synonyms. Array is the preferred word
+in numpy and often used when describing tensors in python. Tensor is the mathematic
+equivalent.</p>
+</div>
+<div class="section" id="einstein-notation">
+<h2><span class="section-number">1.1. </span>Einstein Notation<a class="headerlink" href="#einstein-notation" title="Permalink to this headline">¶</a></h2>
+<p>Einstein notation is the way tensor operations can be written out. We’ll be using a simplified version, based on the <code class="docutils literal notranslate"><span class="pre">einsum</span></code> function available in many numerical libraries (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.einsum.html#numpy.einsum" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.einsum</span></code></a>, <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/einsum" title="(in TensorFlow v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.einsum</span></code></a>, <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.einsum.html#jax.numpy.einsum" title="(in JAX)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jnp.einsum</span></code></a>). It’s relatively simple. Each tensor is written as a lower case variable with explicit indices, like <span class="math notranslate nohighlight">\(a_{ijk}\)</span> for a rank 3 tensor. The reason the variable name is written in lower case is because if you fill in the indices <span class="math notranslate nohighlight">\(a_{023}\)</span>, you get a scalar.  A variable without an index, <span class="math notranslate nohighlight">\(b\)</span>, is a scalar. There is one rule for this notation: if an index doesn’t appear on both sides, it is summed over on the one side in which it appears. Einstein notation requires both sides of the equation to be written-out, so that its clear what the input/output shapes of the operation is.</p>
+<p>Here are some examples of writing tensor operations in Einstein notation.</p>
+<p><strong>Total Sum</strong></p>
+<p>Sum all elements of a rank 4 tensor. In Einstein notation this is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9da414db-5f4b-4233-acdd-5799f78d2dd1">
+<span class="eqno">(1.1)<a class="headerlink" href="#equation-9da414db-5f4b-4233-acdd-5799f78d2dd1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+  a_{ijkl} = b
+\end{equation}\]</div>
+<p>in normal mathematic notation, this would be</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a5375b66-7311-4f50-9e92-9655623221e1">
+<span class="eqno">(1.2)<a class="headerlink" href="#equation-a5375b66-7311-4f50-9e92-9655623221e1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\sum_i \sum_j \sum_k \sum_l a_{ijkl} = b
+\end{equation}\]</div>
+<p><strong>Sum Specific Axis</strong></p>
+<p>Sum over last axis</p>
+<div class="amsmath math notranslate nohighlight" id="equation-64e52934-6b49-4ce5-b0a2-fb2c73411fbf">
+<span class="eqno">(1.3)<a class="headerlink" href="#equation-64e52934-6b49-4ce5-b0a2-fb2c73411fbf" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+  a_{ijkl} = b_{ijk}
+\end{equation}\]</div>
+<p>In normal notation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-081d4e35-9cce-4ede-b780-0f7ba95d06dc">
+<span class="eqno">(1.4)<a class="headerlink" href="#equation-081d4e35-9cce-4ede-b780-0f7ba95d06dc" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+ \sum_l a_{ijkl} = b_{ijk}
+\end{equation}\]</div>
+<p><strong>Dot Product</strong></p>
+<p>In Einstein notation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4afe0db3-8665-4b63-b273-aab1886baa77">
+<span class="eqno">(1.5)<a class="headerlink" href="#equation-4afe0db3-8665-4b63-b273-aab1886baa77" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+  a_{i} b_{i} = c
+\end{equation}\]</div>
+<p>In normal notation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-786b81c7-7496-4fd4-8333-f9c41ff590f2">
+<span class="eqno">(1.6)<a class="headerlink" href="#equation-786b81c7-7496-4fd4-8333-f9c41ff590f2" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+  \sum_i a_{i} b_{i} = c
+\end{equation}\]</div>
+<p>Notice that <span class="math notranslate nohighlight">\(a_i\)</span> and <span class="math notranslate nohighlight">\(b_i\)</span> must have the same dimension in their 0th axis in order for the sum in the dot product to be valid. This makes sense, since to compute a dot product the vectors must be the same dimension. In general, if two tensors share the same index (<span class="math notranslate nohighlight">\(b_{ij}\)</span>, <span class="math notranslate nohighlight">\(a_{ik}\)</span>), then that axis must be the same dimension.</p>
+<p>Can you write the following out in Einstein notation?</p>
+<p><strong>Matrix Multiplication</strong></p>
+<p>The matrix product of 2 rank 2 tensors</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Answer</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4f54dfff-b789-43ac-b156-05e03bea6779">
+<span class="eqno">(1.7)<a class="headerlink" href="#equation-4f54dfff-b789-43ac-b156-05e03bea6779" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    a_{ij} b_{jk} = c_{ik}
+\end{equation}\]</div>
+</div>
+<p><strong>Matrix Vector Product</strong></p>
+<p>Apply matrix <span class="math notranslate nohighlight">\(a\)</span> to column vector <span class="math notranslate nohighlight">\(b\)</span> by multiplication. <span class="math notranslate nohighlight">\(\mathbf{A}\vec{b}\)</span> in linear algebra notation.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Answer</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a0e7ba0c-3ab1-4b10-9ca5-a134c048919c">
+<span class="eqno">(1.8)<a class="headerlink" href="#equation-a0e7ba0c-3ab1-4b10-9ca5-a134c048919c" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    a_{ij} b_{j} = c_{i}
+\end{equation}\]</div>
+</div>
+<p><strong>Matrix Transpose</strong></p>
+<p>Swap the values in a matrix to make it a transpose</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Answer</p>
+<div class="amsmath math notranslate nohighlight" id="equation-75becc5c-d642-47b9-a8e9-543867b7b4f9">
+<span class="eqno">(1.9)<a class="headerlink" href="#equation-75becc5c-d642-47b9-a8e9-543867b7b4f9" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    a_{ij} = t_{ji}
+\end{equation}\]</div>
+</div>
+</div>
+<div class="section" id="tensor-operations">
+<h2><span class="section-number">1.2. </span>Tensor Operations<a class="headerlink" href="#tensor-operations" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title">Why Tensors?</p>
+<p>Tensors are the main building block
+of modern deep learning. Nearly all
+variables in equations are actually tensors.
+Being able to understand how shape affects them
+is they key to understanding how algorithms work.</p>
+</div>
+<p>Although you can specify operations in Einstein notation, it is typically not expressive enough. How would you write this operation: sum the last axis of a tensor. Without knowing the rank, you do not know how many indices you should indicate in the expression. Maybe like this?</p>
+<div class="amsmath math notranslate nohighlight" id="equation-71893a37-49de-48af-a196-ba28384efc42">
+<span class="eqno">(1.10)<a class="headerlink" href="#equation-71893a37-49de-48af-a196-ba28384efc42" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+a_{i_0, i_1, \ldots i_N} = a_{i_0, i_1, \ldots i_{N - 1}}
+\end{equation}\]</div>
+<p>Well that’s good but what if your operation has two arguments: which axis to sum and the tensor. That would also be clumsy to write. Einstein notation is useful and we’ll see it more, but we need to think about <strong>tensor operations</strong> as analogies to functions. Tensor operations take in 1 or more tensors and output 1 or more tensors and the output shape depends on the input shape.</p>
+<p>One of the difficult things about tensors is understanding how shape is treated in equations. For example, consider this equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2e735f15-c4a0-49ed-a819-cab5dfe1ca6b">
+<span class="eqno">(1.11)<a class="headerlink" href="#equation-2e735f15-c4a0-49ed-a819-cab5dfe1ca6b" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    g = \exp\left(a - b\right)^2
+\end{equation}\]</div>
+<p>Seems like a reasonable enough equation. But what if <span class="math notranslate nohighlight">\(a\)</span> is rank 3 and <span class="math notranslate nohighlight">\(b\)</span> is rank 1? Is <span class="math notranslate nohighlight">\(g\)</span> rank 1 or 3 then? Actually, this is a real example and the answer is that <span class="math notranslate nohighlight">\(g\)</span> is rank 4. You subtract each element of <span class="math notranslate nohighlight">\(b\)</span> from each element of <span class="math notranslate nohighlight">\(a\)</span>. You could write this in Einstein notation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6350c198-6727-44a3-8de3-863284eb08e1">
+<span class="eqno">(1.12)<a class="headerlink" href="#equation-6350c198-6727-44a3-8de3-863284eb08e1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    g_{ijkl} = \exp\left(a_{ijk} - b_l\right)^2
+\end{equation}\]</div>
+<p>except this function should work on arbitrary ranked <span class="math notranslate nohighlight">\(a\)</span> and always ouput <span class="math notranslate nohighlight">\(g\)</span> being the rank of <span class="math notranslate nohighlight">\(a + 1\)</span>. Typically the best way to express this is explicitly stating how rank and shape are treated.</p>
+<div class="section" id="reduction-operations">
+<h3><span class="section-number">1.2.1. </span>Reduction Operations<a class="headerlink" href="#reduction-operations" title="Permalink to this headline">¶</a></h3>
+<p>Reduction operations reduce the rank of an input tensor. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.sum(a,</span> <span class="pre">axis=0)</span></code></a> is an example. The axis argument means that we’re summing over the 0th axis so that it will be removed. If <code class="docutils literal notranslate"><span class="pre">a</span></code> is a rank 1 vector, this would leave us with a scalar. If <code class="docutils literal notranslate"><span class="pre">a</span></code> is a matrix, this would remove the rows so that only columns are left over. That means we would be left with <em>column sums</em>. You can also specify a tuple of axes to removed, which will be done in that order <code class="docutils literal notranslate"><span class="pre">np.sum(a,</span> <span class="pre">axis=(0,1)</span> <span class="pre">)</span></code>.</p>
+<p>In addition to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.sum</span></code></a>, there are <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.minimum.html#numpy.minimum" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.minimum</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.maximum.html#numpy.maximum" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.maximum</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.any.html#numpy.any" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.any</span></code></a> (logical or), and more. Let’s see some examples</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">a_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">a_len</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">a_len</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 3, 2)
+[[[ 0  1]
+  [ 2  3]
+  [ 4  5]]
+
+ [[ 6  7]
+  [ 8  9]
+  [10 11]]
+
+ [[12 13]
+  [14 15]
+  [16 17]]
+
+ [[18 19]
+  [20 21]
+  [22 23]]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Try to guess the shape of the output tensors in the below code based on what you’ve learned.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3, 2)
+[[36 40]
+ [44 48]
+ [52 56]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 2)
+[[False  True]
+ [ True  True]
+ [ True  True]
+ [ True  True]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4,)
+[       0   332640  8910720 72681840]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="element-operations">
+<h3><span class="section-number">1.2.2. </span>Element Operations<a class="headerlink" href="#element-operations" title="Permalink to this headline">¶</a></h3>
+<p>Default operations in python, like <code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">-</span></code> <code class="docutils literal notranslate"><span class="pre">*</span></code> <code class="docutils literal notranslate"><span class="pre">/</span></code> <code class="docutils literal notranslate"><span class="pre">^</span></code> , are also tensor operations. They preserve shape so that the ouput shape is the same as the inputs’. The input tensors must have the same shape or be able to become the same shape through <a class="reference internal" href="#broadcasting"><span class="std std-ref">Broadcasting</span></a>, which is defined in the next section.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 3, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">b</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 3, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">c</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 3, 2)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="broadcasting">
+<span id="id1"></span><h2><span class="section-number">1.3. </span>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h2>
+<p>One of the difficulties with the elementary operations is that they require the input tensors to have the same shape. For example, you cannot multiply a scalar (rank 0) and a vector (rank 1). This is where broadcasting comes in. Broadcasting increases the rank of one of the input tensors to be compatible with another. Broadcasting works at the last axis and works its way forward. Let’s see an example</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Broadcasting order</p>
+<p>Broadcasting starts at the last axis and
+goes forward because getting an element
+at the last axis gives a scalar (rank 0)
+no matter what rank. This makes it possible to
+copy to fill up axis to align shapes.</p>
+</div>
+<div class="amsmath math notranslate nohighlight" id="equation-2ff8bfd1-420c-4371-b3a3-8599c8ad4a70">
+<span class="eqno">(1.13)<a class="headerlink" href="#equation-2ff8bfd1-420c-4371-b3a3-8599c8ad4a70" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    A + B
+\end{equation}\]</div>
+<p><strong>Input A</strong></p>
+<p>Rank 2, shape is (2, 3)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">:</span>
+ <span class="mi">4</span>  <span class="mi">3</span>  <span class="mi">2</span> 
+<span class="o">-</span><span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">4</span>
+</pre></div>
+</div>
+<p><strong>Input B</strong></p>
+<p>Rank 1, shape is (3), a vector:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">:</span>
+ <span class="mi">3</span>  
+ <span class="mi">0</span>  
+ <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Now let’s see how the broadcasting works. Broadcasting starts by lining up the shapes from the end of the tensors</p>
+<p><strong>Step 1: align on last axis</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span>        <span class="n">shape</span>
+<span class="n">A</span><span class="p">:</span>             <span class="mi">2</span>  <span class="mi">3</span>
+<span class="n">B</span><span class="p">:</span>                <span class="mi">3</span>
+<span class="n">broadcasted</span> <span class="n">B</span><span class="p">:</span> <span class="o">.</span>  <span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>Step 2: process last axis</strong></p>
+<p>Now broadcasting looks at the last axis (axis 1) and if one tensor has axis dimension 1, its value is copied to match the others. In our case, they agree.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span>        <span class="n">shape</span>
+<span class="n">A</span><span class="p">:</span>             <span class="mi">2</span>  <span class="mi">3</span>
+<span class="n">B</span><span class="p">:</span>                <span class="mi">3</span>
+<span class="n">broadcasted</span> <span class="n">B</span><span class="p">:</span> <span class="o">.</span>  <span class="mi">3</span>
+</pre></div>
+</div>
+<p><strong>Step 3: process next axis</strong></p>
+<p>Now we examine the next axis, axis 0. B has no axis there, because its rank is too low. Broadcasting will insert a new axis by (i) inserting a new axis with dimension 1 and (ii) copying the value at this new axis until its dimension matches.</p>
+<p><strong>Step 3i:</strong></p>
+<p>Add new axis of dimension 1. This is like making <span class="math notranslate nohighlight">\(B\)</span> have 1 row and 3 columns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">:</span>
+ <span class="mi">3</span>  <span class="mi">0</span>  <span class="mi">1</span>
+</pre></div>
+</div>
+<p><strong>Step 3ii:</strong></p>
+<p>Now we copy the values of this axis until its dimension matches <span class="math notranslate nohighlight">\(A\)</span>’s axis 0 dimension. We’re basically copying <span class="math notranslate nohighlight">\(b_{0j}\)</span> to <span class="math notranslate nohighlight">\(b_{1j}\)</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">:</span>
+ <span class="mi">3</span>  <span class="mi">0</span>  <span class="mi">1</span>
+ <span class="mi">3</span>  <span class="mi">0</span>  <span class="mi">1</span>
+</pre></div>
+</div>
+<p><strong>Final</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span>        <span class="n">shape</span>
+<span class="n">A</span><span class="p">:</span>             <span class="mi">2</span>  <span class="mi">3</span>
+<span class="n">B</span><span class="p">:</span>                <span class="mi">3</span>
+<span class="n">broadcasted</span> <span class="n">B</span><span class="p">:</span> <span class="mi">2</span>  <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Now, we compute the result by addition elementwise.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">+</span> <span class="n">B</span>
+ <span class="mi">3</span> <span class="o">+</span> <span class="mi">4</span>  <span class="mi">0</span> <span class="o">+</span> <span class="mi">3</span>  <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>  <span class="o">=</span>   <span class="mi">7</span>  <span class="mi">3</span>  <span class="mi">3</span>
+ <span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span>  <span class="mi">0</span> <span class="o">+</span> <span class="mi">2</span>  <span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span>      <span class="mi">2</span>  <span class="mi">2</span>  <span class="mi">5</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Let’s see some more examples, but only looking at the input/output shape</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>A Shape</p></th>
+<th class="text-align:center head"><p>B Shape</p></th>
+<th class="text-align:right head"><p>Output Shape</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>(4,2)</p></td>
+<td class="text-align:center"><p>(4,1)</p></td>
+<td class="text-align:right"><p>(4,2)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>(4,2)</p></td>
+<td class="text-align:center"><p>(2,)</p></td>
+<td class="text-align:right"><p>(4,2)</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>(16,1,3)</p></td>
+<td class="text-align:center"><p>(4,3)</p></td>
+<td class="text-align:right"><p>(16,4,3)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>(16,3,3)</p></td>
+<td class="text-align:center"><p>(4,1)</p></td>
+<td class="text-align:right"><p><code class="docutils literal notranslate"><span class="pre">Error</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Try some for yourself!</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>A Shape</p></th>
+<th class="text-align:center head"><p>B Shape</p></th>
+<th class="text-align:right head"><p>Output Shape</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>(7,4,3)</p></td>
+<td class="text-align:center"><p>(1,)</p></td>
+<td class="text-align:right"><p>?</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>(16, 16, 3)</p></td>
+<td class="text-align:center"><p>(3,)</p></td>
+<td class="text-align:right"><p>?</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>(2,4,5)</p></td>
+<td class="text-align:center"><p>(5,4,1)</p></td>
+<td class="text-align:right"><p>?</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>(1,4)</p></td>
+<td class="text-align:center"><p>(16,)</p></td>
+<td class="text-align:right"><p>?</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dropdown admonition">
+<p class="admonition-title">Answer</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>A Shape</p></th>
+<th class="text-align:center head"><p>B Shape</p></th>
+<th class="text-align:right head"><p>Output Shape</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>(7,4,3)</p></td>
+<td class="text-align:center"><p>(1,)</p></td>
+<td class="text-align:right"><p>(7,4,3)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>(16, 16, 3)</p></td>
+<td class="text-align:center"><p>(3,)</p></td>
+<td class="text-align:right"><p>(16,16,3)</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>(2,4,5)</p></td>
+<td class="text-align:center"><p>(5,4,1)</p></td>
+<td class="text-align:right"><p><code class="docutils literal notranslate"><span class="pre">Error</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>(1,4)</p></td>
+<td class="text-align:center"><p>(16,)</p></td>
+<td class="text-align:right"><p><code class="docutils literal notranslate"><span class="pre">Error</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="suggested-reading-for-broadcasting">
+<h3><span class="section-number">1.3.1. </span>Suggested Reading for Broadcasting<a class="headerlink" href="#suggested-reading-for-broadcasting" title="Permalink to this headline">¶</a></h3>
+<p>You can read more about broadcastnig in the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.broadcasting.html">numpy tutorial</a> or the <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/02.05-computation-on-arrays-broadcasting.html">Python Data Science Handbook</a>.</p>
+</div>
+</div>
+<div class="section" id="modifying-rank">
+<h2><span class="section-number">1.4. </span>Modifying Rank<a class="headerlink" href="#modifying-rank" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title">newaxis</p>
+<p><code class="docutils literal notranslate"><span class="pre">newaxis</span></code> slices like <code class="docutils literal notranslate"><span class="pre">a[np.newaxis]</span></code> are possible
+in tensorflow, jax, and numpy. In PyTorch there is <code class="docutils literal notranslate"><span class="pre">unsqueeze</span></code>😠.
+You can also use <code class="docutils literal notranslate"><span class="pre">reshape</span></code> and ignore newaxis</p>
+</div>
+<p>The last example we saw brings up an interesting questions: what if we want to add a (1,4) and (16,) to end up with a (4,16) tensor? We could insert a new axis at the end of <span class="math notranslate nohighlight">\(B\)</span> to make its shape (16, 1). This can be done using the <a class="reference external" href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.newaxis</span></code></a> syntax:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">16</span><span class="p">,)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+<span class="n">result</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(16, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just as newaxis can increase rank, we can decrease rank. One way is to just slice, like <code class="docutils literal notranslate"><span class="pre">a[0]</span></code>. A more genaral way is to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html#numpy.squeeze" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.squeeze</span></code></a> which removes any axes that are dimension 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;before squeese:&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;after squeese:&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>before squeese: (1, 32, 4, 1)
+after squeese: (32, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It turns out that <code class="docutils literal notranslate"><span class="pre">np.newaxis</span></code> and <code class="docutils literal notranslate"><span class="pre">tf.newaxis</span></code> are actually defined as <code class="docutils literal notranslate"><span class="pre">None</span></code>. Some programmers will exploit this to save some keystrokes and use <code class="docutils literal notranslate"><span class="pre">None</span></code> instead:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">16</span><span class="p">,)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="n">result</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(16, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>I recommend against this because it can be a bit confusing and it’s really not saving that many keystrokes.</p>
+<div class="section" id="reshaping">
+<h3><span class="section-number">1.4.1. </span>Reshaping<a class="headerlink" href="#reshaping" title="Permalink to this headline">¶</a></h3>
+<p>The most general way of changing rank and shape is through <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.reshape</span></code></a>. This allows you to reshape a tensor, as long as the number of elements remains the same. You could make a (4, 2) into an (8,). You could make a (4, 3) into a (1, 4, 3, 1). Thus it can accomplish the two tasks done by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html#numpy.squeeze" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.squeeze</span></code></a> and <a class="reference external" href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="(in NumPy v1.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np.newaxis</span></code></a>.</p>
+<p>There is one special syntax element to shaping:  A <code class="docutils literal notranslate"><span class="pre">-1</span></code> dimension. <code class="docutils literal notranslate"><span class="pre">-1</span></code> can appear once in a reshape command and means to have the computer figure out what goes there. We know the number of elements doesn’t change in a reshape, so the computer can infer what goes in the dimension marked as <code class="docutils literal notranslate"><span class="pre">-1</span></code>. Let’s see some examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">new_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">new_a</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 8)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">new_a</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 8)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">new_a</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 2, 2, 8)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="rank-slicing">
+<h3><span class="section-number">1.4.2. </span>Rank Slicing<a class="headerlink" href="#rank-slicing" title="Permalink to this headline">¶</a></h3>
+<p>I assume you’re familiar with slicing in numpy/python. I’ll refer you to the <a class="reference external" href="https://docs.python.org/3/tutorial/introduction.html#lists">Python Tutorial</a> and the <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.indexing.html">numpy tutorial</a> for a refresher if you need it. <strong>Rank Slicing</strong> is just my terminology for slicing without knowing the rank of a tensor. Use the <code class="docutils literal notranslate"><span class="pre">...</span></code> (ellipsis) keyword. This allows you to account for unknown rank when slicing. Examples:</p>
+<ul class="simple">
+<li><p>Access last axis: <code class="docutils literal notranslate"><span class="pre">a[...,:]</span></code></p></li>
+<li><p>Access last 2 axes: <code class="docutils literal notranslate"><span class="pre">a[...,:,:]</span></code></p></li>
+<li><p>Add new axis to end <code class="docutils literal notranslate"><span class="pre">a[...,np.newaxis]</span></code></p></li>
+<li><p>Add new axis to beginning <code class="docutils literal notranslate"><span class="pre">a[np.newaxis,...]</span></code></p></li>
+</ul>
+<hr class="docutils" />
+<p>Let’s see if we can put together our skills to implement the equation example from above,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9ca7e698-baca-4c70-82a3-92688925709d">
+<span class="eqno">(1.14)<a class="headerlink" href="#equation-9ca7e698-baca-4c70-82a3-92688925709d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    g = \exp\left(a - b\right)^2
+\end{equation}\]</div>
+<p>for arbitrary rank <span class="math notranslate nohighlight">\(a\)</span>. Recall <span class="math notranslate nohighlight">\(b\)</span> is a rank 1 tensor and we want <span class="math notranslate nohighlight">\(g\)</span> to be the rank of <span class="math notranslate nohighlight">\(a + 1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">g1</span> <span class="o">=</span> <span class="n">eq</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input a1:&#39;</span><span class="p">,</span> <span class="n">a1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;output:&#39;</span><span class="p">,</span> <span class="n">g1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">g2</span> <span class="o">=</span> <span class="n">eq</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input a2:&#39;</span><span class="p">,</span> <span class="n">a2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;output:&#39;</span><span class="p">,</span> <span class="n">g2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>input a1: (4, 3) output: (4, 3, 4)
+input a2: (4, 3, 2, 1) output: (4, 3, 2, 1, 4)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="chapter-summary">
+<h2><span class="section-number">1.5. </span>Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Tensors are the building blocks of machine learning. A tensor has a rank and shape that specifies how many elements it has and how they are arranged. An axis describes each element in the shape.</p></li>
+<li><p>A euclidean vector is a rank 1 tensor with shape (3). It has 1 axis of dimension 3. A matrix is a rank 2 tensor. It has two axes.</p></li>
+<li><p>Equations that describe operating on 1 or more tensors can be written using Einstein notation. Einstein notation uses indices to indicate the shape of tensors, how things are summed, and which axes must match up.</p></li>
+<li><p>There are operations that reduce ranks of tensors, like <code class="docutils literal notranslate"><span class="pre">sum</span></code> or <code class="docutils literal notranslate"><span class="pre">mean</span></code>.</p></li>
+<li><p>Broadcasting is an automatic tool in programming languages that modifies shapes of tensors make them compatible with operations.</p></li>
+<li><p>Tensors can be reshaped or have ranked modified by <code class="docutils literal notranslate"><span class="pre">newaxis</span></code>,  <code class="docutils literal notranslate"><span class="pre">reshape</span></code>, and <code class="docutils literal notranslate"><span class="pre">squeeze</span></code>. These are not standard among the various numeric libraries in Python.</p></li>
+</ul>
+</div>
+<div class="section" id="exercises">
+<h2><span class="section-number">1.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3><span class="section-number">1.6.1. </span>Einstein notation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Write out the following in Einstein notation:</p>
+<ol class="simple">
+<li><p>Product of two matrices</p></li>
+<li><p>Trace of a matrix</p></li>
+<li><p>Outer product of two Euclidean vectors</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is a rank 3 tensor whose last axis is dimension 3 and contains Euclidean vectors. <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is Euclidean vector. Compute the dot product of each of the vectors in <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> with B. So if <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is shape (11, 7, 3), it contains 11 <span class="math notranslate nohighlight">\(\times\)</span> 7 vectors and the output should be shape (11,7). <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is shape (3)</p></li>
+</ol>
+</div>
+<div class="section" id="reductions">
+<h3><span class="section-number">1.6.2. </span>Reductions<a class="headerlink" href="#reductions" title="Permalink to this headline">¶</a></h3>
+<p>Answer the following with Python code with reductions. Write your code to be as general as possible – being able to take arbitrary rank tensors unless it is specified that something is a vector.</p>
+<ol class="simple">
+<li><p>Normalize a vector so that the sum of its elements is 1. Note the rank of the vector should be unchanged.</p></li>
+<li><p>Normalize the last axis of a tensor</p></li>
+<li><p>Compute the mean squared error between two tensors</p></li>
+<li><p>Compute the mean squared error between the last axis of tensor <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and vector <span class="math notranslate nohighlight">\(\vec{b}\)</span></p></li>
+</ol>
+</div>
+<div class="section" id="broadcasting-and-shapes">
+<h3><span class="section-number">1.6.3. </span>Broadcasting and Shapes<a class="headerlink" href="#broadcasting-and-shapes" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Consider two vectors <span class="math notranslate nohighlight">\(\vec{a}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span>. Using reshaping and broadcasting alone, write python code to compute their outer product.</p></li>
+<li><p>Why is the code <code class="docutils literal notranslate"><span class="pre">a.reshape((-1,</span> <span class="pre">3,</span> <span class="pre">-1))</span></code> invalid?</p></li>
+<li><p>You have a tensor of unknown rank <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and would like to subtract 3.5, and 2.5 from every element. Your output will be a new tensor <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> with rank <span class="math notranslate nohighlight">\(\textrm{rank}(\mathbf{A}) + 1\)</span>. The last axis of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> should be dimension 2. Here is the example:</p></li>
+</ol>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1"># prints [[6.5, 7.5]]</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="c1"># [[[ 1.5  2.5]</span>
+<span class="c1">#  [-0.5  0.5]</span>
+<span class="c1">#  [-3.5 -2.5]]</span>
+
+<span class="c1"># [[-3.5 -2.5]</span>
+<span class="c1">#  [-1.5 -0.5]</span>
+<span class="c1">#  [ 2.5  3.5]]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="../intro.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Overview</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="../ml/introduction.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">2. </span>Introduction to Machine Learning</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

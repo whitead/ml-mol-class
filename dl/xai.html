@@ -1,0 +1,1223 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>15. Interpretability in Deep Learning &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="16. Predicting DFT Energies with GNNs" href="../applied/QM9.html" />
+    <link rel="prev" title="14. Natural Language Processing" href="NLP.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="flows.html">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NLP.html">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/dl/xai.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/dl/xai.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/dl/xai.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-an-explanation">
+   15.1. What is an explanation?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feature-importance">
+   15.2. Feature Importance
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#neural-network-feature-importance">
+     15.2.1. Neural Network Feature Importance
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#shapley-values">
+     15.2.2. Shapley Values
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   15.3. Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feature-importance-example">
+   15.4. Feature Importance Example
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gradients">
+     15.4.1. Gradients
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#integrated-gradients">
+     15.4.2. Integrated Gradients
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#smoothgrad">
+     15.4.3. SmoothGrad
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#shapley-value">
+     15.4.4. Shapley Value
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-data-importance">
+   15.5. Training Data Importance
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#surrogate-models">
+   15.6. Surrogate Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#counterfactuals">
+   15.7. Counterfactuals
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example">
+     15.7.1. Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#specific-architectures-explanations">
+   15.8. Specific Architectures Explanations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   15.9. Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   15.10. Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="interpretability-in-deep-learning">
+<h1><span class="section-number">15. </span>Interpretability in Deep Learning<a class="headerlink" href="#interpretability-in-deep-learning" title="Permalink to this headline">¶</a></h1>
+<p>Interpretability, part of the broader topic of explainable AI (XAI), is the process of adding explanations to deep learning model predictions. These explanations should help us understand why particular predictions are made. This is a critical topic because being able to understand model predictions is justified from a practical, theoretical, and increasingly a regulatory stand-point. It is practical because it has been shown that people are more likely to use predictions of a model if they can understand the rationale <span id="id1">[<a class="reference internal" href="#id156">LS04</a>]</span>. Another practical concern is that correctly implementing methods is much easier when one can understand how a model arrived at a prediction. A theoretical justification for transparency is that it can help identify incompleteness in model domains (i.e., covariate shift)<span id="id2">[<a class="reference internal" href="#id155">DVK17</a>]</span>. It is now becoming a compliance problem because both the European Union <span id="id3">[<a class="reference internal" href="#id164">GF17</a>]</span> and the G20 <span id="id4">[<a class="reference internal" href="#id165">Dev19</a>]</span> have recently adopted guidelines that recommend or require explanations for machine predictions. The European Union is considering going further with more <a class="reference external" href="https://digital-strategy.ec.europa.eu/en/library/proposal-regulation-laying-down-harmonised-rules-artificial-intelligence-artificial-intelligence">strict draft legislation</a> being considered.</p>
+<p>A famous example on the need for explainable AI is found in Caruana et al.<span id="id5">[<a class="reference internal" href="#id157">CLG+15</a>]</span> who built an ML predictor to assess mortality risk of patients in the ER with pneumonia. The idea is that patients with pneumonia are screened with this tool and it helps doctors know which patients are more at risk of dying. It was found to be quite accurate. When the interpretation of its predictions were examined though, the reasoning was medically insane. The model surprisingly suggested patients with asthma (called asthmatics) have a reduced mortality risk when coming to the ER with pneumonia. Asthma, a condition which makes it difficult to breathe, was found to <em>make pneumonia patients less likely to die.</em> This was incidental; asthmatics are actually more at risk of dying from pneumonia but doctors are acutely aware of this and are thus more aggressive and attentive with them. Thanks to the increase care and attention from doctors, there are fewer mortalities. From an empirical standpoint, the model predictions are correct. However if the model were put into practice, it could have cost lives by incorrectly characterizing asthmatics as low mortality risk. Luckily the interpretability of their model helped researchers identify this problem. Thus, we can see that interpretation should always be a step in the construction of predictive models.</p>
+<div class="section" id="what-is-an-explanation">
+<h2><span class="section-number">15.1. </span>What is an explanation?<a class="headerlink" href="#what-is-an-explanation" title="Permalink to this headline">¶</a></h2>
+<p>We’ll use the definition of explanation from Miller <span id="id6">[<a class="reference internal" href="#id182">Mil19</a>]</span>. Miller distinguishes between interpretability, justification, and explanation with the following definitions:</p>
+<ul class="simple">
+<li><p><strong>interptability</strong> “the degree to which an observer can understand the cause of a decision”. Miller considers this synonymous with explainability.</p></li>
+<li><p><strong>justification</strong> evidence or explanation of why a decision is good, like testing error or accuracy of a model</p></li>
+<li><p><strong>explanation</strong> explanations are a presentation of information intended for humans that give the context and cause for an outcome. These are the major focus of this chapter.</p></li>
+</ul>
+<p>We will dig deeper into what constitutes an <em>explanation</em>, but note an explanation is different than justifying a prediction. Justification is what we’ve focused on previously: empirical evidence for why we should believe model predictions are accurate. An explanation provides a <em>cause</em> for the prediction. Ultimately, explanations are intended to be understood by humans.</p>
+<p>Deep learning alone is a black box modeling technique it not interpretable or explainable. Examining the weights or model equation provides little insight into why predictions are made. Thus, interpretability is an extra task and means adding an explanation to predictions from the model. This is a challenge because of both the black box nature of deep learning and because there is no consensus on what exactly constitutes an “explanation” for model predictions <span id="id7">[<a class="reference internal" href="#id155">DVK17</a>]</span>. For some, interpretability means having a natural language explanation justifying each prediction. For others, it can be simply showing which features contributed most to the prediction.</p>
+<p>There are two broad approaches to interpretation of ML models: post hoc interpretation via explanations and self-explaining models <span id="id8">[<a class="reference internal" href="#id158">MSK+19</a>]</span>. Self-explaining models are constructed so that an expert can view output of the model and connect it with the features through reasoning. They inherently interpretable. Self-explaining models are highly dependent on the task model<span id="id9">[<a class="reference internal" href="#id159">MSMuller18</a>]</span>. A familiar example would be a physics based simulation like molecular dynamics or a single-point quantum energy calculation. You can examine the molecular dynamics trajectory, look at output numbers, and an expert can explain why, for example, the simulation predicts a drug molecule will bind to a protein. It may seem like this would be useless for deep learning interpretation. However, we will see later that we can create a <strong>proxy model</strong> (sometimes <strong>surrogate model</strong>) that is self-explaining and train it to agree with the deep learning model. Why will this training burden be any less than just using the proxy model from the beginning? We can generate an infinite amount of training data because our trained neural network can label arbitrary points. You can also construct deep learning models which have self-explaining features in them, like attention <span id="id10">[<a class="reference internal" href="#id169">BCB14</a>]</span>. This allows you to connect the input features to the prediction based on attention.</p>
+<p>Post hoc interpretation by creating explanations can be approached in a number of ways, but the most common are training data importance, feature importance, and counterfactual explanations<span id="id11">[<a class="reference internal" href="#id181">WSW21</a>, <a class="reference internal" href="#id160">RSG16a</a>, <a class="reference internal" href="#id161">RSG16b</a>, <a class="reference internal" href="#id163">WMR17</a>]</span>. An example of a post hoc interpretation based on data importance is identifying the most influential training data to explain a prediction <span id="id12">[<a class="reference internal" href="#id162">KL17</a>]</span>. It is perhaps arguable if this gives an <em>explanation</em>, but it certainly helps understand which data is relevant for a prediction. Feature importance is probably the most common XAI approach and frequently appear in computer vision research where the pixels most important for the class of an image are highlighted. Finally, counterfactual explanations are an emerging approach where a new data point is generated (in same distribution as training data features) that serves as a counterfactual. A counterfactual gives insight into how important and sensitive the features are. An example might be in a model that recommends giving a loan. A model could produce the following counterfactual explanation (from <span id="id13">[<a class="reference internal" href="#id163">WMR17</a>]</span>):</p>
+<blockquote>
+<div><p>You were denied a loan based on your annual income, zip code, and assets. If
+your annual income had been $45,000, you would have been offered a loan.</p>
+</div></blockquote>
+<p>The second sentence is the conuterfactual and shows how the features could be changed to affect the model outcome. Coutnerfactuals provide a nice balance of complexity and explanatory power.</p>
+<p>This was a brief overview of large field of XAI. You can find a recent review of interpretable deep learning in Samek et al. <span id="id14">[<a class="reference internal" href="#id167">SML+21</a>]</span> and Christopher Molnar has a <a class="reference external" href="https://christophm.github.io/interpretable-ml-book/">broad online book</a> about interpretable machine learning, including deep learning <span id="id15">[<a class="reference internal" href="#id168">Mol19</a>]</span>. Prediction error and confidence in predictions is not covered here, since they are more about justification, but see the methods from <a class="reference internal" href="../ml/regression.html"><span class="doc">Regression</span></a> which apply.</p>
+</div>
+<div class="section" id="feature-importance">
+<h2><span class="section-number">15.2. </span>Feature Importance<a class="headerlink" href="#feature-importance" title="Permalink to this headline">¶</a></h2>
+<p>Feature importance is the most straightforward and common method of interpreting a machine learning model. The output of feature importance is a ranking or numerical values for each feature, typically for a single prediction. If you are trying to understand the feature importance across the whole model, this is called <strong>global</strong> feature importance and <strong>local</strong> for a single prediction. Global feature importance and global interpretability is relatively rare because the best models change which features are important in different regions of feature space.</p>
+<p>Let’s start with a linear model to see feature importance:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-530803c9-a3d3-4124-b28a-4050791028bf">
+<span class="eqno">(15.1)<a class="headerlink" href="#equation-530803c9-a3d3-4124-b28a-4050791028bf" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\hat{y} = \vec{w}\vec{x} + b 
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{x}\)</span> is our feature vector. A simple way to assess feature importance is to simply look at the weight value <span class="math notranslate nohighlight">\(w_i\)</span> for a particular feature <span class="math notranslate nohighlight">\(x_i\)</span>. The weight <span class="math notranslate nohighlight">\(w_i\)</span> shows how much <span class="math notranslate nohighlight">\(\hat{y}\)</span> would change if <span class="math notranslate nohighlight">\(x_i\)</span> is increased by 1 while all other features are constant. If the magnitude of our features are comparable, then this would be a reasonable way to rank features. However, if our features have units, this approach is sensitive to unit choices and relative magnitude of features. For example if our temperature was changed from Celsius to Fahrenheit, a 1 degree increase will have a smaller effect.</p>
+<p>To remove the effect of feature magnitude and units, a slightly better way to assess feature importance is to divide <span class="math notranslate nohighlight">\(w_i\)</span> by the <strong>standard error</strong>  in the feature values. Recall that standard error is just the ratio of sum of squared error in predicted value divided by the total deviation in the feature. Standard error is a ratio of prediction accuracy to feature variance – and the prediction accuracy is independent of the feature and thus has no effect for ranking feature importance. <span class="math notranslate nohighlight">\(w_i\)</span> divided by standard error is called the <span class="math notranslate nohighlight">\(t\)</span>-statistic because it can be compared with the <span class="math notranslate nohighlight">\(t\)</span>-distribution for assessing feature importance.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-910a009e-e429-49f1-aec2-f2970e22e282">
+<span class="eqno">(15.2)<a class="headerlink" href="#equation-910a009e-e429-49f1-aec2-f2970e22e282" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+t_i = \frac{w_i}{S_{w_i}},\; S^2_{w_i} = \frac{1}{N - D}\sum_j \frac{\left(\hat{y}_j - y_j\right)^2}{\left(x_{ij} - \bar{x}_i\right)^2}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the number of examples,  <span class="math notranslate nohighlight">\(D\)</span> is the number of features, and <span class="math notranslate nohighlight">\(\bar{x}_i\)</span> is the average value of the <span class="math notranslate nohighlight">\(i\)</span>th feature. The <span class="math notranslate nohighlight">\(t_i\)</span> value can be used to rank features and it can be used for a hypothesis test: if <span class="math notranslate nohighlight">\(P(t &gt; t_i) &lt; 0.05\)</span> then that feature is significant, where <span class="math notranslate nohighlight">\(P(t)\)</span> is Student’s <span class="math notranslate nohighlight">\(t\)</span>-distribution. Note that a feature’s significance is sensitive to which features are present in a model; if you add new features some may become redundant.</p>
+<p>If we move to a non-linear learned function <span class="math notranslate nohighlight">\(\hat{f}(\vec{x})\)</span>, we must compute how the prediction changes if a feature value increases by 1 via the derivative approximation:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\Delta \hat{f}(\vec{x})}{\Delta x_i} \approx \frac{\partial  \hat{f}(\vec{x})}{\partial x_i}
+\]</div>
+<p>so a change by 1 is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3fbd5d97-2660-45a4-9db7-12295a54fb0d">
+<span class="eqno">(15.3)<a class="headerlink" href="#equation-3fbd5d97-2660-45a4-9db7-12295a54fb0d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\Delta \hat{f}(\vec{x}) \approx \frac{\partial  \hat{f}(\vec{x})}{\partial x_i}.
+\end{equation}\]</div>
+<p>In practice, we make a slight variation on this equation – instead of a Taylor series centered at 0 approximating this change, we center at some other root (point where the function is 0). This “grounds” the series at the decision boundary (a root) and then you can view the partials as “pushing” the predicted class away or towards the decision boundary. Another way to think about this is that we use the first-order terms of the Taylor series to build a linear model. Then we just apply what we did above to that linear model and use the coefficients as the “importance” of features. Specifically, we use this surrogate function for <span class="math notranslate nohighlight">\(\hat{f}(\vec{x})\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0ba4f9af-6074-4b16-b602-bf42d11d1506">
+<span class="eqno">(15.4)<a class="headerlink" href="#equation-0ba4f9af-6074-4b16-b602-bf42d11d1506" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\require{cancel}
+\hat{f}(\vec{x}) \approx \cancelto{0}{f(\vec{x}')} +  \nabla\hat{f}(\vec{x}')\cdot\left(\vec{x} - \vec{x}'\right)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{x}'\)</span> is the root of <span class="math notranslate nohighlight">\(\hat{f}(\vec{x})\)</span>. In practice people may choose the trivial root <span class="math notranslate nohighlight">\(\vec{x}' = \vec{0}\)</span>, however a nearby root is ideal. This root is often called the <strong>baseline</strong> input. Note that as opposed to the linear example above, we consider the product of the partial <span class="math notranslate nohighlight">\(\frac{\partial  \hat{f}(\vec{x})}{\partial x_i}\)</span> and the increase above baseline <span class="math notranslate nohighlight">\((x_i - x_i')\)</span>.</p>
+<div class="section" id="neural-network-feature-importance">
+<h3><span class="section-number">15.2.1. </span>Neural Network Feature Importance<a class="headerlink" href="#neural-network-feature-importance" title="Permalink to this headline">¶</a></h3>
+<p>In neural networks the partial derivatives are a poor approximation of the real changes to the output. Small changes to the input can have discontinuous changes, making the terms above have little explanatory power. This is called the <strong>shattered gradients</strong> problem <span id="id16">[<a class="reference internal" href="#id170">BFL+17</a>]</span>. Breaking down each feature separately also misses correlations between features – which don’t exist in a linear model. Thus the derivative approximation works satisfactorily in locally linear models, but not deep neural networks.</p>
+<p>There are a variety of techniques that get around the issue of shattered gradients in neural networks. Two popular methods are integrated gradients <span id="id17">[<a class="reference internal" href="#id172">STY17</a>]</span> and SmoothGrad<span id="id18">[<a class="reference internal" href="#id173">STK+17</a>]</span>. Integrated gradients creates a path from <span class="math notranslate nohighlight">\(\vec{x}'\)</span> to <span class="math notranslate nohighlight">\(\vec{x}\)</span> and integrates Equation 4 along that path:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-18035e14-19a3-49e4-866f-4940323dbdd0">
+<span class="eqno">(15.5)<a class="headerlink" href="#equation-18035e14-19a3-49e4-866f-4940323dbdd0" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\textrm{IG}_i = \left(\vec{x} - \vec{x}'\right) \int_0^1\left[\nabla\hat{f}\left(\vec{x}' + t\left(\vec{x} - \vec{x}'\right)\right)\right]_i\,dt
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(t\)</span> is some increment along the path such that <span class="math notranslate nohighlight">\(\vec{x}' + t\left(\vec{x} - \vec{x}'\right) = \vec{x}'\)</span> when <span class="math notranslate nohighlight">\(t = 0\)</span> and <span class="math notranslate nohighlight">\(\vec{x}' + t\left(\vec{x} - \vec{x}'\right) = \vec{x}\)</span> when <span class="math notranslate nohighlight">\(t = 1\)</span>. This gives us the integrated gradient for each feature <span class="math notranslate nohighlight">\(i\)</span>. The integrated gradients are the importance of each feature, but without the complexity of shattered gradients. There are some nice properties too, like <span class="math notranslate nohighlight">\(\sum_i \textrm{IG}_i = f(\vec{x}) - f(\vec{x}')\)</span> so that the integrated gradients provide a complete partition of the change from the baseline to the prediction<span id="id19">[<a class="reference internal" href="#id172">STY17</a>]</span>.</p>
+<p>Implementing integrated gradients is actually relatively simple. You approximate the path integral with a Riemann sum by breaking the path into a set of discrete inputs between the input features <span class="math notranslate nohighlight">\(\vec{x}\)</span> and the baseline <span class="math notranslate nohighlight">\(\vec{x}'\)</span>. You compute the gradient of these inputs with the neural network. Then you multiply that be the change in features above baseline: <span class="math notranslate nohighlight">\(\left(\vec{x} - \vec{x}'\right)\)</span>.</p>
+<p>SmoothGrad is a similar idea to the integrated gradients. Rather than summing up the gradients along a path though, we sum gradients from random points nearby our prediction. The equation is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bb29d877-3405-4b0a-ac88-10f45cfe2cb2">
+<span class="eqno">(15.6)<a class="headerlink" href="#equation-bb29d877-3405-4b0a-ac88-10f45cfe2cb2" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\textrm{SG}_i = \sum_j^M\left[\nabla\hat{f}\left(\vec{x}' + \vec{\epsilon}\right)\right]_i
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(M\)</span> is a choice of sample number and <span class="math notranslate nohighlight">\(\vec{\epsilon}\)</span> is sampled from <span class="math notranslate nohighlight">\(D\)</span> zero-mean Guassians <span id="id20">[<a class="reference internal" href="#id173">STK+17</a>]</span>. The only change in implementation here is to replace the path with a series of random perturbations.</p>
+<p>Beyond these gradient based approaches, Layer-wise Relevance Propagation (LRP) is another popular approach for feature importance analysis in neural networks. LRP works by doing a backwards propogation through the neural network that partitions the output value of one layer to the input features. It “distributes relevance”. What is unusual about LRP is that each layer type needs its own implementation. It doesn’t rely on the analytic derivative, but instead a Taylor series expansion of the layer equation. There are variants for GNNs and NLP, so that LRP can be used in most settings in materials and chemistry <span id="id21">[<a class="reference internal" href="#id174">MBL+19</a>]</span>.</p>
+</div>
+<div class="section" id="shapley-values">
+<h3><span class="section-number">15.2.2. </span>Shapley Values<a class="headerlink" href="#shapley-values" title="Permalink to this headline">¶</a></h3>
+<p>A model agnostic way to treat feature importance is with <strong>Shapley values.</strong> Shapley values come from game theory and are a solution to how to pay a coalition of cooperating players according to their contributions. Imagine each feature is a player and we would like to “pay” them according to their contribution to the predicted value. A Shapley value <span class="math notranslate nohighlight">\(\phi_i\)</span> is the pay to feature <span class="math notranslate nohighlight">\(i\)</span>. We break-up the predicted function value <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span> into the Shapley values so that the sum of the pay is the function value (<span class="math notranslate nohighlight">\(\sum_i \phi_i = \hat{f}(x)\)</span>. This means you can interpet the Shapley value of a feature as its numerical contribution to the prediction. Shapley values are powerful because their calculation is agnostic to the model, they partition the predicted value among each feature, and they have other attributes that we would desire in an explanation of a prediction (symmetry, linearity, permutation invariant, etc.). Their disadvantage are that exact computation is combinatorial with respect to feature number and they have no sparsity, making them less helpful as feature number grows. Most methods we discuss here also have no sparsity – you can also force your model to be sparse to achieve sparse explanations.</p>
+<p>Shapley values are computed as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0cc02ed2-4a88-4ab1-ab27-615b5f315440">
+<span class="eqno">(15.7)<a class="headerlink" href="#equation-0cc02ed2-4a88-4ab1-ab27-615b5f315440" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\phi_i = \frac{1}{Z}\sum_{S \in M \backslash x_i}v(S\cup x_i) - v(S)
+\end{equation}\]</div>
+<div class="math notranslate nohighlight">
+\[
+Z = \frac{|S|!\left(N - |S| - 1\right)!}{N!}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(S \in N \backslash x_i\)</span> means all sets of features that exclude feature <span class="math notranslate nohighlight">\(x_i\)</span>, <span class="math notranslate nohighlight">\(S\cup x_i\)</span> means putting back feature <span class="math notranslate nohighlight">\(x_i\)</span> into the set, and <span class="math notranslate nohighlight">\(v(S)\)</span> is the value of <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span> using only the features included in <span class="math notranslate nohighlight">\(S\)</span>, and <span class="math notranslate nohighlight">\(Z\)</span> is a normalization value. The formula can be interpreted as the mean of all possible differences in <span class="math notranslate nohighlight">\(\hat{f}\)</span> formed by adding/removing feature <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>One immediate concern though is how can we “remove” feature <span class="math notranslate nohighlight">\(i\)</span> from a model equation? We marginilize out feature <span class="math notranslate nohighlight">\(i\)</span>. Recall a marginal is a way to integrate out a random variable – <span class="math notranslate nohighlight">\(P(x) = \int\, P(x,y)\,dy\)</span>. That integrates over all possible <span class="math notranslate nohighlight">\(x\)</span> values. Marginalization can be used on functions of random variables, which obviously are also random variables, by taking an expectation: <span class="math notranslate nohighlight">\(E_y[f | X = x] = \int\,f(X=x,y)P(X=x,y)\, dy\)</span>. I’ve emphasized that the random variable <span class="math notranslate nohighlight">\(X\)</span> is fixed in the integral and thus <span class="math notranslate nohighlight">\(E_y[f]\)</span> is a function of <span class="math notranslate nohighlight">\(x\)</span>. <span class="math notranslate nohighlight">\(y\)</span> is removed by computing the expected value of <span class="math notranslate nohighlight">\(f(x,y)\)</span> where <span class="math notranslate nohighlight">\(x\)</span> is fixed (the function argument). We’re essentially replacing <span class="math notranslate nohighlight">\(f(x,y)\)</span> with a new function <span class="math notranslate nohighlight">\(E_y[f]\)</span> that is the average of all possible <span class="math notranslate nohighlight">\(y\)</span> values I’m over-explaining this though, it’s quite intuitive. The other detail is that <em>value</em> is the change relative to the average of <span class="math notranslate nohighlight">\(\hat{f}\)</span>. You can typically ignore this extra term - it cancels, but I include it for completeness. Thus the value equation becomes <span id="id22">[<a class="reference internal" href="#id176">vStrumbeljK14</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c8971af9-e836-4940-8743-e841ed3102d6">
+<span class="eqno">(15.8)<a class="headerlink" href="#equation-c8971af9-e836-4940-8743-e841ed3102d6" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+v(x_i) = \int\,f(x_0, x_1, \ldots, x_i,\ldots, x_N)P(x_0, x_1, \ldots, x_i,\ldots, x_N)\, dx_i - E\left[\hat{f}(\vec{x})\right]
+\end{equation}\]</div>
+<p>How do we compute the marginal <span class="math notranslate nohighlight">\(\int\,f(x_0, x_1, \ldots, x_i,\ldots, x_N)P(x_0, x_1, \ldots, x_i,\ldots, x_N)\, dx_i\)</span>? We do not have a known probability distribution <span class="math notranslate nohighlight">\(P(\vec{x})\)</span>. We can sample from <span class="math notranslate nohighlight">\(P(\vec{x})\)</span> by considering our data as an <strong>empirical distribution</strong>. That is, we can sample from <span class="math notranslate nohighlight">\(P(\vec{x})\)</span> by sampling data points. There is a little bit of complexity here because we need to sample the <span class="math notranslate nohighlight">\(\vec{x}\)</span>’s jointly, we cannot just mix together individual features randomly because there are correlations between features that will be removed. <span id="id23">[<a class="reference internal" href="#id176">vStrumbeljK14</a>]</span> showed that we can directly estimate the <span class="math notranslate nohighlight">\(i\)</span>th Shapley value with:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5de49dcd-f48f-4f85-8fdf-3ee8cf3dcaa6">
+<span class="eqno">(15.9)<a class="headerlink" href="#equation-5de49dcd-f48f-4f85-8fdf-3ee8cf3dcaa6" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\phi_i(\vec{x}) = \frac{1}{M}\sum^M \hat{f}\left(\vec{z}_{+i}\right) - \hat{f}\left(\vec{z}_{-i}\right)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{z}\)</span> is a “chimera” exapmle constructed from the real example <span class="math notranslate nohighlight">\(\vec{x}\)</span> and a randomly drawn example <span class="math notranslate nohighlight">\(\vec{x}'\)</span>. We randomly select from <span class="math notranslate nohighlight">\(\vec{x}\)</span> and <span class="math notranslate nohighlight">\(\vec{x}'\)</span> to construct <span class="math notranslate nohighlight">\(\vec{z}\)</span>, except <span class="math notranslate nohighlight">\(\vec{z}_{+i}\)</span> specifically has the <span class="math notranslate nohighlight">\(i\)</span>th feature from the example <span class="math notranslate nohighlight">\(\vec{x}\)</span> and <span class="math notranslate nohighlight">\(\vec{z}_{-i}\)</span> has the <span class="math notranslate nohighlight">\(i\)</span>th feature from the random example <span class="math notranslate nohighlight">\(\vec{x}'\)</span>. <span class="math notranslate nohighlight">\(M\)</span> is chosen large enough to get a good sample for this value. <span id="id24">[<a class="reference internal" href="#id176">vStrumbeljK14</a>]</span> gives guidance on choosing <span class="math notranslate nohighlight">\(M\)</span>, but basically as large <span class="math notranslate nohighlight">\(M\)</span> as computationally feasible reasonable.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Marginalizing features <em>is not</em> the same as replacing features with their average.</p>
+</div>
+<p>With this efficient approximation method, the strong theory, and independence of model choice, Shapley values are an excellent choice for describing feature importance for examples.</p>
+</div>
+</div>
+<div class="section" id="running-this-notebook">
+<h2><span class="section-number">15.3. </span>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages, either on your own environment or on Google Colab</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install matplotlib numpy pandas seaborn jax jaxlib dm-haiku
+</pre></div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">haiku</span> <span class="k">as</span> <span class="nn">hk</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">jax.experimental.optimizers</span> <span class="k">as</span> <span class="nn">opt</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;dark&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s1">&#39;xtick.bottom&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;ytick.left&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span>     <span class="mf">0.8</span> <span class="p">,</span> <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="n">color_cycle</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1BBC9B&#39;</span><span class="p">,</span> <span class="s1">&#39;#F06060&#39;</span><span class="p">,</span> <span class="s1">&#39;#5C4B51&#39;</span><span class="p">,</span> <span class="s1">&#39;#F3B562&#39;</span><span class="p">,</span> <span class="s1">&#39;#6e5687&#39;</span><span class="p">]</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_cycle</span><span class="p">)</span> 
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">ALPHABET</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">,</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span><span class="s1">&#39;E&#39;</span><span class="p">,</span><span class="s1">&#39;G&#39;</span><span class="p">,</span><span class="s1">&#39;H&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">,</span><span class="s1">&#39;M&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;P&#39;</span><span class="p">,</span><span class="s1">&#39;S&#39;</span><span class="p">,</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="s1">&#39;W&#39;</span><span class="p">,</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">seq2array</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">ALPHABET</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">seq</span><span class="p">)),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">L</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">array2oh</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="mi">21</span><span class="p">))</span>
+    <span class="n">o</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span> <span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+
+<span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span>
+    <span class="s1">&#39;https://github.com/whitead/dmol-book/raw/master/data/hemolytic.npz&#39;</span><span class="p">,</span> <span class="s1">&#39;hemolytic.npz&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;hemolytic.npz&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+    <span class="n">pos_data</span><span class="p">,</span> <span class="n">neg_data</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;positives&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;negatives&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="feature-importance-example">
+<h2><span class="section-number">15.4. </span>Feature Importance Example<a class="headerlink" href="#feature-importance-example" title="Permalink to this headline">¶</a></h2>
+<p>Let’s see an example of these feature importance methods on a peptide prediction task to predict if a peptide will kill red blood cells (hemolytic). This is similar to the solubility prediction example from <a class="reference internal" href="layers.html"><span class="doc">Standard Layers</span></a>. The data is from <span id="id25">[<a class="reference internal" href="#id177">BW21</a>]</span>.  The model takes in peptides sequences (e.g., <code class="docutils literal notranslate"><span class="pre">DDFRD</span></code>) and predicts the probability that the peptide is hemolytic. The goal of the feature importance method here will be to identify which amino acids matter most for the hemolytic activity. The hidden-cell below loads and processes the data into a dataset.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create labels and stich it all into one </span>
+<span class="c1"># tensor</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">neg_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">pos_data</span><span class="p">,</span> <span class="n">neg_data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># we now need to shuffle before creating TF dataset</span>
+<span class="c1"># so that our train/test/val splits are random</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># need to add token for empty amino acid</span>
+<span class="c1"># dataset just has all zeros currently</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">L</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">features</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">full_data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">features</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">labels</span><span class="p">))</span>
+
+<span class="c1"># now split into val, test, train</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">neg_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">full_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+<span class="n">nontest</span> <span class="o">=</span> <span class="n">full_data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+<span class="n">val_data</span><span class="p">,</span> <span class="n">train_data</span> <span class="o">=</span> <span class="n">nontest</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">nontest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We rebuild the convolution model in JAX (using Haiku) to make working with gradients a bit easier. We also make a few changes to the model – we pass in the sequence length and amino acid fractions as extra information in addition to the convolutions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">binary_cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Binary cross entropy without sigmoid. Works with logits directly&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">logits</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">logits</span><span class="p">)))</span>
+<span class="k">def</span> <span class="nf">model_fn</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># get fractions, excluding skip character</span>
+    <span class="n">aa_fracs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="c1"># compute convolutions/poolings</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">:],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    
+    <span class="k">for</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">pool</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">hk</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">mask</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">hk</span><span class="o">.</span><span class="n">MaxPool</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">pool</span><span class="p">,</span> <span class="s1">&#39;VALID&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">hk</span><span class="o">.</span><span class="n">MaxPool</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">pool</span><span class="p">,</span> <span class="s1">&#39;VALID&#39;</span><span class="p">)(</span><span class="n">mask</span><span class="p">)</span>
+    <span class="c1"># combine fractions, length, and convolution ouputs</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">hk</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">x</span><span class="p">),</span> <span class="n">aa_fracs</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>        
+    <span class="c1"># dense layers. no bias, so zeros give P=0.5</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">hk</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>               
+        <span class="n">hk</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">with_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span>
+        <span class="n">hk</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">with_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span>
+        <span class="n">hk</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">with_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">])(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">logits</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">hk</span><span class="o">.</span><span class="n">without_apply_rng</span><span class="p">(</span><span class="n">hk</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">model_fn</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>    
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">binary_cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">hemolytic_prob</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">logits</span><span class="p">))</span>
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">accuracy_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">logits</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">logits</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xi</span><span class="p">,</span> <span class="n">yi</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:</span><span class="n">batch_size</span><span class="p">],</span> <span class="n">labels</span><span class="p">[:</span><span class="n">batch_size</span><span class="p">]</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+
+<span class="n">opt_init</span><span class="p">,</span> <span class="n">opt_update</span><span class="p">,</span> <span class="n">get_params</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">)</span>
+<span class="n">opt_state</span> <span class="o">=</span> <span class="n">opt_init</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">)(</span><span class="n">get_params</span><span class="p">(</span><span class="n">opt_state</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">opt_update</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">opt_state</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">avg_v</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_data</span><span class="p">):</span>
+        <span class="n">v</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">xi</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">yi</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>        
+        <span class="n">avg_v</span> <span class="o">+=</span> <span class="n">v</span>
+<span class="n">opt_params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">opt_state</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we compute the accuracy of our model, which is quite good.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">acc</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">:</span>
+    <span class="n">acc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy_fn</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">xi</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">yi</span><span class="o">.</span><span class="n">numpy</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">acc</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.95208335
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try an amino acid sequence, a peptide, to get a feel for the model. The model outputs logits (logarithm of odds), which we put through a sigmoid to get probabilities. The peptides must be converted from a sequence to a matrix of one-hot column vectors. We’ll try two known sequences: Q is known to be common in hemolytic residues and the second sequence is poly-G, which is the simplest amino acid.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;QQQQQ&#39;</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">array2oh</span><span class="p">(</span><span class="n">seq2array</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">hemolytic_prob</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">sm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Probability </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1"> of being hemolytic </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;GGGGG&#39;</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">array2oh</span><span class="p">(</span><span class="n">seq2array</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">hemolytic_prob</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">sm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Probability </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1"> of being hemolytic </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Probability QQQQQ of being hemolytic 1.00
+Probability GGGGG of being hemolytic 0.00
+</pre></div>
+</div>
+</div>
+</div>
+<p>It looks reasonable – the model matches our intuition about these two sequences</p>
+<div class="section" id="gradients">
+<h3><span class="section-number">15.4.1. </span>Gradients<a class="headerlink" href="#gradients" title="Permalink to this headline">¶</a></h3>
+<p>Now to start examining <em>why</em> a particular sequence is hemolytic! We’ll begin by computing the gradients with respect to input – the naieve approach that is susceptible to shattered gradients. Computing this is a component in the process for integrated and smooth gradients, so not wasted effort. We will use a more complex peptide sequence that is known to be hemolytic to get more interesting analysis.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_grad</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1">#g = np.array(g)</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">ALPHABET</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">s</span><span class="p">))]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">g</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;RAGLQFPVGRLLRRLLRRLLR&#39;</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">array2oh</span><span class="p">(</span><span class="n">seq2array</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">hemolytic_prob</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">sm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Probability </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1"> of being hemolytic </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Probability RAGLQFPVGRLLRRLLRRLLR of being hemolytic 1.00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gradient</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">s</span><span class="p">)),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">sm</span><span class="p">)</span>
+<span class="n">plot_grad</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/xai_19_0.png" src="../_images/xai_19_0.png" />
+</div>
+</div>
+<p>Remember that the model outputs logits. Positive value of the gradient mean this amino acid is responsible for pushing hemolytic probability higher and negative values mean the amino acid is pushing towards non-hemolytic. Interestingly, you can see a strong position dependence on the leucine (L) and arginine (R).</p>
+</div>
+<div class="section" id="integrated-gradients">
+<h3><span class="section-number">15.4.2. </span>Integrated Gradients<a class="headerlink" href="#integrated-gradients" title="Permalink to this headline">¶</a></h3>
+<p>We’ll now implement the integrated gradients method. We go through three basic steps:</p>
+<ol class="simple">
+<li><p>Create an array of inputs going from baseline to input peptide</p></li>
+<li><p>Evaluate gradient on each input</p></li>
+<li><p>Compute the sum of the gradients and multiply it by difference between baseline and peptide</p></li>
+</ol>
+<p>The baseline for us is all zeros – which gives a probability of 0.5 (logits = 0, a model root). This baseline is exactly on the decision boundary. You could use other baselines like all glycines or all alanines, just they should be at or near probability of 0.5. You can find a detailed and interactive exploration of the baseline choice in <span id="id26">[<a class="reference internal" href="#id175">SLL20</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">integrated_gradients</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">baseline</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">sm</span> <span class="o">*</span> <span class="n">t</span>
+    <span class="k">def</span> <span class="nf">get_grad</span><span class="p">(</span><span class="n">pi</span><span class="p">):</span>
+        <span class="c1"># compute gradient </span>
+        <span class="c1"># add/remove batch axes</span>
+        <span class="k">return</span> <span class="n">gradient</span><span class="p">(</span><span class="n">pi</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">get_grad</span><span class="p">)(</span><span class="n">path</span><span class="p">)</span>
+    <span class="c1"># sum pieces (Riemann sum), multiply by (x - x&#39;)</span>
+    <span class="n">ig</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">gs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sm</span> <span class="o">-</span> <span class="n">baseline</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ig</span>
+<span class="n">ig</span> <span class="o">=</span> <span class="n">integrated_gradients</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_grad</span><span class="p">(</span><span class="n">ig</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/xai_22_0.png" src="../_images/xai_22_0.png" />
+</div>
+</div>
+<p>We see that the position dependence has become more pronounced, with arginine being very sensitive to position. Relatively little has qualitatively changed between this and the vanilla gradients.</p>
+</div>
+<div class="section" id="smoothgrad">
+<h3><span class="section-number">15.4.3. </span>SmoothGrad<a class="headerlink" href="#smoothgrad" title="Permalink to this headline">¶</a></h3>
+<p>To do SmoothGrad, our steps are almost identicial:</p>
+<ol class="simple">
+<li><p>Create an array of inputs that are random pertubations of the input peptide</p></li>
+<li><p>Evaluate gradient on each input</p></li>
+<li><p>Compute the mean of the gradients</p></li>
+</ol>
+<p>There is one additional hyperparameter, <span class="math notranslate nohighlight">\(\sigma\)</span>, which in principle should be as small as possible while still causing the model output to change.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">smooth_gradients</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">rng</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="o">*</span> <span class="n">sigma</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">sm</span> <span class="o">+</span> <span class="n">t</span>
+    <span class="c1"># remove examples that are negative and force summing to 1</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">/=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    
+    <span class="k">def</span> <span class="nf">get_grad</span><span class="p">(</span><span class="n">pi</span><span class="p">):</span>
+        <span class="c1"># compute gradient </span>
+        <span class="c1"># add/remove batch axes</span>
+        <span class="k">return</span> <span class="n">gradient</span><span class="p">(</span><span class="n">pi</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">get_grad</span><span class="p">)(</span><span class="n">path</span><span class="p">)</span>
+    <span class="c1"># mean</span>
+    <span class="n">ig</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">gs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ig</span>
+<span class="n">sg</span> <span class="o">=</span> <span class="n">smooth_gradients</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">plot_grad</span><span class="p">(</span><span class="n">sg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/xai_24_0.png" src="../_images/xai_24_0.png" />
+</div>
+</div>
+<p>It looks remarkably similar to the vanilla gradient setting – probably because our 1D input/shallow network is not as sensitive to shattered gradients.</p>
+</div>
+<div class="section" id="shapley-value">
+<h3><span class="section-number">15.4.4. </span>Shapley Value<a class="headerlink" href="#shapley-value" title="Permalink to this headline">¶</a></h3>
+<p>Now we will approximate the Shapley values for each feature using Equation 10.9. The Shapley value computation is different than previous approaches because it does not require gradients. The basic algorithm is:</p>
+<ol class="simple">
+<li><p>select random point x’</p></li>
+<li><p>create point z by combining x and x’</p></li>
+<li><p>compute change in predicted function</p></li>
+</ol>
+<p>One efficiency change we make is to prevent modifying the sequence in its padding – basically preventing exploring making the sequence longer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">shapley</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">sampled_x</span><span class="p">,</span> <span class="n">rng</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_params</span><span class="o">=</span><span class="n">opt_params</span><span class="p">):</span>
+    <span class="n">M</span><span class="p">,</span><span class="n">F</span><span class="p">,</span><span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">sampled_x</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">z_choice</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="n">F</span><span class="p">))</span>
+    <span class="c1"># only swap out features within length of sm</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sm</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">:],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>        
+    <span class="n">z_choice</span> <span class="o">*=</span> <span class="n">mask</span>
+    <span class="n">z_choice</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">z_choice</span>
+    <span class="c1"># construct with and w/o ith feature</span>
+    <span class="n">z_choice</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">z_choice</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="n">z_choice_i</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">z_choice</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># select them via multiplication</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">sm</span> <span class="o">*</span> <span class="n">z_choice</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">sampled_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">z_choice</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+    <span class="n">z_i</span> <span class="o">=</span> <span class="n">sm</span> <span class="o">*</span> <span class="n">z_choice_i</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">sampled_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">z_choice_i</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">z_i</span><span class="p">)</span> <span class="o">-</span> <span class="n">model</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>    
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    
+<span class="c1"># assume data is alrady shuffled, so just take M</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">sl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">sampled_x</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">unbatch</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">M</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy_iterator</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># make batched shapley so we can compute for all features</span>
+<span class="n">bshapley</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">shapley</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">sv</span> <span class="o">=</span> <span class="n">bshapley</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sl</span><span class="p">),</span> <span class="n">sm</span><span class="p">,</span> <span class="n">sampled_x</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sl</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>One nice check on Shapley values is that we can check that their sum is equal to the value of model function. This should be true because the Shapley values partition the model among the features. That value is computed as:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sv</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">sm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.7759295 [[8.086258]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>which is <em>some</em> disagreement. This is an effect of the approximation method we’re using. We can check that by examining how sample number effects the sum of Shapley values.</p>
+<div class="figure align-default" id="shapley-convg">
+<div class="cell_output docutils container">
+<img alt="../_images/xai_28_0.png" src="../_images/xai_28_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 15.1 </span><span class="caption-text">A comparison of sum of Shapley values and function value as a function of samples number in the Shapley value approximation.</span><a class="headerlink" href="#shapley-convg" title="Permalink to this image">¶</a></p>
+</div>
+<p>It is slowly converging. Finally we can view the individual Shapley values, which is our explanation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_grad</span><span class="p">(</span><span class="n">sv</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/xai_32_0.png" src="../_images/xai_32_0.png" />
+</div>
+</div>
+<p>The four methods are shown side-by-side below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">gi</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">g</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">sg</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Gradient&#39;</span><span class="p">,</span> <span class="s1">&#39;Integrated&#39;</span><span class="p">,</span> <span class="s1">&#39;Smooth&#39;</span><span class="p">])):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">gi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">ALPHABET</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">s</span><span class="p">))]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mi">5</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">l</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span>
+        <span class="o">/</span><span class="mi">5</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Shapley&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/xai_34_0.png" src="../_images/xai_34_0.png" />
+</div>
+</div>
+<p>As someone who works with peptides, I believe the Shapley is the most accurate here. I wouldn’t expect the pattern of L and R to be that significant, which is what the Shapley values show. Another difference is that the Shapley values do not show the phenylalanine (F) as have a significant effect.</p>
+<p>What can we conclude from this information? We could perhaps add an explanation like this: “The sequence is predicted to be hemolytic primarily because of the glutamine, proline, and arrangement of lecucine and arginine.”</p>
+</div>
+</div>
+<div class="section" id="training-data-importance">
+<h2><span class="section-number">15.5. </span>Training Data Importance<a class="headerlink" href="#training-data-importance" title="Permalink to this headline">¶</a></h2>
+<p>Another kind of explanation or interpretation we might desire is <em>which</em> training data points contribute most to a prediction. This is a more literal answer to the question: “Why did my model predict this?” – neural networks are a result of training data and thus the answer to why a prediction is made can be traced to training data. Ranking training data for a given prediction helps us understand which training examples are causing the neural network to predict a value. This is like an influence function, <span class="math notranslate nohighlight">\(\mathcal{I}(x_i, x)\)</span>, which gives a score of incluence for training point <span class="math notranslate nohighlight">\(i\)</span> and input <span class="math notranslate nohighlight">\(x\)</span>. The most straightforward way to compute the influence would be to train the neural network with (i.e., <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span>) and without <span class="math notranslate nohighlight">\(x_i\)</span> (i.e., <span class="math notranslate nohighlight">\(\hat{f}_{-x_i}(x)\)</span>) and define the influence as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2717bc68-31da-4374-8a70-dd2438442ce1">
+<span class="eqno">(15.10)<a class="headerlink" href="#equation-2717bc68-31da-4374-8a70-dd2438442ce1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\mathcal{I}(x_i, x) = \hat{f}_{-x_i}(x) - \hat{f}(x)
+\end{equation}\]</div>
+<p>For example, if a prediction is higher after removing the training point <span class="math notranslate nohighlight">\(x_i\)</span> from training, we would say that point has a positive influence. Computing this influence function requires training the model as many times as you have points – typically computationally infeasible. <span id="id27">[<a class="reference internal" href="#id162">KL17</a>]</span> show a way to approximate this by looking at infinitesimal changes to the <em>weights</em> of each training point. Computing these influence functions do require computing a Hessian with respect to the loss function and thus are not commonly used. If you’re using JAX though, this is simple to do.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>If using a kernel model, the features are the training data. The above methods like integrated gradients, give training data importance.</p>
+</div>
+<p>Training data importance provides an interpretation that is useful for deep learning experts. It tells you which training examples are most influential for a given predictions. This can help troubleshoot issues with data or tracing explanations for spurious predictions. However, a typical user of predictions from a deep learning model will probably be unsatisfied with a ranking of training data as an explanation.</p>
+</div>
+<div class="section" id="surrogate-models">
+<h2><span class="section-number">15.6. </span>Surrogate Models<a class="headerlink" href="#surrogate-models" title="Permalink to this headline">¶</a></h2>
+<p>One of the more general ideas in interpretability is to fit an interpretable model to a black box model <em>in the neighborhood of a specific example</em>. We assume that an interpretable model cannot be fit globally to a black box model – otherwise we could just use the interpretable model and throw away the black box model. However, if we fit the interpretable model to just a small region around an example of interest, we can provide an explanation through the locally correct interpretable model. We call the interpretable model a <strong>local surrogate model</strong>. Examples of local surrogate models that are inherently interpretable include decision trees, linear models, sparse linear models (for succint explanations), a Naive Bayes Classifier, etc.</p>
+<p>A popular algorithm for this process of fitting a local surrogate model is called Local Interpretable Model-Agnostic Explanations (LIME) <span id="id28">[<a class="reference internal" href="#id160">RSG16a</a>]</span>. LIME fits the local surrogate model in the neighborhood of the example of interest utilizing the loss function that trained the original black box model. The loss function for the local surrogate model is weighted so that we value points closer to the example of interest as we regress the surrogate model. The LIME paper includes sparsifying the surrogate model in its notation, but we’ll omit that from the loss equation since that is more of an attribute of the local surrogate model. Thus, our definition for the local surrogate model loss is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-27429876-6cfd-4e92-a28b-d1b11722e951">
+<span class="eqno">(15.11)<a class="headerlink" href="#equation-27429876-6cfd-4e92-a28b-d1b11722e951" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\mathcal{l^s}\left(x'\right) = w(x', x)\mathcal{l}\left(\hat{f}_s(x'), \hat{f}(x')\right)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(w(x', x)\)</span> is a weight kernel function that weights points near example of interest <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(\mathcal{l}(\cdot,\cdot)\)</span> is the original black box model loss, <span class="math notranslate nohighlight">\(\hat{f}(\cdot)\)</span> is the black box model, and <span class="math notranslate nohighlight">\(\hat{f}_s(\cdot)\)</span> is the local surrogate model.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>LIME as formulated in <span id="id29">[<a class="reference internal" href="#id160">RSG16a</a>]</span> gives feature importance descriptions, but you can use Hmm, not sure if I’</p>
+</div>
+<p>The weight function is a bit ad hoc – it depends on the data type. For regression tasks with scalar labels, we use a kernel function and you have a variety of choices: Gaussian, cosine, Epanechnikov. For text, the LIME implementations use a <a class="reference external" href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> which just counts number of text tokens which do not match between two strings. Images use the same distance but with superpixels being the same as the example or blank.</p>
+<p>How are the points <span class="math notranslate nohighlight">\(x'\)</span> generated? In the continuous case <span class="math notranslate nohighlight">\(x'\)</span> is sampled <em>uniformly</em>, which is quite a feat since feature spaces are often unbounded. You could sample <span class="math notranslate nohighlight">\(x'\)</span> according to your weight function and then omit the weighting (since it was sampled according to that) to avoid issues like unbounded feature spaces. In general, LIME is a bit subjective in continuous vector feature spaces. For images and text, <span class="math notranslate nohighlight">\(x'\)</span> is formed by masking tokens (words) and zeroing (making black) superpixels. This leads to explanations that should feel quite similar to Shapley values – and indeed you can show LIME is equivalent to Shapley values with some small notation changes.</p>
+</div>
+<div class="section" id="counterfactuals">
+<h2><span class="section-number">15.7. </span>Counterfactuals<a class="headerlink" href="#counterfactuals" title="Permalink to this headline">¶</a></h2>
+<p>A counterfactual is a solution to an optimization problem: find an example <span class="math notranslate nohighlight">\(x'\)</span> that has a different label than <span class="math notranslate nohighlight">\(x\)</span> and as close as possible to <span class="math notranslate nohighlight">\(x\)</span><span id="id30">[<a class="reference internal" href="#id163">WMR17</a>]</span>. You can formulate this like:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-48015dd5-c200-433c-b84e-511172dd787f">
+<span class="eqno">(15.12)<a class="headerlink" href="#equation-48015dd5-c200-433c-b84e-511172dd787f" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\textrm{minimize}\qquad d(x, x')\\
+\textrm{such that}\qquad \hat{f}(x) \neq \hat{f}(x')
+\end{equation}\]</div>
+<p>In regression settings where <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span> outputs a scalar, you need to modify your constraint to be some <span class="math notranslate nohighlight">\(\Delta\)</span> away from <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span>. <span class="math notranslate nohighlight">\(x'\)</span> that satisfies this optimization problem is the counterfactual: a condition that did not occur and would have led to a different outcome. Typically finding <span class="math notranslate nohighlight">\(x'\)</span> is treated as a derivative-free optimization. You can calculate <span class="math notranslate nohighlight">\(\frac{\partial \hat{f}}{\partial x'}\)</span> and do constrained optimization, but in practice it can be faster to just randomly perturb <span class="math notranslate nohighlight">\(x\)</span> until <span class="math notranslate nohighlight">\(\hat{f}(x) \neq \hat{f}(x')\)</span> like a Monte Carlo optimization. You can also use a generative model that can propose new <span class="math notranslate nohighlight">\(x'\)</span> via unsupervised training. See <span id="id31">[<a class="reference internal" href="#id181">WSW21</a>]</span> for a universal counterfactual generator for molecules. See <span id="id32">[<a class="reference internal" href="#id178">NB20</a>]</span> for a method specifically for graph neural networks of molecules.</p>
+<p>Defining distance is an important subjective concern, that we saw above for LIME. A common example for molecular structures is Tanimoto similarity (also known as Jaccard index).</p>
+<p>Counterfactuals have a disadvantage compared to Shapley values: they do not provide a <em>complete</em> explanation. Shapley values sum to the prediction, meaning we are not missing any part of the explanation. Counterfactuals modify as few features as possible (minimizing distance) and so may omit information about features that still contribute to a prediction.</p>
+<div class="section" id="example">
+<h3><span class="section-number">15.7.1. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>We can quickly implement this idea for our peptide example above. We can define our distance as the Hamming distance. Then the closes <span class="math notranslate nohighlight">\(x'\)</span> would be a single amino acid substitution. Let’s just try enumerating those and see if we can achieve a label swap. We’ll define a function that does a single substitution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_cf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>    
+    <span class="c1"># copy</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>        
+    <span class="c1"># substitute</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#print(x)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">opt_params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">check_cf</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DeviceArray([[8.559381]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then build all possible substitutions with <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.meshgrid.html#jax.numpy.meshgrid" title="(in JAX)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jnp.meshgrid</span></code></a> and apply our function over that with <code class="xref py py-obj docutils literal notranslate"><span class="pre">vmap</span></code>. <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.ravel.html#jax.numpy.ravel" title="(in JAX)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">.ravel()</span></code></a> makes our array of indices be a single dimensions, so we do not need to worry about doing a complex vmap.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sl</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">21</span><span class="p">))</span>
+<span class="n">ii</span><span class="p">,</span> <span class="n">jj</span> <span class="o">=</span> <span class="n">ii</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">jj</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">check_cf</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))(</span><span class="n">sm</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’ll display all the single amino acid substitutions which resulted in a negative prediction - the logits are less than zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;tt&gt;&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ii</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">jj</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]):</span>    
+    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&lt;span style=&quot;color:red;&quot;&gt;</span><span class="si">{</span><span class="n">ALPHABET</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">}</span><span class="s1">&lt;/span&gt;</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s1">&lt;br/&gt;&#39;</span><span class="p">)</span>
+<span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/tt&gt;&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><tt>RAGL<span style="color:red;">-</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">-</span>VGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">A</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">A</span>VGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">C</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">C</span>VGRLLRRLLRRLLR<br/>RAGLQFP<span style="color:red;">C</span>GRLLRRLLRRLLR<br/>RAGL<span style="color:red;">I</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">I</span>VGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">L</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">L</span>VGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">F</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">F</span>VGRLLRRLLRRLLR<br/>RAGLQFP<span style="color:red;">F</span>GRLLRRLLRRLLR<br/>RAGL<span style="color:red;">P</span>FPVGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">T</span>FPVGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">W</span>FPVGRLLRRLLRRLLR<br/>RAGL<span style="color:red;">V</span>FPVGRLLRRLLRRLLR<br/>RAGLQF<span style="color:red;">V</span>VGRLLRRLLRRLLR<br/></tt></div></div>
+</div>
+<p>We have a few to choose from, but the interpretation is essentially exchange the glutamine with a hydrophobic group or replace the proline with V, F, A, or C to make the peptide non-hemolytic. Stated as a counterfactual: “If the glutamine were exchanged with a hydrophobic amino acid, the peptide would not be hemolytic”.</p>
+</div>
+</div>
+<div class="section" id="specific-architectures-explanations">
+<h2><span class="section-number">15.8. </span>Specific Architectures Explanations<a class="headerlink" href="#specific-architectures-explanations" title="Permalink to this headline">¶</a></h2>
+<p>The same principles above apply to GNNs, but there are competing ideas about how best to translate these ideas to work on graphs. See <span id="id33">[<a class="reference internal" href="#id179">AZL21</a>]</span> for a discussion of theory of interpretability specifically for GNNs and <span id="id34">[<a class="reference internal" href="#id180">YYGJ20</a>]</span> for a survey of the methods available for constructing explanations in GNNs.</p>
+<p>NLP is another area where there are specific approaches to constructing explanations and interpretation. See <span id="id35">[<a class="reference internal" href="#id183">MRC21</a>]</span> for a recent survey.</p>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">15.9. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Interpretation of deep learning models is imperitive for ensuring model correctness, making predictions useful to humans, and can be required for legal compliance.</p></li>
+<li><p>Interpretability of neural networks is part of a broader topic of explainability in AI (XAI), a topic that is in its infancy</p></li>
+<li><p>An <em>explanation</em> is still ill-defined, but most often is expressed in terms of model features.</p></li>
+<li><p>Strategies for explanations inlcude feature importance, training data importance, counterfactuals, and surrogate models that are locally accurate,</p></li>
+<li><p>Most explanations are generated per-example (at inference).</p></li>
+<li><p>The most systemtic but expensive to compute explanations are Shapley values.</p></li>
+<li><p>Some argue that counterfactuals provide the most intuitive and satisfying explanations, but they may not be complete explanations.</p></li>
+</ul>
+</div>
+<div class="section" id="cited-references">
+<h2><span class="section-number">15.10. </span>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<p id="id36"><dl class="citation">
+<dt class="label" id="id156"><span class="brackets"><a class="fn-backref" href="#id1">LS04</a></span></dt>
+<dd><p>John D Lee and Katrina A See. Trust in automation: Designing for appropriate reliance. <em>Human Factors</em>, 46(1):50–80, 2004. URL: <a class="reference external" href="https://journals.sagepub.com/doi/abs/10.1518/hfes.46.1.50_30392">https://journals.sagepub.com/doi/abs/10.1518/hfes.46.1.50_30392</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1518/hfes.46.1.50{\_}30392">doi:https://doi.org/10.1518/hfes.46.1.50{\_}30392</a>.</p>
+</dd>
+<dt class="label" id="id155"><span class="brackets">DVK17</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id7">2</a>)</span></dt>
+<dd><p>Finale Doshi-Velez and Been Kim. Towards a rigorous science of interpretable machine learning. <em>arXiv preprint arXiv:1702.08608</em>, 2017.</p>
+</dd>
+<dt class="label" id="id164"><span class="brackets"><a class="fn-backref" href="#id3">GF17</a></span></dt>
+<dd><p>Bryce Goodman and Seth Flaxman. European Union regulations on algorithmic decision-making and a “right to explanation”. <em>AI Magazine</em>, 38(3):50–57, 2017.</p>
+</dd>
+<dt class="label" id="id165"><span class="brackets"><a class="fn-backref" href="#id4">Dev19</a></span></dt>
+<dd><p>Organisation for Economic Co-operation and Development. Recommendation of the Council on Artificial Intelligence. 2019. URL: <a class="reference external" href="https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449">https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449</a>.</p>
+</dd>
+<dt class="label" id="id157"><span class="brackets"><a class="fn-backref" href="#id5">CLG+15</a></span></dt>
+<dd><p>Rich Caruana, Yin Lou, Johannes Gehrke, Paul Koch, Marc Sturm, and Noemie Elhadad. Intelligible models for healthcare: Predicting pneumonia risk and hospital 30-day readmission. In <em>Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 1721–1730. ACM, 2015.</p>
+</dd>
+<dt class="label" id="id182"><span class="brackets"><a class="fn-backref" href="#id6">Mil19</a></span></dt>
+<dd><p>Tim Miller. Explanation in artificial intelligence: insights from the social sciences. <em>Artificial intelligence</em>, 267:1–38, 2019.</p>
+</dd>
+<dt class="label" id="id158"><span class="brackets"><a class="fn-backref" href="#id8">MSK+19</a></span></dt>
+<dd><p>James W Murdoch, Chandan Singh, Karl Kumbier, Reza Abbasi-Asl, and Bin Yu. Interpretable machine learning: definitions, methods, and applications. <em>eprint arXiv</em>, pages 1–11, 2019. URL: <a class="reference external" href="http://arxiv.org/abs/1901.04592">http://arxiv.org/abs/1901.04592</a>.</p>
+</dd>
+<dt class="label" id="id159"><span class="brackets"><a class="fn-backref" href="#id9">MSMuller18</a></span></dt>
+<dd><p>Grégoire Montavon, Wojciech Samek, and Klaus-Robert Müller. Methods for interpreting and understanding deep neural networks. <em>Digital Signal Processing</em>, 73:1–15, 2018.</p>
+</dd>
+<dt class="label" id="id169"><span class="brackets"><a class="fn-backref" href="#id10">BCB14</a></span></dt>
+<dd><p>Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio. Neural machine translation by jointly learning to align and translate. <em>arXiv preprint arXiv:1409.0473</em>, 2014.</p>
+</dd>
+<dt class="label" id="id181"><span class="brackets">WSW21</span><span class="fn-backref">(<a href="#id11">1</a>,<a href="#id31">2</a>)</span></dt>
+<dd><p>Geemi P Wellawatte, Aditi Seshadri, and Andrew D White. Model agnostic generation of counterfactual explanations for molecules. <em>ChemRxiv</em>, 2021. <a class="reference external" href="https://doi.org/10.33774/chemrxiv-2021-4qkg8">doi:10.33774/chemrxiv-2021-4qkg8</a>.</p>
+</dd>
+<dt class="label" id="id160"><span class="brackets">RSG16a</span><span class="fn-backref">(<a href="#id11">1</a>,<a href="#id28">2</a>,<a href="#id29">3</a>)</span></dt>
+<dd><p>Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. &quot; why should i trust you?&quot; explaining the predictions of any classifier. In <em>Proceedings of the 22nd ACM SIGKDD international conference on knowledge discovery and data mining</em>, 1135–1144. 2016.</p>
+</dd>
+<dt class="label" id="id161"><span class="brackets"><a class="fn-backref" href="#id11">RSG16b</a></span></dt>
+<dd><p>Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. Model-agnostic interpretability of machine learning. <em>arXiv preprint arXiv:1606.05386</em>, 2016.</p>
+</dd>
+<dt class="label" id="id163"><span class="brackets">WMR17</span><span class="fn-backref">(<a href="#id11">1</a>,<a href="#id13">2</a>,<a href="#id30">3</a>)</span></dt>
+<dd><p>Sandra Wachter, Brent Mittelstadt, and Chris Russell. Counterfactual explanations without opening the black box: automated decisions and the gdpr. <em>Harv. JL &amp; Tech.</em>, 31:841, 2017.</p>
+</dd>
+<dt class="label" id="id162"><span class="brackets">KL17</span><span class="fn-backref">(<a href="#id12">1</a>,<a href="#id27">2</a>)</span></dt>
+<dd><p>Pang Wei Koh and Percy Liang. Understanding black-box predictions via influence functions. In <em>International Conference on Machine Learning</em>, 1885–1894. PMLR, 2017.</p>
+</dd>
+<dt class="label" id="id167"><span class="brackets"><a class="fn-backref" href="#id14">SML+21</a></span></dt>
+<dd><p>Wojciech Samek, Grégoire Montavon, Sebastian Lapuschkin, Christopher J. Anders, and Klaus-Robert Müller. Explaining deep neural networks and beyond: a review of methods and applications. <em>Proceedings of the IEEE</em>, 109(3):247–278, 2021. <a class="reference external" href="https://doi.org/10.1109/JPROC.2021.3060483">doi:10.1109/JPROC.2021.3060483</a>.</p>
+</dd>
+<dt class="label" id="id168"><span class="brackets"><a class="fn-backref" href="#id15">Mol19</a></span></dt>
+<dd><p>Christoph Molnar. <em>Interpretable Machine Learning</em>. Lulu.com, 2019. <span><a class="reference external" href="#"></a></span>https://christophm.github.io/interpretable-ml-book/.</p>
+</dd>
+<dt class="label" id="id170"><span class="brackets"><a class="fn-backref" href="#id16">BFL+17</a></span></dt>
+<dd><p>David Balduzzi, Marcus Frean, Lennox Leary, J. P. Lewis, Kurt Wan-Duo Ma, and Brian McWilliams. The shattered gradients problem: if resnets are the answer, then what is the question? In Doina Precup and Yee Whye Teh, editors, <em>Proceedings of the 34th International Conference on Machine Learning</em>, volume 70 of Proceedings of Machine Learning Research, 342–350. PMLR, 06–11 Aug 2017. URL: <a class="reference external" href="http://proceedings.mlr.press/v70/balduzzi17b.html">http://proceedings.mlr.press/v70/balduzzi17b.html</a>.</p>
+</dd>
+<dt class="label" id="id172"><span class="brackets">STY17</span><span class="fn-backref">(<a href="#id17">1</a>,<a href="#id19">2</a>)</span></dt>
+<dd><p>Mukund Sundararajan, Ankur Taly, and Qiqi Yan. Axiomatic attribution for deep networks. In <em>International Conference on Machine Learning</em>, 3319–3328. PMLR, 2017.</p>
+</dd>
+<dt class="label" id="id173"><span class="brackets">STK+17</span><span class="fn-backref">(<a href="#id18">1</a>,<a href="#id20">2</a>)</span></dt>
+<dd><p>Daniel Smilkov, Nikhil Thorat, Been Kim, Fernanda Viégas, and Martin Wattenberg. Smoothgrad: removing noise by adding noise. <em>arXiv preprint arXiv:1706.03825</em>, 2017.</p>
+</dd>
+<dt class="label" id="id174"><span class="brackets"><a class="fn-backref" href="#id21">MBL+19</a></span></dt>
+<dd><p>Grégoire Montavon, Alexander Binder, Sebastian Lapuschkin, Wojciech Samek, and Klaus-Robert Müller. <em>Layer-Wise Relevance Propagation: An Overview</em>, pages 193–209. Springer International Publishing, Cham, 2019. URL: <a class="reference external" href="https://doi.org/10.1007/978-3-030-28954-6_10">https://doi.org/10.1007/978-3-030-28954-6_10</a>, <a class="reference external" href="https://doi.org/10.1007/978-3-030-28954-6_10">doi:10.1007/978-3-030-28954-6_10</a>.</p>
+</dd>
+<dt class="label" id="id176"><span class="brackets">vStrumbeljK14</span><span class="fn-backref">(<a href="#id22">1</a>,<a href="#id23">2</a>,<a href="#id24">3</a>)</span></dt>
+<dd><p>Erik Štrumbelj and Igor Kononenko. Explaining prediction models and individual predictions with feature contributions. <em>Knowledge and information systems</em>, 41(3):647–665, 2014.</p>
+</dd>
+<dt class="label" id="id177"><span class="brackets"><a class="fn-backref" href="#id25">BW21</a></span></dt>
+<dd><p>Rainier Barrett and Andrew D. White. Investigating active learning and meta-learning for iterative peptide design. <em>Journal of Chemical Information and Modeling</em>, 61(1):95–105, 2021. URL: <a class="reference external" href="https://doi.org/10.1021/acs.jcim.0c00946">https://doi.org/10.1021/acs.jcim.0c00946</a>, <a class="reference external" href="https://doi.org/10.1021/acs.jcim.0c00946">doi:10.1021/acs.jcim.0c00946</a>.</p>
+</dd>
+<dt class="label" id="id175"><span class="brackets"><a class="fn-backref" href="#id26">SLL20</a></span></dt>
+<dd><p>Pascal Sturmfels, Scott Lundberg, and Su-In Lee. Visualizing the impact of feature attribution baselines. <em>Distill</em>, 2020. https://distill.pub/2020/attribution-baselines. <a class="reference external" href="https://doi.org/10.23915/distill.00022">doi:10.23915/distill.00022</a>.</p>
+</dd>
+<dt class="label" id="id178"><span class="brackets"><a class="fn-backref" href="#id32">NB20</a></span></dt>
+<dd><p>Danilo Numeroso and Davide Bacciu. Explaining deep graph networks with molecular counterfactuals. <em>arXiv preprint arXiv:2011.05134</em>, 2020.</p>
+</dd>
+<dt class="label" id="id179"><span class="brackets"><a class="fn-backref" href="#id33">AZL21</a></span></dt>
+<dd><p>Chirag Agarwal, Marinka Zitnik, and Himabindu Lakkaraju. Towards a rigorous theoretical analysis and evaluation of gnn explanations. <em>arXiv preprint arXiv:2106.09078</em>, 2021.</p>
+</dd>
+<dt class="label" id="id180"><span class="brackets"><a class="fn-backref" href="#id34">YYGJ20</a></span></dt>
+<dd><p>Hao Yuan, Haiyang Yu, Shurui Gui, and Shuiwang Ji. Explainability in graph neural networks: a taxonomic survey. <em>arXiv preprint arXiv:2012.15445</em>, 2020.</p>
+</dd>
+<dt class="label" id="id183"><span class="brackets"><a class="fn-backref" href="#id35">MRC21</a></span></dt>
+<dd><p>Andreas Madsen, Siva Reddy, and Sarath Chandar. Post-hoc interpretability for neural nlp: a survey. <em>arXiv preprint arXiv:2108.04840</em>, 2021.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./dl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="NLP.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">14. </span>Natural Language Processing</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="../applied/QM9.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">16. </span>Predicting DFT Energies with GNNs</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

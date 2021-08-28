@@ -1,0 +1,104 @@
+/* The Modal (background) */
+#wh-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9999; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  }
+
+  /* Modal Content (Image) */
+  #wh-modal-img {
+    margin: auto;
+    display: block;
+    max-width: min(1200px, 100%);
+  }
+
+/* The Close Button */
+#wh-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  #wh-modal-close:hover,
+  #wh-modal-close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .wh-fig-a:hover {
+    cursor: pointer;
+  }
+
+  .wh-venti-button {
+      background-color: transparent;
+      border: none;
+  }
+
+.wh-wrapper {
+    /*width: 500px;*/
+}
+
+.wh-progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    padding: 3px;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+.wh-progress-bar-fill {
+    display: block;
+    height: 22px;
+    background-color: #1BBC9B;
+    border-radius: 3px;
+    text-align: center;
+    color: #ffffff;
+    transition: width 500ms ease-in-out;
+}
+
+td > p {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.table td, .table th {
+  padding: 0.2rem 0.75rem 0.2rem 0.75rem;
+}
+
+.wh-container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.wh-div-centered {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  transform: translate(-17%, -50%);
+  background: rgba(0, 0, 0, .75);
+}
+
+.wh-hero {
+  color: #FFFFFF !important;
+  padding: 1em;
+  margin: 0;
+  height: 100%;
+}
+
+/* Not sure why, but pasted images are going display:blocks(??)*/
+
+.pasted-inline > img {
+  display: inline !important;
+}

@@ -1,0 +1,870 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12. Normalizing Flows &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. Equivariant Neural Networks" href="Equivariant.html" />
+    <link rel="prev" title="11. Variational Autoencoder" href="VAE.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NLP.html">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="xai.html">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/dl/flows.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/dl/flows.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/dl/flows.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#flow-equation">
+   12.1. Flow Equation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bijectors">
+   12.2. Bijectors
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bijector-chains">
+     12.2.1. Bijector Chains
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training">
+   12.3. Training
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#common-bijectors">
+   12.4. Common Bijectors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   12.5. Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#moon-example">
+   12.6. Moon Example
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generating-data">
+     12.6.1. Generating Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#z-distribution">
+     12.6.2. Z Distribution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-normalizing-flow">
+     12.6.3. The Normalizing Flow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id10">
+     12.6.4. Training
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relevant-videos">
+   12.7. Relevant Videos
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#normalizing-flow-for-molecular-conformation">
+     12.7.1. Normalizing Flow for Molecular Conformation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chapter-summary">
+   12.8. Chapter Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   12.9. Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="normalizing-flows">
+<h1><span class="section-number">12. </span>Normalizing Flows<a class="headerlink" href="#normalizing-flows" title="Permalink to this headline">¶</a></h1>
+<p>The VAE was our first example of a generative model that is capable of sampling from <span class="math notranslate nohighlight">\(P(x)\)</span>. The VAE has two disadvantages though. The first that you cannot numerically evaluate <span class="math notranslate nohighlight">\(P(x)\)</span>, the probability of a single point. The second disadvantage is that training the VAE is difficult, especially because you’re assuming the latent space should be normal. <strong>Generative adversarial networks</strong> (GANs) are similar to VAEs and have the same two disadvantages.</p>
+<p>A <strong>normalizing flow</strong> is similar to a VAE in that we try to build up <span class="math notranslate nohighlight">\(P(x)\)</span> by starting from a simple known distribution <span class="math notranslate nohighlight">\(P(z)\)</span>. We use functions, like the decoder from a VAE, to go from <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(z\)</span>. However, we make sure that the functions we choose keep the probability mass normalized (<span class="math notranslate nohighlight">\(\sum P(x) = 1\)</span>) and can be used forward (to sample from x) and backward (to compute <span class="math notranslate nohighlight">\(P(x)\)</span>). We call these functions <strong>bijectors</strong> because they are bijective (1 to 1, onto). An example of a bijector is an element-wise cosine <span class="math notranslate nohighlight">\(y_i = \cos x_i\)</span> and non-bijective function would be any reduction <span class="math notranslate nohighlight">\(y = \sum_i x_i\)</span>. Any function which changes dimension is automatically not bijective. A consequence of using only bijectors in constructing our normalizing flow is that the size of the latent space must be equal to the size of the feature space. Remember the VAE used a smaller latent space than the feature space.</p>
+<p>You can find a recent review of normalizing <a class="reference external" href="https://arxiv.org/pdf/1908.09257.pdf">flows here</a> <span id="id1">[<a class="reference internal" href="#id65">KPB20</a>]</span> and <a class="reference external" href="https://arxiv.org/abs/1912.02762">here</a><span id="id2">[<a class="reference internal" href="#id83">PNR+19</a>]</span>. Although generating images and sound is the most popular application of normalizing flows, some of their biggest scientific impact has been on more efficient sampling from posteriors or likelihoods and other complex probability distributions <span id="id3">[<a class="reference internal" href="#id82">PSM19</a>]</span>. You find details on how to do normalizing flows on categorical (discrete) data in Hoogeboom et al. <span id="id4">[<a class="reference internal" href="#id100">HNJ+21</a>]</span>.</p>
+<div class="section" id="flow-equation">
+<h2><span class="section-number">12.1. </span>Flow Equation<a class="headerlink" href="#flow-equation" title="Permalink to this headline">¶</a></h2>
+<p>Recall for the VAE decoder, we had an explicit formula for <span class="math notranslate nohighlight">\(p(x | z)\)</span>. This allowed us to compute <span class="math notranslate nohighlight">\(p(x) = \int\,dz p(x | z)p(z)\)</span> which is the quantity of interest. The VAE decoder is a conditional probability density function. In the normalizing flow, we do not use probability density functions. We use bijective functions. So we cannot just compute an integral to change variables. We can use the change of variable formula. Consider our normalizing flow to be defined by our bijector <span class="math notranslate nohighlight">\(x = f(z)\)</span>, its inverse <span class="math notranslate nohighlight">\(z = g(x)\)</span>, and the starting probability distribution <span class="math notranslate nohighlight">\(P_z(z)\)</span>. Then the formula for probability of <span class="math notranslate nohighlight">\(x\)</span> is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c61d4034-6f48-4dda-96e5-4e9909ce69ca">
+<span class="eqno">(12.1)<a class="headerlink" href="#equation-c61d4034-6f48-4dda-96e5-4e9909ce69ca" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+P(x) = P_z\left(g(x)\right) \,\left| \textrm{det}\left[\mathbf{J}_g\right]\right|
+\end{equation}\]</div>
+<p>where the term on the right is the absolute value of the determinant of the Jacobian of <span class="math notranslate nohighlight">\(g\)</span>. <a class="reference external" href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobians</a> are matrices that describe how infinitesimal changes in each domain dimension change each range dimension. This term corrects for the volume change of the distribution. For example, if <span class="math notranslate nohighlight">\(f(z) = 2z\)</span>, then <span class="math notranslate nohighlight">\(g(x) = x / 2\)</span>, and the Jacobian determinant is <span class="math notranslate nohighlight">\(1 / 2\)</span>. The intuition is that we are stretching out <span class="math notranslate nohighlight">\(z\)</span> by 2, so we need to account for the increase in volume to keep the probability normalized. You can read more about the change of variable formula for <a class="reference external" href="https://cranmer.github.io/stats-ds-book/distributions/change-of-variables.html">probability distributions here</a></p>
+</div>
+<div class="section" id="bijectors">
+<h2><span class="section-number">12.2. </span>Bijectors<a class="headerlink" href="#bijectors" title="Permalink to this headline">¶</a></h2>
+<p>A bijector is a function that is <a class="reference external" href="https://en.wikipedia.org/wiki/Injective_function">injective</a> (1 to 1) and <a class="reference external" href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a> (onto). An equivalent way to view a bijective function is if it has an inverse. For example, a sum reduction has no inverse and is thus not bijective. <span class="math notranslate nohighlight">\(\sum [1,0] = 1\)</span> and <span class="math notranslate nohighlight">\(\sum [-1, 2] = 1\)</span>. Multiplying by a matrix which has an inverse is bijective. <span class="math notranslate nohighlight">\(y = x^2\)</span> is not bijective, since <span class="math notranslate nohighlight">\(y = 4\)</span> has two solutions.</p>
+<p>Remember that we must compute the determinant of the bijector Jacobian. If the Jacobian is dense (all output elements depend on all input elements), computing this quantity will be <span class="math notranslate nohighlight">\(O\left(|x|_0^3\right)\)</span> where <span class="math notranslate nohighlight">\(|x|_0\)</span> is the number of dimensions of <span class="math notranslate nohighlight">\(x\)</span> because a determinant scales by <span class="math notranslate nohighlight">\(O(n^3)\)</span>. This would make computing normalizing flows impractical in high-dimensions. However, in practice we restrict ourselves to bijectors that have easy to calculate Jacobians. For example, if the bijector is <span class="math notranslate nohighlight">\(x_i = \cos z_i\)</span> then the Jacobian will be diagonal. Typically, the trick that is done is to make the Jacobian triangular. Then <span class="math notranslate nohighlight">\(x_0\)</span> only depends on <span class="math notranslate nohighlight">\(z_0\)</span>, <span class="math notranslate nohighlight">\(z_1\)</span> depends on <span class="math notranslate nohighlight">\(z_0, Z_1\)</span>, and <span class="math notranslate nohighlight">\(x_2\)</span> depends on <span class="math notranslate nohighlight">\(z_0, z_1, z_2\)</span>, etc. The matrix determinant is then computed in linear time with respect to the number of dimensions.</p>
+<div class="section" id="bijector-chains">
+<h3><span class="section-number">12.2.1. </span>Bijector Chains<a class="headerlink" href="#bijector-chains" title="Permalink to this headline">¶</a></h3>
+<p>Just like in deep neural networks, multiple bijectors are chained together to increase how complex of the final fit distribution <span class="math notranslate nohighlight">\(\hat{P}(x)\)</span> can be. The change of variable equation can be repeatedly applied:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-837c1244-689b-47af-bed3-4c6eb292049d">
+<span class="eqno">(12.2)<a class="headerlink" href="#equation-837c1244-689b-47af-bed3-4c6eb292049d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+P(x) = P_z\left[g_1\left(g_0(x)\right)\right] \,\left| \textrm{det}\left[\mathbf{J}_{g_1}\right]\right|  \left|\textrm{det}\left[\mathbf{J}_{g_0}\right]\right|
+\end{equation}\]</div>
+<p>where we would compute <span class="math notranslate nohighlight">\(x\)</span> with <span class="math notranslate nohighlight">\(f_0\left(f_1(z)\right)\)</span>. One critical point is that you should also include a <strong>permute bijector</strong> that swaps the order of dimensions. Since the bijectors typically have triangular Jacobians, certain output dimensions will depend on many input dimensions and others will only depend on a single one. By applying a permutation, you allow each dimension to influence each other.</p>
+</div>
+</div>
+<div class="section" id="training">
+<h2><span class="section-number">12.3. </span>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h2>
+<p>At this point, you may be wondering how you could possibly train a normalizing flow. The trainable parameters appear in the bijectors. They have adjustable parameters. The loss equation is quite simple: the negative log-likelihood (negative to make it minimization). Explicitly:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bab0577f-19e1-4616-89a5-b5e901b58022">
+<span class="eqno">(12.3)<a class="headerlink" href="#equation-bab0577f-19e1-4616-89a5-b5e901b58022" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\mathcal{l} = -\log P_z\left[g_1\left(g_0(x)\right)\right] - \sum_i \log\left| \textrm{det}\left[\mathbf{J}_{g_i}\right]\right|
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is the training point and when you take the gradient of the loss, it is with respect to the parameters of the bijectors.</p>
+</div>
+<div class="section" id="common-bijectors">
+<h2><span class="section-number">12.4. </span>Common Bijectors<a class="headerlink" href="#common-bijectors" title="Permalink to this headline">¶</a></h2>
+<p>The choice of bijector functions is a fast changing area. I will thus only mention a few. You can of course use any bijective function or matrix, but these become inefficient at high-dimension due to the Jacobian calculation. One class of efficient bijectors are autoreggresive bijectors. These have triangular Jacobians because each output dimension can only depend on the dimensions with a lower index. There are two variants: masked autoregressive flows (MAF)<span id="id5">[<a class="reference internal" href="#id66">PPM17</a>]</span> and inverse autoreggresive flows (IAF) <span id="id6">[<a class="reference internal" href="#id67">KSJ+16</a>]</span>. MAFs are efficient at training and computing probabilities, but are slow for sampling from <span class="math notranslate nohighlight">\(P(x)\)</span>. IAFs are slow at training and computing probabilities but efficient for sampling. Wavenets combine the advantages of both <span id="id7">[<a class="reference internal" href="#id68">KLS+18</a>]</span>. I’ll mention one other common bijector which is not autoregressive: real non-volume preserving (RealNVPs) <span id="id8">[<a class="reference internal" href="#id69">DSDB16</a>]</span>. RealNVPs are less expressive than IAFs/MAFs, meaning they have trouble replicating complex distributions, but are efficient at all three tasks: training, sampling, and computing probabilities. Another interesting variant is the Glow bijector,which is able to expand the rank of the normalizing flow, for example going from a matrix to an RGB image <span id="id9">[<a class="reference internal" href="#id70">DAS19</a>]</span>. What are the equations for all these bijectors? Most are variants of standard neural network layers but with special rules about which outputs depend on which inputs.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to add permute bijectors between autoregressive bijectors to ensure the dependence between dimensions is well-mixed.</p>
+</div>
+</div>
+<div class="section" id="running-this-notebook">
+<h2><span class="section-number">12.5. </span>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages, either on your own environment or on Google Colab</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install matplotlib numpy tesnorflow-probability
+</pre></div>
+</div>
+</div>
+<p>The hidden code below imports the tensorflow probability package and other necessary packages. Note that the tensorflow probability package (<code class="docutils literal notranslate"><span class="pre">tfp</span></code>) is further broken into distributions (<code class="docutils literal notranslate"><span class="pre">tfd</span></code>) and bijectors (<code class="docutils literal notranslate"><span class="pre">tfb</span></code>).</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tensorflow_probability</span> <span class="k">as</span> <span class="nn">tfp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">sklearn.datasets</span> <span class="k">as</span> <span class="nn">datasets</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;dark&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s1">&#39;xtick.bottom&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;ytick.left&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span>     <span class="mf">0.8</span> <span class="p">,</span> <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="n">color_cycle</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1BBC9B&#39;</span><span class="p">,</span> <span class="s1">&#39;#F06060&#39;</span><span class="p">,</span> <span class="s1">&#39;#5C4B51&#39;</span><span class="p">,</span> <span class="s1">&#39;#F3B562&#39;</span><span class="p">,</span> <span class="s1">&#39;#6e5687&#39;</span><span class="p">]</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_cycle</span><span class="p">)</span> 
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="n">tfd</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">distributions</span>
+<span class="n">tfb</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">bijectors</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="moon-example">
+<h2><span class="section-number">12.6. </span>Moon Example<a class="headerlink" href="#moon-example" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start with a basic 2D example to learn the two moon’s distribution with a normalizing flow. When doing normalizing flows you have two options to implement them. You can do all the Jacobians, inverses, and likelihood calculations analytically and implement them in a normal ML framework like Jax, PyTorch, or TensorFlow. This is actually most common. The second option is to utilize a probability library that knows how to use bijectors and distributions. The packages for that are PYMC3, TensorFlow Probability (which has a non-tensorflow JAX version confusingly), and Pyro (Pytorch). We’ll use TensorFlow Probability for this work.</p>
+<div class="section" id="generating-data">
+<h3><span class="section-number">12.6.1. </span>Generating Data<a class="headerlink" href="#generating-data" title="Permalink to this headline">¶</a></h3>
+<p>In the code below, I set-up my imports and sample points which will be used for training. Remember, this code has nothing to do with normalizing flows – it’s just to generate data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">moon_n</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">ndim</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">make_moons</span><span class="p">(</span><span class="n">moon_n</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3163e35be0&gt;]
+</pre></div>
+</div>
+<img alt="../_images/flows_6_1.png" src="../_images/flows_6_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="z-distribution">
+<h3><span class="section-number">12.6.2. </span>Z Distribution<a class="headerlink" href="#z-distribution" title="Permalink to this headline">¶</a></h3>
+<p>Our Z distribution should always be as simple as possible. I’ll create a 2D Gaussian with unit variance, no covariance, and centered at 0. I’ll be using the tensorflow probability package for this example. The key new concept is that we organize our tensors that were <em>sampled</em> from a probability distribution in a specific way. We, by convention, make the first axes be the <strong>sample</strong> shape, the second axes be the <strong>batch</strong> shape, and the final axes be the <strong>event</strong> shape. The sample shape is the number of times we sampled from our distribution. It is a <em>shape</em> and not a single dimension because occasionally you’ll want to organize your samples into some shape. The batch shape is a result of possibly multiple distributions batched together. For example, you might have 2 Gaussians, instead of a single 2D Gaussian. Finally, the event shape is the shape of a single sample from the distribution. This is overly complicated for our example, but you should be able to read information about the distribution now by understanding this nomenclature. You can find a tutorial on these <a class="reference external" href="https://www.tensorflow.org/probability/examples/Understanding_TensorFlow_Distributions_Shapes">shapes here</a> and more tutorials on <a class="reference external" href="https://www.tensorflow.org/probability/examples/A_Tour_of_TensorFlow_Probability">tensorflow probability here</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zdist</span> <span class="o">=</span> <span class="n">tfd</span><span class="o">.</span><span class="n">MultivariateNormalDiag</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span><span class="p">)</span>
+<span class="n">zdist</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;tfp.distributions.MultivariateNormalDiag &#39;MultivariateNormalDiag&#39; batch_shape=[] event_shape=[2] dtype=float32&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>With our new understanding of shapes, you can see that this distribution has no <code class="docutils literal notranslate"><span class="pre">batch_shape</span></code> because there is only one set of parameters and the <code class="docutils literal notranslate"><span class="pre">event_shape</span></code> is <code class="docutils literal notranslate"><span class="pre">[2]</span></code> because it’s a 2D Gaussian. Let’s now sample from this distribution and view it</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zsamples</span> <span class="o">=</span> <span class="n">zdist</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">moon_n</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">zsamples</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zsamples</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_10_0.png" src="../_images/flows_10_0.png" />
+</div>
+</div>
+<p>As expected, our starting distribution looks nothing like are target distribution. Let’s demonstrate a bijector now. We’ll implement the following bijector:</p>
+<div class="math notranslate nohighlight">
+\[
+x = \vec{z} \times (1, 0.5)^T + (0.5, 0.25)
+\]</div>
+<p>This is bijective because the operations are element-wise and invertible. Rather than just write this out using operations like <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> or <code class="docutils literal notranslate"><span class="pre">*</span></code>, we’ll use the built-in bijectors from TensorFlow probability. The reason we do this is that they have their inverses and Jacobian determinants already defined.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinearOperatorDiag</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">tfb</span><span class="o">.</span><span class="n">AffineLinearOperator</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">sb</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /tmp/ipykernel_11794/1266464230.py:2: AffineLinearOperator.__init__ (from tensorflow_probability.python.bijectors.affine_linear_operator) is deprecated and will be removed after 2020-01-01.
+Instructions for updating:
+`AffineLinearOperator` bijector is deprecated; please use `tfb.Shift(loc)(tfb.ScaleMatvecLinearOperator(...))`.
+</pre></div>
+</div>
+</div>
+</div>
+<p>To now apply the change of variable formula, we create a <strong>transformed distribution</strong>. What is important about this choice is that we can compute likelihoods, probabilities, and sample from it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <span class="n">tfd</span><span class="o">.</span><span class="n">TransformedDistribution</span><span class="p">(</span><span class="n">zdist</span><span class="p">,</span> <span class="n">bijector</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+<span class="n">td</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;tfp.distributions.TransformedDistribution &#39;affine_linear_operatorMultivariateNormalDiag&#39; batch_shape=[] event_shape=[2] dtype=float32&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zsamples</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">moon_n</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">zsamples</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zsamples</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_15_0.png" src="../_images/flows_15_0.png" />
+</div>
+</div>
+<p>We show above the sampling from this new distribution. We can also plot it’s probability, which is impossible for a VAE-like model!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make points for grid</span>
+<span class="n">zpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">zpoints</span><span class="p">,</span> <span class="n">zpoints</span><span class="p">)</span>
+<span class="n">zgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">z1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># compute P(x) </span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">zgrid</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="c1"># plot and set axes limits</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z1</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_17_0.png" src="../_images/flows_17_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="the-normalizing-flow">
+<h3><span class="section-number">12.6.3. </span>The Normalizing Flow<a class="headerlink" href="#the-normalizing-flow" title="Permalink to this headline">¶</a></h3>
+<p>Now we will build bijectors that are expressive enough to capture the moon distribution. I will use 3 sets of a MAF and permutation for 6 total bijectors. MAF’s have dense neural network layers in them, so I will also set the usual parameters for a neural network: dimension of hidden layer and activation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_layers</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">my_bijects</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># loop over desired bijectors and put into list</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
+    <span class="c1"># Syntax to make a MAF</span>
+    <span class="n">anet</span> <span class="o">=</span> <span class="n">tfb</span><span class="o">.</span><span class="n">AutoregressiveNetwork</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">ndim</span><span class="p">,</span> <span class="n">hidden_units</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)</span>    
+    <span class="n">ab</span> <span class="o">=</span> <span class="n">tfb</span><span class="o">.</span><span class="n">MaskedAutoregressiveFlow</span><span class="p">(</span><span class="n">anet</span><span class="p">)</span>
+    <span class="c1"># Add bijector to list</span>
+    <span class="n">my_bijects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ab</span><span class="p">)</span>
+    <span class="c1"># Now permuate (!important!)</span>
+    <span class="n">permute</span> <span class="o">=</span> <span class="n">tfb</span><span class="o">.</span><span class="n">Permute</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">my_bijects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">permute</span><span class="p">)</span>
+<span class="c1"># put all bijectors into one &quot;chain bijector&quot;</span>
+<span class="c1"># that looks like one </span>
+<span class="n">big_bijector</span> <span class="o">=</span> <span class="n">tfb</span><span class="o">.</span><span class="n">Chain</span><span class="p">(</span><span class="n">my_bijects</span><span class="p">)</span>
+<span class="c1"># make transformed dist</span>
+<span class="n">td</span> <span class="o">=</span> <span class="n">tfd</span><span class="o">.</span><span class="n">TransformedDistribution</span><span class="p">(</span><span class="n">zdist</span><span class="p">,</span> <span class="n">bijector</span><span class="o">=</span><span class="n">big_bijector</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>At this point, we have not actually trained but we can still view our distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">zpoints</span><span class="p">,</span> <span class="n">zpoints</span><span class="p">)</span>
+<span class="n">zgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">z1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">zgrid</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z1</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_21_0.png" src="../_images/flows_21_0.png" />
+</div>
+</div>
+<p>You can already see that the distribution looks more complex than a Gaussian.</p>
+</div>
+<div class="section" id="id10">
+<h3><span class="section-number">12.6.4. </span>Training<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>To train, we’ll use TensorFlow Keras, which just handles computing derivatives and the optimizer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># declare the feature dimension</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="c1"># create a &quot;placeholder&quot; function </span>
+<span class="c1"># that will be model output</span>
+<span class="n">log_prob</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1"># use input (feature) and output (log prob)</span>
+<span class="c1"># to make model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">log_prob</span><span class="p">)</span>
+<span class="c1"># define a loss</span>
+<span class="k">def</span> <span class="nf">neg_loglik</span><span class="p">(</span><span class="n">yhat</span><span class="p">,</span> <span class="n">log_prob</span><span class="p">):</span>
+    <span class="c1"># losses always take in label, prediction</span>
+    <span class="c1"># in keras. We do not have labels,</span>
+    <span class="c1"># but we still need to accept the arg</span>
+    <span class="c1"># to comply with Keras format</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">log_prob</span>
+<span class="c1"># now we prepare model for training</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">),</span> <span class="n">loss</span><span class="o">=</span><span class="n">neg_loglik</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>One detail is that we have to create fake labels (zeros) because Keras expects there to always be training labels. Thus our loss we defined above (negative log-likelihood) takes in the labels but does nothing with them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">moon_n</span><span class="p">),</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_26_0.png" src="../_images/flows_26_0.png" />
+</div>
+</div>
+<p>Training looks reasonable. Let’s now see our distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">zpoints</span><span class="p">,</span> <span class="n">zpoints</span><span class="p">)</span>
+<span class="n">zgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">z1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">zgrid</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z1</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_28_0.png" src="../_images/flows_28_0.png" />
+</div>
+</div>
+<p>Wow! We now can compute the probability of any point in this distribution. You can see there are some oddities that could be fixed with further training. One issue that cannot be overcome is the connection between the two curves – it is not possible to get fully disconnected densities. This is because of our requirement that the bijectors are invertible and volume preserving – you can only squeeze volume so far but cannot completely disconnect. Some work has been done on addressing this issue by adding sampling to the flow and this gives more expressive normalizing flows <span id="id11">[<a class="reference internal" href="#id81">WKohlerNoe20</a>]</span>.</p>
+<p>Finally, we’ll sample from our model just to show that indeed it is generative.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zsamples</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">moon_n</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">zsamples</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zsamples</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/flows_30_0.png" src="../_images/flows_30_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="relevant-videos">
+<h2><span class="section-number">12.7. </span>Relevant Videos<a class="headerlink" href="#relevant-videos" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="normalizing-flow-for-molecular-conformation">
+<h3><span class="section-number">12.7.1. </span>Normalizing Flow for Molecular Conformation<a class="headerlink" href="#normalizing-flow-for-molecular-conformation" title="Permalink to this headline">¶</a></h3>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/XhAP2VNPVhg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+</div>
+<div class="section" id="chapter-summary">
+<h2><span class="section-number">12.8. </span>Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>A normalizing flow builds up a probability distribution of <span class="math notranslate nohighlight">\(x\)</span> by starting from a known distribution on <span class="math notranslate nohighlight">\(z\)</span>. Bijective functions are used to go from <span class="math notranslate nohighlight">\(z\)</span> to <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+<li><p>Bijectors are functions that keep the probability mass normalized and are used to go forward and backward (because they have well-defined inverses).</p></li>
+<li><p>To find the probability distribution of <span class="math notranslate nohighlight">\(x\)</span> we use the change of variable formula, which requires a function inverse and Jacobian.</p></li>
+<li><p>The bijector function has trainable parameters, which can be trained using a negative log-likelihood function.</p></li>
+<li><p>Multiple bijectors can be chained together, but typically must include a permute bijector to swap the order of dimensions.</p></li>
+</ul>
+</div>
+<div class="section" id="cited-references">
+<h2><span class="section-number">12.9. </span>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<p id="id12"><dl class="citation">
+<dt class="label" id="id65"><span class="brackets"><a class="fn-backref" href="#id1">KPB20</a></span></dt>
+<dd><p>Ivan Kobyzev, Simon Prince, and Marcus Brubaker. Normalizing flows: an introduction and review of current methods. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 2020.</p>
+</dd>
+<dt class="label" id="id83"><span class="brackets"><a class="fn-backref" href="#id2">PNR+19</a></span></dt>
+<dd><p>George Papamakarios, Eric Nalisnick, Danilo Jimenez Rezende, Shakir Mohamed, and Balaji Lakshminarayanan. Normalizing flows for probabilistic modeling and inference. <em>arXiv preprint arXiv:1912.02762</em>, 2019.</p>
+</dd>
+<dt class="label" id="id82"><span class="brackets"><a class="fn-backref" href="#id3">PSM19</a></span></dt>
+<dd><p>George Papamakarios, David Sterratt, and Iain Murray. Sequential neural likelihood: fast likelihood-free inference with autoregressive flows. In <em>The 22nd International Conference on Artificial Intelligence and Statistics</em>, 837–848. PMLR, 2019.</p>
+</dd>
+<dt class="label" id="id100"><span class="brackets"><a class="fn-backref" href="#id4">HNJ+21</a></span></dt>
+<dd><p>Emiel Hoogeboom, Didrik Nielsen, Priyank Jaini, Patrick Forré, and Max Welling. Argmax flows: learning categorical distributions with normalizing flows. In <em>Third Symposium on Advances in Approximate Bayesian Inference</em>. 2021. URL: <a class="reference external" href="https://openreview.net/forum?id=fdsXhAy5Cp">https://openreview.net/forum?id=fdsXhAy5Cp</a>.</p>
+</dd>
+<dt class="label" id="id66"><span class="brackets"><a class="fn-backref" href="#id5">PPM17</a></span></dt>
+<dd><p>George Papamakarios, Theo Pavlakou, and Iain Murray. Masked autoregressive flow for density estimation. In <em>Advances in Neural Information Processing Systems</em>, 2338–2347. 2017.</p>
+</dd>
+<dt class="label" id="id67"><span class="brackets"><a class="fn-backref" href="#id6">KSJ+16</a></span></dt>
+<dd><p>Durk P Kingma, Tim Salimans, Rafal Jozefowicz, Xi Chen, Ilya Sutskever, and Max Welling. Improved variational inference with inverse autoregressive flow. In <em>Advances in neural information processing systems</em>, 4743–4751. 2016.</p>
+</dd>
+<dt class="label" id="id68"><span class="brackets"><a class="fn-backref" href="#id7">KLS+18</a></span></dt>
+<dd><p>Sungwon Kim, Sang-gil Lee, Jongyoon Song, Jaehyeon Kim, and Sungroh Yoon. Flowavenet: a generative flow for raw audio. <em>arXiv preprint arXiv:1811.02155</em>, 2018.</p>
+</dd>
+<dt class="label" id="id69"><span class="brackets"><a class="fn-backref" href="#id8">DSDB16</a></span></dt>
+<dd><p>Laurent Dinh, Jascha Sohl-Dickstein, and Samy Bengio. Density estimation using real nvp. <em>arXiv preprint arXiv:1605.08803</em>, 2016.</p>
+</dd>
+<dt class="label" id="id70"><span class="brackets"><a class="fn-backref" href="#id9">DAS19</a></span></dt>
+<dd><p>Hari Prasanna Das, Pieter Abbeel, and Costas J Spanos. Dimensionality reduction flows. <em>arXiv preprint arXiv:1908.01686</em>, 2019.</p>
+</dd>
+<dt class="label" id="id81"><span class="brackets"><a class="fn-backref" href="#id11">WKohlerNoe20</a></span></dt>
+<dd><p>Hao Wu, Jonas Köhler, and Frank Noé. Stochastic normalizing flows. <em>arXiv preprint arXiv:2002.06707</em>, 2020.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./dl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="VAE.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">11. </span>Variational Autoencoder</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="Equivariant.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">13. </span>Equivariant Neural Networks</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

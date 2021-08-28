@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7. Standard Layers &#8212; Deep Learning for Molecules and Materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Graph Neural Networks" href="gnn.html" />
+    <link rel="prev" title="6. Introduction to Deep Learning" href="introduction.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning for Molecules and Materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   6. Introduction to Deep Learning
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="attention.html">
+   9. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data.html">
+   10. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="VAE.html">
+   11. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="flows.html">
+   12. Normalizing Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Equivariant.html">
+   13. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NLP.html">
+   14. Natural Language Processing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="xai.html">
+   15. Interpretability in Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script><noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/dl/layers.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/whitead/dmol-book/master?urlpath=tree/dl/layers.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/dl/layers.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hyperparameters">
+   7.1. Hyperparameters
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#validation">
+     7.1.1. Validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tuning">
+     7.1.2. Tuning
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#common-layers">
+   7.2. Common Layers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#convolutions">
+     7.2.1. Convolutions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pooling">
+     7.2.2. Pooling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#embedding">
+     7.2.3. Embedding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   7.3. Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   7.4. Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#regularization">
+   7.5. Regularization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#early-stopping">
+     7.5.1. Early Stopping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#weight">
+     7.5.2. Weight
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#activity">
+     7.5.3. Activity
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#batch-normalization">
+     7.5.4. Batch Normalization
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#layer-normalization">
+       7.5.4.1. Layer Normalization
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dropout">
+     7.5.5. Dropout
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#residues">
+   7.6. Residues
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#blocks">
+   7.7. Blocks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dropout-regularization-example">
+   7.8. Dropout Regularization Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#l2-weight-regularization-example">
+   7.9. L2 Weight Regularization Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discussion">
+   7.10. Discussion
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chapter-summary">
+   7.11. Chapter Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   7.12. Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="standard-layers">
+<h1><span class="section-number">7. </span>Standard Layers<a class="headerlink" href="#standard-layers" title="Permalink to this headline">¶</a></h1>
+<p>We will now see an overview of the enourmous diversity in deep learning layers. This survey is necessarily limited to standard layers and we begin <em>without</em> considering the key layers that enable deep learning of molecules and materials. Almost all the layers listed below came out of a model for a specific task and were not thought-up independently. That means that some of the layers are suited to specific tasks and often the nomenclature around that layer is targeted towards a specific kinds of data. The most common type is image data and we first begin with an overview of how image features are represented. An image is a rank 3 tensor with shape <span class="math notranslate nohighlight">\((H, W, C)\)</span> where <span class="math notranslate nohighlight">\(H\)</span> is the height of the image, <span class="math notranslate nohighlight">\(W\)</span> is the width, and <span class="math notranslate nohighlight">\(C\)</span> is the number of channels (typically 3 – red, green, blue). Since all training is in batches, the input features shape will be <span class="math notranslate nohighlight">\((B, H, W, C)\)</span>. Often layers will discuss input as having a batch axis, some number of shape axes, and then finally a channel axis. The layers will then operate on perhaps only the channels or only the shape dimensions. The layers are all quite flexible, so this is not a limitation in practice, but it’s important to know when reading about layer types. Often the documentation or literature will mention <em>batch number</em> or <em>channels</em> and this is typically the first and last axes of a tensor, respectively.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Everything and nothing is batched in deep learning. Practically, data is always batched. Even if your data is not batched, the first axis input to a neural network is of unspecified dimension and called the batch axis. Many frameworks make this implicit, meaning if you say the output from one layer is shape <span class="math notranslate nohighlight">\((4,5)\)</span>, it will be <span class="math notranslate nohighlight">\((B, 4, 5)\)</span> when you actually inspect data. Or, for example in JAX, you can write your code without batching and make it batched through a function transform. So, all data is batched but often the math, frameworks, and documentation make it seem as if there is no batch axis.</p>
+</div>
+<div class="section" id="hyperparameters">
+<h2><span class="section-number">7.1. </span>Hyperparameters<a class="headerlink" href="#hyperparameters" title="Permalink to this headline">¶</a></h2>
+<p>We saw from the FC/Dense layer that we have to choose if we use bias, the activation, and the output shape. As we learn about more complex layers, there will be more choices. These choices begin to accumulate and in a neural network you may have billions of possible combinations of them. These chocies about shape, activation, initialization, and other layer arguments are called <strong>hyperparameters</strong>. They are parameters in the sense that they can be tuned, but they are not trained on our data so we call them hyperparameters to distinguish them from the “regular” parameters like value of weights and biases in the layers. The name is inherited from Bayesian statistics.</p>
+<p>Choosing these hyperparameters is difficult and we typically rely on the body of existing literature to understand ranges of reasonable parameters. In deep learning, we usually are in a regime of hyperparameters which yield many trainable parameters (deep networks) and thus our models can represent any function. Our models are expressive. However, optimizing hyperparameters makes training faster and/or require less data. For example, papers have shown that carefully choosing the initial value of weights can be more effective than complex architecture <span id="id1">[<a class="reference internal" href="#id35">GB10</a>]</span>. Another example found that convolutions, which are thought to be the most important layer for image recognition, are not necessary if hyperparameters are chosen correctly for dense neural networks<span id="id2">[<a class="reference internal" href="#id36">CMGS10</a>]</span>. This is now changing, with options for tuning hyperparameters, but the current state-of-the art is to take hyperparameters from previous work as a starting guess and change a little if you believe it is needed.</p>
+<div class="section" id="validation">
+<h3><span class="section-number">7.1.1. </span>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h3>
+<p>The number of hyperparameters is high-enough that overfitting can actually occur by choosing hyperparameters that minimize error on the test set. This is surprising because we don’t explicitly train hyperparameters. Nevertheless, you will find in your own work that if you use the test data extensively in hyperparameter tuning and for assessing overfitting of the regular training parameters, your performance will be overfit to the testing data. To combat this, we split our data three ways in deep learning:</p>
+<ol class="simple">
+<li><p>Training data: used for trainable parameters.</p></li>
+<li><p>Validation data: used to choose hyperparameters or measure overfitting of training data</p></li>
+<li><p>Test data: data not used for anything except final reported error</p></li>
+</ol>
+<p>To clean-up our nomenclature here, we use the word <strong>genaralization error</strong> to refer to performance on a hypothetical infinite stream of unseen data. So regardless of if you split three-ways or use other approaches, generalization error means error on unseen data.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>You can replace this three-way split with cross-validation methods from previously, but remember that those require training <span class="math notranslate nohighlight">\(k\)</span>-times. Thus you rarely see k-fold corss-validation and more rarely see leave-one-out or Jacknife because it is expensive to train models.</p>
+</div>
+</div>
+<div class="section" id="tuning">
+<h3><span class="section-number">7.1.2. </span>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h3>
+<p>So how do you tune hyperparameters? The main answer is by-hand, but this is an active area of research. Hyperparameters are continuous (e.g., regularization strength), categorical (e.g., which activation), and discrete variables (e.g., number of layers). One category of ways to tune hyperparameters is a topic called meta-learning<span id="id3">[<a class="reference internal" href="#id30">FAL17</a>]</span>, which aims to learn hyperparameters by looking at multiple related datasets. Another area is auto-machine learning (auto-ML)<span id="id4">[<a class="reference internal" href="#id31">ZL17</a>]</span>, where optimization strategies that do not require derivatives can tune hyperparameters. An important category of optimization related to hyperparameter tuning is <strong>multi-armed bandit</strong> optimization where we explicitly treat the fact that we have a finite amount of computational resources for tuning hyperparameters<span id="id5">[<a class="reference internal" href="#id33">LJD+18</a>]</span>. Specific implementations of these methods can be found in many ML frameworks now, for example <a class="reference external" href="https://keras-team.github.io/keras-tuner/">Keras-Tuner for Keras</a> or <a class="reference external" href="https://docs.ray.io/en/latest/tune/index.html">Ray Tune</a> for PyTorch.</p>
+</div>
+</div>
+<div class="section" id="common-layers">
+<h2><span class="section-number">7.2. </span>Common Layers<a class="headerlink" href="#common-layers" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have some understanding of hyperparameters and their role, let’s now survey the common types of layers.</p>
+<div class="section" id="convolutions">
+<h3><span class="section-number">7.2.1. </span>Convolutions<a class="headerlink" href="#convolutions" title="Permalink to this headline">¶</a></h3>
+<p>You can find a more thorough overview of <a class="reference external" href="http://d2l.ai/chapter_convolutional-neural-networks/why-conv.html">convolutions here</a> and <a class="reference external" href="https://cs231n.github.io/convolutional-networks/">here with more visuals</a>. Here is a <a class="reference external" href="https://www.youtube.com/watch?v=x_VrgWTKkiM">nice video on this</a>. Convolutions are the most commonly used input layer when dealing with images or other data defined on a regular grid. In chemistry, you’ll see convolutions on protein or DNA sequences, on 2D imaging data, and occasionally on 3D spatial data like average density from a molecular simulation. What makes a convolution different from a dense layer is that the number of trainable weights is more flexible than input grid shape <span class="math notranslate nohighlight">\(\times\)</span> output shape, which is what you would get with a dense layer. Since the trainable parameters doesn’t depend on the input grid shape, you don’t learn to depend on location in the image. This is important if you’re hoping to learn something independent of location on the input grid – like if a specific object is present in the image independent of where it is located.</p>
+<p>In a convolution, you specify a <strong>kernel shape</strong> that defines the size of trainable parameters. The kernel shape defines a window over your input data in which a dense neural network is applied. The rank of the kernal shape is the rank of your grid + 1, where the extra axis accounts for channels. For example, for images you might define a kernel shape of <span class="math notranslate nohighlight">\(5\times5\)</span>. The kernel shape will become <span class="math notranslate nohighlight">\(5\times5\times{}C\)</span>, where <span class="math notranslate nohighlight">\(C\)</span> is the number of channels. When referring to a convolution as 1D, 2D, or 3D, we’re referring to the grid of the input data and thus the kernel shape. A 2D convolution actually has an input of rank 4 tensors, the extra 2 axes accounting for batch and channels. The kernel shape of <span class="math notranslate nohighlight">\(5\times5\)</span> means that the output of a specific value in the grid will depend on its 24 nearest neighboring pixels (2 in each direction). Note that the kernel is used like a normal dense layer – it can have bias (dimension <span class="math notranslate nohighlight">\(C\)</span>), output activation, and regularization.</p>
+<p>Practically, convolutions are always grouped in parallel. You have a set of <span class="math notranslate nohighlight">\(F\)</span> kernels, where <span class="math notranslate nohighlight">\(F\)</span> is called the number of <strong>filters</strong>. Each of these filters is completely independent and if you examine what they learn, some filters will learn to identify squares and some might learn to identify color or others will learn textures. Filters is a term left-over from image processing, which is the field where convolutions were first explored. Combining all of these together, a 2D convolution will have an input shape of <span class="math notranslate nohighlight">\((B, H, W, C)\)</span> and an output of <span class="math notranslate nohighlight">\((B, \approx H, \approx W, F)\)</span>, where <span class="math notranslate nohighlight">\(F\)</span> is the number of filters chosen, and the <span class="math notranslate nohighlight">\(\approx\)</span> accounts for the fact that when you slide your kernel window over the input data, you’ll lose some values on the edge. This can either be treated by padding, so your input height and width match output height and width, or your dimensionality is reduced by a small amount (e.g., going from <span class="math notranslate nohighlight">\(128\times128\)</span> to <span class="math notranslate nohighlight">\(125\times125\)</span>). A 1D convolution will have input shape <span class="math notranslate nohighlight">\((B, L, C)\)</span> and output shape <span class="math notranslate nohighlight">\((B, \approx L, F)\)</span>. As a practical example, consider a convolution on DNA. <span class="math notranslate nohighlight">\(L\)</span> is length of the sequence. <span class="math notranslate nohighlight">\(C\)</span>, your channels, will be one-hot indicators for the base (T, C, A, G).</p>
+<p>One of the important properties we’ll begin to discuss is <strong>invariances</strong> and <strong>equivariances</strong>. An invariance means the output from a neural network (or a general function) is insensitive to changes in input. For example, a translational invariance means that the output does not change if the input is translated. Convolutions and pooling should be chosen when you want to have <strong>translation invariance</strong>. For example, if you are identifying if a cat exists in an image, you want your network to give the same answer even if the cat is translated in the image to different regions. However, just because you use a convolution layer does not make a neural network automatically translationally invariant. You must include other layers to achieve this.  Convolutions are actually translationally equivariant – if you translate all pixels in your input, the output will also be translated. People usually do not distinguish between equivariance and invariance. If you are trying to identify <em>where</em> a cat is located in an image you would still use convolutions but you want your neural network to be translationally equivariant, meaning your guess about where the cat is located is sensitive to where the cat is located in the input pixels. The reason convolutions have this property is that the trainable parameters, the kernel, are location independent. You use the same kernel on every region of the input.</p>
+</div>
+<div class="section" id="pooling">
+<h3><span class="section-number">7.2.2. </span>Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h3>
+<p>Convolutions are commonly paired with pooling layers. If your goal is to produce a single number (regression) or class (classification) from an input image or sequence, you need to reduce the rank to 0, a scalar. After a convolution, you could use a reduction like average or maximum. It has been shown empirically that reducing the number of elements of your features more gradually is better. One way is through <strong>pooling</strong>. Pooling is similar to convolutions, in that you define a kernel shape (called window shape), but pooling has no trainable parameters. Instead, you run a window across your input grid and compute a reduction. Commonly an average or maximum is computed. If your pool window is a <span class="math notranslate nohighlight">\(2\times2\)</span> on an input of <span class="math notranslate nohighlight">\((B, H, W, F)\)</span>, then your output will be <span class="math notranslate nohighlight">\((B, H / 2, W / 2, F)\)</span>. In convolutional neural networks, often multiple <strong>blocks</strong> of convolutions and poolings are combined. For example, you might use three rounds of convolutions and pooling to take an image from <span class="math notranslate nohighlight">\(32 \times 32\)</span> down to a <span class="math notranslate nohighlight">\(4 \times 4\)</span>. Pooling is translationally equivariant like convolutions. Read more about <a class="reference external" href="http://d2l.ai/chapter_convolutional-neural-networks/pooling.html">pooling here</a></p>
+</div>
+<div class="section" id="embedding">
+<h3><span class="section-number">7.2.3. </span>Embedding<a class="headerlink" href="#embedding" title="Permalink to this headline">¶</a></h3>
+<p>Another important type of input layers are <strong>embeddings</strong>. Embeddings convert integers into vectors. They are typically used to convert characters or words into numerical vectors. The characters or words are first converted into <strong>tokens</strong> separately as a pre-processing step and then the input to the embedding layer is the indices of the token. The indices are integer values that index into a dictionary of all possible tokens. It sounds more complex than it is. For example, we might tokenize characters in the alphabet. There are 26 tokens (letters) in the alphabet (dictionary of tokens) and we could convert the word “hello” into the indices <span class="math notranslate nohighlight">\([7, 4, 11, 11, 14]\)</span>, where 7 means the 7th letter of the alphabet.</p>
+<p>After converting into indices, an embedding layer converts these indices into dense vectors of a chosen dimension. The rationale behind embeddings is to go from a large discrete space (e.g., all words in the English language) into a much smaller space of real numbers (e.g., vectors of size 5). You might use embeddings for converting monomers in a polymer into dense vectors or atom identities in a molecule or DNA bases.</p>
+</div>
+</div>
+<div class="section" id="running-this-notebook">
+<h2><span class="section-number">7.3. </span>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages, either on your own environment or on Google Colab</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install jupyter-book matplotlib numpy tensorflow pydot seaborn Pillow
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="example">
+<h2><span class="section-number">7.4. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>At this point, we have enough common layers to try to build a neural network. We will combine these three layers to predict if a protein is soluble. Our dataset comes from <span id="id6">[<a class="reference internal" href="#id37">CSTR14</a>]</span> and consists of proteins known to be soluble or insoluble. As usual, the code below sets-up our imports.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;dark&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s1">&#39;xtick.bottom&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;ytick.left&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span>     <span class="mf">0.8</span> <span class="p">,</span> <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="n">color_cycle</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1BBC9B&#39;</span><span class="p">,</span> <span class="s1">&#39;#F06060&#39;</span><span class="p">,</span> <span class="s1">&#39;#5C4B51&#39;</span><span class="p">,</span> <span class="s1">&#39;#F3B562&#39;</span><span class="p">,</span> <span class="s1">&#39;#6e5687&#39;</span><span class="p">]</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_cycle</span><span class="p">)</span> 
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our task is binary classification. The data is split into two: positive and negative examples. We’ll need to rearrange a little into a normal dataset with labels and training/testing split. We also really really need to shuffle our data, so it doesn’t see all positives and then all negatives.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span>
+    <span class="s1">&#39;https://github.com/whitead/dmol-book/raw/master/data/solubility.npz&#39;</span><span class="p">,</span> <span class="s1">&#39;solubility.npz&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;solubility.npz&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+    <span class="n">pos_data</span><span class="p">,</span> <span class="n">neg_data</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;positives&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;negatives&#39;</span><span class="p">]</span>
+
+<span class="c1"># create labels and stich it all into one </span>
+<span class="c1"># tensor</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">neg_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">pos_data</span><span class="p">,</span> <span class="n">neg_data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># we now need to shuffle before creating TF dataset</span>
+<span class="c1"># so that our train/test/val splits are random</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">full_data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
+
+<span class="c1"># now split into val, test, train</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">neg_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="s1">&#39;examples&#39;</span><span class="p">)</span>
+<span class="n">split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">full_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">nontest</span> <span class="o">=</span> <span class="n">full_data</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+<span class="n">val_data</span><span class="p">,</span> <span class="n">train_data</span> <span class="o">=</span> <span class="n">nontest</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nontest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>18453 examples
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before getting to modeling, let’s examine our data. The protein sequences have already been tokenized. There are 20 possible values at each position because there are 20 amino acids possible in proteins. Let’s see a soluble protein</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pos_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([13, 17, 15, 16,  1,  1,  1, 17,  8,  9,  7,  1,  1,  4,  7,  6,  2,
+       11,  2,  7, 11,  2,  8, 11, 17,  2,  6, 11, 15, 17,  8, 20,  1, 20,
+       20, 17,  1,  6,  4,  8,  7, 20,  1,  9,  8,  1, 17, 20, 16, 17, 20,
+       16, 20, 11, 16,  6,  6, 15, 11,  2, 10,  8, 20, 16, 11,  2,  2,  8,
+       16, 19, 11, 17,  8, 11, 10,  2,  6,  2,  2, 20, 14,  1, 11,  3, 20,
+       11, 16, 16,  2,  6, 16,  1, 20,  1,  4, 18, 14,  1,  3, 15,  7,  2,
+       15,  2,  8, 18,  2,  6, 14,  4, 19, 20,  2, 18, 17,  1,  9, 15, 12,
+        1,  8, 13, 15, 20, 11,  7,  4,  1, 11,  1,  6, 11,  9,  5,  2, 11,
+       17,  4, 11, 10, 15, 11,  8,  1, 16,  4,  4, 11, 11, 20,  1,  7, 20,
+       11,  4,  8,  2,  8,  2,  3,  8,  2, 15, 11, 20,  3, 14,  3,  8,  2,
+       11,  9,  4, 20,  7, 14,  2,  8, 20, 20,  2, 20, 16,  2,  4,  6, 15,
+       16,  1, 20, 17, 16, 11,  7,  0,  0,  0,  0,  0,  0])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that integers/indices are used because our data is tokenized already. To make our data all be the same input shape, a special token (0) is inserted at the end indicating no amino acid is present. This needs to be treated carefully, because it should be zeroed throughout the network. Luckily this is built into Keras, so we do not need to worry about it.</p>
+<p>This data is perfect for an embedding because we need to convert token indices to real vectors. Then we will use 1D convolutions to look for sequence patterns with pooling. We need to then make sure our final layer is a sigmoid. This architecture is inspired by the original work on pooling with convolutions <span id="id7">[<a class="reference internal" href="#id32">LecunBottouBengioHaffner98</a>]</span>. The number of layers and kernel sizes below are hyperparameters. You are encouraged to experiment with these or find improvements!</p>
+<p>We begin with an embedding. We’ll use a 2 dimensional embedding, which gives us two channels for our sequence. Our kernel filter size for the 1D convolution will be 5 and we’ll use 16 filters. Beyond that, the rest of the network is about distilling gradually into a final class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+
+<span class="c1"># make embedding and indicate that 0 should be treated specially</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="c1"># now we move to convolutions and pooling</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># now we flatten to move to hidden dense layers.</span>
+<span class="c1"># Flattening just removes all axes except 1 (and implicit batch is still in there as always!)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 200, 16)           336       
+_________________________________________________________________
+conv1d (Conv1D)              (None, 196, 16)           1296      
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 49, 16)            0         
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 47, 16)            784       
+_________________________________________________________________
+max_pooling1d_1 (MaxPooling1 (None, 23, 16)            0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 21, 16)            784       
+_________________________________________________________________
+max_pooling1d_2 (MaxPooling1 (None, 10, 16)            0         
+_________________________________________________________________
+flatten (Flatten)            (None, 160)               0         
+_________________________________________________________________
+dense (Dense)                (None, 256)               41216     
+_________________________________________________________________
+dense_1 (Dense)              (None, 64)                16448     
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 65        
+=================================================================
+Total params: 60,929
+Trainable params: 60,929
+Non-trainable params: 0
+_________________________________________________________________
+</pre></div>
+</div>
+<img alt="../_images/layers_11_1.png" src="../_images/layers_11_1.png" />
+</div>
+</div>
+<p>Take a moment to look at the model summary (shapes) and model diagram. This is a fairly complex and modern neural network. If you can understand this, you’ll have a grasp on most current networks used in deep learning. Now we’ll begin training. Since we are doing classification, we’ll also examine accuracy on validation data as we train.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/layers_14_0.png" src="../_images/layers_14_0.png" />
+</div>
+</div>
+<p>You can see this is a classic case of overfitting, with the validation data rising quickly as we improve our loss on the training data. Indeed, our model is quite expressive in its capability to fit the training data but it is incidentally fititng the noise. We have 61,000 trainable parameters and about 15,000 training examples, so this is not a surprise. However, we still able to learn a little bit – our accuracy is above 50%. This is actually a challenging dataset and the state-of-the art result is 77% accuracy <span id="id8">[<a class="reference internal" href="#id38">KRK+18</a>]</span>. We need to expand our tools to include layers that can address overfitting.</p>
+</div>
+<div class="section" id="regularization">
+<h2><span class="section-number">7.5. </span>Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h2>
+<p>As we saw in the ML chapters, regularization is a strategy that changes your training procedure (often by adding loss terms) to prevent overfitting. There is a nice argument for it in the bias-variance trade-off regarding model complexity, however this doesn’t seem to hold in practice <span id="id9">[<a class="reference internal" href="../ml/regression.html#id21">NMB+18</a>]</span>. Thus we view regularization as an empirical process. Regularization, like other hyperparameter tuning, is dependent on the layers, how complex your model is, your data, and especially if your model is underfit or overfit. Underfitting means you could train longer to improve validation loss. Adding regularization if your model is underfit will usually reduce performance. Consider training longer or adjusting learning rates if you observe this.</p>
+<div class="section" id="early-stopping">
+<h3><span class="section-number">7.5.1. </span>Early Stopping<a class="headerlink" href="#early-stopping" title="Permalink to this headline">¶</a></h3>
+<p>The most commonly used and simplest form of regularization is <strong>early stopping</strong>. Early stopping means monitoring the loss on your validation data and stopping training once it begins to rise. Normally, training is done until convergened – meaning the loss stops decreasing. Early stopping tries to prevent overfitting by looking at the loss on unseen data (validation data) and stopping once that begins to rise. This is an example of regularization because the weights are limited to move a fix distance from their initial value. Just like in L2 regularization, we’re squeezing our trainable weights. Early stopping can be a bit more complicated to implement in practice than it sounds, so check out how frameworks do it before trying to implement yourself (e.g., <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping" title="(in TensorFlow v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.keras.callbacks.EarlyStopping</span></code></a>).</p>
+</div>
+<div class="section" id="weight">
+<h3><span class="section-number">7.5.2. </span>Weight<a class="headerlink" href="#weight" title="Permalink to this headline">¶</a></h3>
+<p><strong>Weight regularization</strong> is the addition of terms to the loss that depend on the trainable weights in the model like we saw before. These can be L2 (<span class="math notranslate nohighlight">\(\sqrt{\sum w_i^2}\)</span>) or L1 (<span class="math notranslate nohighlight">\(\sum \left|w_i\right|\)</span>). You must choose the strength, which is expressed as a parameter (often denoted <span class="math notranslate nohighlight">\(\lambda\)</span>) that should be much less than <span class="math notranslate nohighlight">\(1\)</span>. Typically values of <span class="math notranslate nohighlight">\(0.1\)</span> to <span class="math notranslate nohighlight">\(1\times10^{-4}\)</span> are chosen. This may be broken into <strong>kernel regularization</strong>, which affects the multiplicative weights in a dense or convolution neural network, and <strong>bias regularization</strong>. Bias regularization is rarely seen in practice.</p>
+</div>
+<div class="section" id="activity">
+<h3><span class="section-number">7.5.3. </span>Activity<a class="headerlink" href="#activity" title="Permalink to this headline">¶</a></h3>
+<p><strong>Activity regularization</strong> is the addition of terms to the loss that depend on the <em>output</em> from a layer. Activity regularization ultimately leads to minimizing weight magnitudes, but it makes the strength of that effect depend on the output from the layers. Weight regularization has the strongest effect on weights that have little effect on layer output, because they have no gradient if they have little effect on the output. In contrast, activity regularization has the strongest effect on weights that greatly affect layer output. Conceptually, weight regularization reduces weights that are unimportant but could harm generalization error if there is a shift in the type of features seen in testing. Activity regularization reduces weights that affect layer output and is more akin to early stopping by reducing how far those weights can move in training.</p>
+</div>
+<div class="section" id="batch-normalization">
+<h3><span class="section-number">7.5.4. </span>Batch Normalization<a class="headerlink" href="#batch-normalization" title="Permalink to this headline">¶</a></h3>
+<p>It is arguable if batch normalization is a regularization technique or itself a layer type. Batch normalization is a layer that is added to a neural network with trainable weights, but its trainable weights are not updated via gradient descent of the loss. Batch normalization has a layer equation of:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-68d3b850-2883-4273-987b-ed996f750c07">
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-68d3b850-2883-4273-987b-ed996f750c07" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+f(X) = \frac{X - \bar{X}}{S}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{X}\)</span> and <span class="math notranslate nohighlight">\(S\)</span> are the sample mean and variance taken across the batch axis (zeroth axis of <span class="math notranslate nohighlight">\(X\)</span>). This has the effect of “smoothing” out the magnitudes of values seen between batches. Remember that activations like ReLU depend on values being near 0 (since the non-linear part is at <span class="math notranslate nohighlight">\(x = 0\)</span>) and tanh has the most change in output round <span class="math notranslate nohighlight">\(x = 0\)</span>, so you typically want your intermediate layer outputs to be around <span class="math notranslate nohighlight">\(0\)</span>. This is what batch normalization. At inference time you may not have batches or your batches may be a different size, so <span class="math notranslate nohighlight">\(\bar{X}\)</span> and <span class="math notranslate nohighlight">\(S\)</span> are set to the average across all batches seen in training data.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p><strong>Inference</strong> is the word for when you use your model to make predictions. Training is when you train the model and inference is when you use the model.</p>
+</div>
+<div class="section" id="layer-normalization">
+<h4><span class="section-number">7.5.4.1. </span>Layer Normalization<a class="headerlink" href="#layer-normalization" title="Permalink to this headline">¶</a></h4>
+<p>Batch normalization depends on there being a constant batch size. Some kinds of data, like text or a graphs, have different sizes and so the batch mean/variance can change significantly. <strong>Layer normalization</strong> avoids this problem by normalizing across the <em>features</em> (the non-zero axes) instead of the batch. This has a similar effect of making the layer output features behave well centered at 0 but without having highly variable means/variances because of batch to batch variation. You’ll see these in graph neural networks and recurrent neural networks, with both take variable sized inputs.</p>
+</div>
+</div>
+<div class="section" id="dropout">
+<h3><span class="section-number">7.5.5. </span>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h3>
+<p>The last regularization type is <strong>dropout</strong>. Like batch normalization, dropout is typically viewed as a layer and has no trainable parameters. In dropout, we randomly zero-out specific elements of the input and then rescale the output so its average magnitude is unchanged. You can think of it like <em>masking</em>. There is a mask tensor <span class="math notranslate nohighlight">\(M\)</span> which contains 1s and 0s and is multiplied by the input. Then the output is multiplied by <span class="math notranslate nohighlight">\(|M|  / \sum M\)</span> where <span class="math notranslate nohighlight">\(|M|\)</span> is the number of elements in <span class="math notranslate nohighlight">\(M\)</span>. Dropout forces your neural network to learn to use different features or “pathways” by zeroing out elements. Weight regularization squeezes unused trainable weights through minimization. Dropout tries to force all trainable weights to be used by randomly negating weights. Dropout is more common than weight or activity regularization but has arguable theoretical merit. Some have proposed it is a kind of sampling mechanism for exploring model variations<span id="id10">[<a class="reference internal" href="#id39">GG16</a>]</span>. Despite it appearing ad-hoc, it is effective. Note that dropout is only used during training, not for inference. You need to choose the dropout rate when using it, another hyperparameter. Usually, you will want to choose a rate of 0.05–0.35. 0.2 is common. Too small of a value – meaning you rarely do dropout – makes the effect too small to matter. Too large of a value – meaning you often dropout values – can prevent you from actually learning.</p>
+</div>
+</div>
+<div class="section" id="residues">
+<h2><span class="section-number">7.6. </span>Residues<a class="headerlink" href="#residues" title="Permalink to this headline">¶</a></h2>
+<p>One last “layer” note to mention is residues. One of the classic problems in neural network training is <strong>vanishing gradients</strong>. If your neural network is deep and many features contribute to the label, you can have very small gradients during training that make it difficult to train. This is visible as underfitting. One way this can be addressed is through careful choice of optimization and learning rates. Another way is to add “residue” connections in the neural network. Residue connections are a fancy way of saying “adding” or “concatonating” later layers with early layers. The most common way to do this is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-400a513d-926d-47fb-90c4-058531612823">
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-400a513d-926d-47fb-90c4-058531612823" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+X^{i + 1} = \sigma(W^iX^i + b^i) + X^i
+\end{equation}\]</div>
+<p>This is the usual equation for a dense neural network but we’ve added the previous layer output (<span class="math notranslate nohighlight">\(X^i\)</span>) to our output. Now when you take a gradient of earlier weights from layer <span class="math notranslate nohighlight">\(i - 1\)</span>, they will appear through both the <span class="math notranslate nohighlight">\(\sigma(W^iX^i + b^i)\)</span> term via the chain rule and the <span class="math notranslate nohighlight">\(X^i\)</span> term. This goes around the activation <span class="math notranslate nohighlight">\(\sigma\)</span> and the effect of <span class="math notranslate nohighlight">\(W^i\)</span>. Note this continues at all layers and then a gradient can propogate back to earlier layers via either term. You can add the “residue” connection to the previous layer as shown here or go back even earlier. You can also be more complex and use a trainable function for how the residue term (<span class="math notranslate nohighlight">\(X^i\)</span>) can be treated. For example:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-449a0634-50bb-45b3-9926-a29055946161">
+<span class="eqno">(7.3)<a class="headerlink" href="#equation-449a0634-50bb-45b3-9926-a29055946161" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+X^{i + 1} = \sigma(W^iX^i + b^i) + W'^i X^i
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(W'^i\)</span> is a set of new trainable parameters. We have seen that there are many hyperaprametes for tuning and adjusting residue connections is one of the least effective thing to adjust. So don’t expect much of an improvement. However, if you’re seeing underfitting and inefficient training, perhaps it’s worth investigating.</p>
+</div>
+<div class="section" id="blocks">
+<h2><span class="section-number">7.7. </span>Blocks<a class="headerlink" href="#blocks" title="Permalink to this headline">¶</a></h2>
+<p>You can imagine that we might join a dense layer with dropout, batch normalization, and maybe a residue. When you group multiple layers together, this can be called a <strong>block</strong> for simplicity. For example, you might use the word “convolution block” to describe a sequential layers of convolution, pooling, and dropout.</p>
+</div>
+<div class="section" id="dropout-regularization-example">
+<h2><span class="section-number">7.8. </span>Dropout Regularization Example<a class="headerlink" href="#dropout-regularization-example" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s try to add a few dropout layers to see if we can do better on our example above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+
+<span class="c1"># make embedding and indicate that 0 should be treated specially</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="c1"># now we move to convolutions and pooling</span>
+<span class="c1"># NOTE: Keras doesn&#39;t respect masking here</span>
+<span class="c1"># I should switch to PyTorch.</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># now we flatten to move to hidden dense layers.</span>
+<span class="c1"># Flattening just removes all axes except 1 (and implicit batch is still in there as always!)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">())</span>
+
+<span class="c1">#HERE IS THE DROPOUT</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_1&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding_1 (Embedding)      (None, 200, 16)           336       
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 196, 16)           1296      
+_________________________________________________________________
+max_pooling1d_3 (MaxPooling1 (None, 49, 16)            0         
+_________________________________________________________________
+conv1d_4 (Conv1D)            (None, 47, 16)            784       
+_________________________________________________________________
+max_pooling1d_4 (MaxPooling1 (None, 23, 16)            0         
+_________________________________________________________________
+conv1d_5 (Conv1D)            (None, 21, 16)            784       
+_________________________________________________________________
+max_pooling1d_5 (MaxPooling1 (None, 10, 16)            0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 160)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 160)               0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 256)               41216     
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 256)               0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 64)                16448     
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 64)                0         
+_________________________________________________________________
+dense_5 (Dense)              (None, 1)                 65        
+=================================================================
+Total params: 60,929
+Trainable params: 60,929
+Non-trainable params: 0
+_________________________________________________________________
+</pre></div>
+</div>
+<img alt="../_images/layers_19_1.png" src="../_images/layers_19_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/layers_21_0.png" src="../_images/layers_21_0.png" />
+</div>
+</div>
+<p>We added a few dropout layers and now we can see the validation loss is a little better but additional training will indeed result it in rising. Feel free to try the other ideas above to see if you can get the validation loss to decrease like the training loss.</p>
+</div>
+<div class="section" id="l2-weight-regularization-example">
+<h2><span class="section-number">7.9. </span>L2 Weight Regularization Example<a class="headerlink" href="#l2-weight-regularization-example" title="Permalink to this headline">¶</a></h2>
+<p>Now we’ll demonstrate adding weight regularization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+
+<span class="c1"># make embedding and indicate that 0 should be treated specially</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">pos_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="c1"># now we move to convolutions and pooling</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># now we flatten to move to hidden dense layers.</span>
+<span class="c1"># Flattening just removes all axes except 1 (and implicit batch is still in there as always!)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">())</span>
+
+<span class="c1">#HERE IS THE REGULARIZATION:</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+
+
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/layers_23_0.png" src="../_images/layers_23_0.png" />
+</div>
+</div>
+<p>L2 regularization is too strong it appears, preventing learning. You could go back and reduce the strength; here we’re just using the default which doesn’t look appropriate for our setting. Tuning hyperparameters like this is a favorite past time of neural network engineers and we could go on forever. We’ll stop here and leave it as an exercise for the reader to continue exploring hyperparameters.</p>
+</div>
+<div class="section" id="discussion">
+<h2><span class="section-number">7.10. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
+<p>Designing and training neural networks is a complex task. The best approach is to always start simple and work your way up in complexity. Remember, you have to write correct code, create a competent model, and have clean data. If you start with a complex model it can be hard to discern if learning problems are due to bugs, the model, or the data. My advice is to always start with a pre-trained or simple baseline network from a previous paper. If you find yourself designing and training your own neural network, read through Andrej Karpathy’s <a class="reference external" href="http://karpathy.github.io/2019/04/25/recipe/">excellent guide</a> on how to approach this task.</p>
+</div>
+<div class="section" id="chapter-summary">
+<h2><span class="section-number">7.11. </span>Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Layers are created for specific tasks, and given the variety of layers, there are a vast number of permutations of layers in a deep neural network.</p></li>
+<li><p>Convolution layers are used for data defined on a regular grid (such as images). In a convolution, one defines the size of the trainable parameters through the kernel shape.</p></li>
+<li><p>An invariance is when the output from a neural network is insensitive to changes in the input.</p></li>
+<li><p>An equivariance is when the output changes linearly with respect to the input.</p></li>
+<li><p>Convolution layers are often paired with pooling layers. A pooling layer behaves similarly to a convolution layer, except a reduction is computed and the output is a smaller shape (same rank) than the input.</p></li>
+<li><p>Embedding layers convert indices into vectors, and are typically used as pre-processing steps.</p></li>
+<li><p>Hyperparameters are choices regarding the shape of the layers, the activation function, initialization parameters, and other layer arguments. They can be tuned but are not trained on the data.</p></li>
+<li><p>Hyperparameters must be tuned by hand, as they can be continuous, categorical, or discrete variables, but there are algorithms being researched that tune hyperparameters.</p></li>
+<li><p>Tuning the hyperparameters can make training faster or require less training data.</p></li>
+<li><p>Using a validation data set can measure the overfitting of training data, and is used to help choose the hyperparameters.</p></li>
+<li><p>Regularization is an empirical technique used to change training procedures to prevent overfitting. There are five common types of regularization: early stopping, weight regularization, activity regularization, batch normalization, and dropout.</p></li>
+<li><p>Vanishing gradient problems can be addressed by adding “residue” connections, essentially adding later layers with early layers in the neural network.</p></li>
+</ul>
+</div>
+<div class="section" id="cited-references">
+<h2><span class="section-number">7.12. </span>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<p id="id11"><dl class="citation">
+<dt class="label" id="id23"><span class="brackets"><a class="fn-backref" href="#id9">NMB+18</a></span></dt>
+<dd><p>Brady Neal, Sarthak Mittal, Aristide Baratin, Vinayak Tantia, Matthew Scicluna, Simon Lacoste-Julien, and Ioannis Mitliagkas. A modern take on the bias-variance tradeoff in neural networks. <em>arXiv preprint arXiv:1810.08591</em>, 2018.</p>
+</dd>
+<dt class="label" id="id35"><span class="brackets"><a class="fn-backref" href="#id1">GB10</a></span></dt>
+<dd><p>Xavier Glorot and Yoshua Bengio. Understanding the difficulty of training deep feedforward neural networks. In <em>Proceedings of the thirteenth international conference on artificial intelligence and statistics</em>, 249–256. 2010.</p>
+</dd>
+<dt class="label" id="id36"><span class="brackets"><a class="fn-backref" href="#id2">CMGS10</a></span></dt>
+<dd><p>Dan Claudiu Cireşan, Ueli Meier, Luca Maria Gambardella, and Jürgen Schmidhuber. Deep, big, simple neural nets for handwritten digit recognition. <em>Neural Computation</em>, 22(12):3207–3220, 2010. <a class="reference external" href="https://doi.org/10.1162/NECO\_a\_00052">doi:10.1162/NECO\_a\_00052</a>.</p>
+</dd>
+<dt class="label" id="id30"><span class="brackets"><a class="fn-backref" href="#id3">FAL17</a></span></dt>
+<dd><p>Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. <em>arXiv preprint arXiv:1703.03400</em>, 2017.</p>
+</dd>
+<dt class="label" id="id31"><span class="brackets"><a class="fn-backref" href="#id4">ZL17</a></span></dt>
+<dd><p>Barret Zoph and Quoc V. Le. Neural architecture search with reinforcement learning. <em>arXiv preprint arXiv:1611.01578</em>, 2017. URL: <a class="reference external" href="https://arxiv.org/abs/1611.01578">https://arxiv.org/abs/1611.01578</a>.</p>
+</dd>
+<dt class="label" id="id33"><span class="brackets"><a class="fn-backref" href="#id5">LJD+18</a></span></dt>
+<dd><p>Lisha Li, Kevin Jamieson, Giulia DeSalvo, Afshin Rostamizadeh, and Ameet Talwalkar. Hyperband: a novel bandit-based approach to hyperparameter optimization. <em>Journal of Machine Learning Research</em>, 18(185):1–52, 2018. URL: <a class="reference external" href="http://jmlr.org/papers/v18/16-558.html">http://jmlr.org/papers/v18/16-558.html</a>.</p>
+</dd>
+<dt class="label" id="id37"><span class="brackets"><a class="fn-backref" href="#id6">CSTR14</a></span></dt>
+<dd><p>Catherine Ching Han Chang, Jiangning Song, Beng Ti Tey, and Ramakrishnan Nagasundara Ramanan. Bioinformatics approaches for improved recombinant protein production in escherichia coli: protein solubility prediction. <em>Briefings in bioinformatics</em>, 15(6):953–962, 2014.</p>
+</dd>
+<dt class="label" id="id32"><span class="brackets"><a class="fn-backref" href="#id7">LecunBottouBengioHaffner98</a></span></dt>
+<dd><p>Y. Lecun, L. Bottou, Y. Bengio, and P. Haffner. Gradient-based learning applied to document recognition. <em>Proceedings of the IEEE</em>, 86(11):2278–2324, 1998.</p>
+</dd>
+<dt class="label" id="id38"><span class="brackets"><a class="fn-backref" href="#id8">KRK+18</a></span></dt>
+<dd><p>Sameer Khurana, Reda Rawi, Khalid Kunji, Gwo-Yu Chuang, Halima Bensmail, and Raghvendra Mall. DeepSol: a deep learning framework for sequence-based protein solubility prediction. <em>Bioinformatics</em>, 34(15):2605–2613, 03 2018. URL: <a class="reference external" href="https://doi.org/10.1093/bioinformatics/bty166">https://doi.org/10.1093/bioinformatics/bty166</a>, <a class="reference external" href="https://arxiv.org/abs/https://academic.oup.com/bioinformatics/article-pdf/34/15/2605/25230875/bty166.pdf">arXiv:https://academic.oup.com/bioinformatics/article-pdf/34/15/2605/25230875/bty166.pdf</a>, <a class="reference external" href="https://doi.org/10.1093/bioinformatics/bty166">doi:10.1093/bioinformatics/bty166</a>.</p>
+</dd>
+<dt class="label" id="id39"><span class="brackets"><a class="fn-backref" href="#id10">GG16</a></span></dt>
+<dd><p>Yarin Gal and Zoubin Ghahramani. Dropout as a bayesian approximation: representing model uncertainty in deep learning. In <em>international conference on machine learning</em>, 1050–1059. 2016.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./dl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="introduction.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">6. </span>Introduction to Deep Learning</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="gnn.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">8. </span>Graph Neural Networks</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Andrew D. White<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
