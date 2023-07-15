@@ -1,0 +1,47 @@
+name: deploy-book
+
+# Only run this on PRs
+on:
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+# This job installs dependencies, build the book, and pushes it to `gh-pages`
+jobs:
+
+  deploy-book:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: s-weigand/setup-conda@v1
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        conda install -c conda-forge pygraphviz
+        cd package && python -m pip --use-deprecated=legacy-resolver --no-cache-dir install .
+        pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.12.0+cpu.html
+    - name: Build dmol-book package
+      run: |
+        pip install build
+        cd package && python -m build --sdist --wheel --outdir dist/ .
+    - name: Publish distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      continue-on-error: true
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        packages_dir: package/dist/
+    - name: Build the book
+      run: env TF_CPP_MIN_LOG_LEVEL=3 jupyter-book build .
+    - name: Deploy Jupyter book to GitHub pages
+      uses: peaceiris/actions-gh-pages@v3.9.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: _build/html
+        #force_orphan: true
+        keep_files: true
+        destination_dir: ${{ steps.myref.outputs.branch }}
+        cname: dmol.pub

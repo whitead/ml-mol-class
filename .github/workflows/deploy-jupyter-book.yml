@@ -43,4 +43,6 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: _build/html
         force_orphan: true
+        #keep_files: true
         cname: dmol.pub
+        destination_dir: latest
